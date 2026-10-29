@@ -1,0 +1,21 @@
+
+<div class="empty-state">
+  <div class="empty-icon">
+    <i [class]="icon" aria-hidden="true"></i>
+  </div>
+
+  <h3 class="empty-title">{{ title }}</h3>
+
+  @if (message) {
+    <p class="empty-message">{{ message }}</p>
+  }
+
+  @if (buttonText) {
+    <button
+      type="button"
+      class="btn btn-primary-custom"
+      (click)="onButtonClick()">
+      {{ buttonText }}
+    </button>
+  }
+</div>

@@ -1,0 +1,27 @@
+
+<div class="search-container">
+  <div class="search-input-wrapper">
+    <i
+      class="bi bi-search search-icon"
+      aria-hidden="true">
+    </i>
+
+    <input
+      type="text"
+      class="form-control input-dark search-input"
+      [placeholder]="placeholder"
+      [attr.aria-label]="ariaLabel"
+      [formControl]="searchControl">
+
+    @if (searchControl.value) {
+      <button
+        type="button"
+        class="clear-btn"
+        aria-label="Clear search"
+        (click)="clearSearch()">
+
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    }
+  </div>
+</div>

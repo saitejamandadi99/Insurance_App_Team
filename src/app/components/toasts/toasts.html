@@ -1,0 +1,36 @@
+<div class="toast-container" aria-live="polite" aria-atomic="false">
+
+    <div
+        *ngFor="let toast of toasts"
+        class="toast-card"
+        [ngClass]="toast.type"
+        [attr.role]="toast.type === ToastType.Error ? 'alert' : 'status'">
+
+        <div class="toast-icon">
+            <i
+                class="bi"
+                [ngClass]="{
+                    'bi-check-circle-fill': toast.type === ToastType.Success,
+                    'bi-x-circle-fill': toast.type === ToastType.Error,
+                    'bi-exclamation-triangle-fill': toast.type === ToastType.Warning,
+                    'bi-info-circle-fill': toast.type === ToastType.Info
+                }">
+            </i>
+        </div>
+
+        <div class="toast-content">
+            <h6>{{ toast.title }}</h6>
+            <p>{{ toast.message }}</p>
+        </div>
+
+        <button
+            type="button"
+            class="toast-close"
+            aria-label="Close notification"
+            (click)="removeToast(toast.id)">
+            <i class="bi bi-x-lg"></i>
+        </button>
+
+    </div>
+
+</div>

@@ -1,0 +1,54 @@
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.action-buttons .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 90px;
+  padding: 6px 12px;
+  border-radius: var(--radius-md, 6px);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.action-buttons .btn i {
+  font-size: 14px;
+}
+
+.action-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.action-buttons .btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.action-buttons .btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 576px) {
+  .action-buttons {
+    gap: 6px;
+  }
+
+  .action-buttons .btn {
+    min-width: auto;
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+}

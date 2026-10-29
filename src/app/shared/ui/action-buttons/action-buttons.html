@@ -1,0 +1,16 @@
+
+<div class="action-buttons">
+  @for (action of actions; track $index) {
+    <button
+      class="btn btn-sm"
+      type="button"
+      [ngClass]="getButtonClass(action)"
+      (click)="onAction(action)"
+      [attr.aria-label]="action + ' action">
+
+      <i [class]="getIcon(action)" aria-hidden="true"></i>
+
+      <span>{{ action | titlecase }}</span>
+    </button>
+  }
+</div>

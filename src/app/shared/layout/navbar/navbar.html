@@ -1,0 +1,41 @@
+
+<nav class="navbar navbar-expand-lg shadow-sm px-4">
+  <button
+    type="button"
+    class="logo-section"
+    aria-label="Navigate to dashboard"
+    (click)="navigateToDashboard()">
+
+    <div class="logo-icon">
+      <i class="bi bi-shield-check" aria-hidden="true"></i>
+    </div>
+
+    <div class="logo-text">
+      <h3>InsuPro</h3>
+      <small>Insurance management system</small>
+    </div>
+  </button>
+
+  <div class="navbar-right">
+    <div class="user-info">
+      <i class="bi bi-person-circle user-avatar" aria-hidden="true"></i>
+
+      <div class="user-details">
+        <h6 [title]="userEmail">{{ userEmail || 'User' }}</h6>
+
+        @if (role) {
+          <span class="role-badge">{{ role }}</span>
+        }
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-outline-danger logout-btn"
+      (click)="logout()">
+
+      <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+      <span>Logout</span>
+    </button>
+  </div>
+</nav>
