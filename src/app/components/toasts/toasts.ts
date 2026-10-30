@@ -3,9 +3,10 @@ import { ToastService } from '../../services/Toast/toast-service';
 import { Subscription } from 'rxjs';
 import { Toast } from '../../Enums/Toast';
 import { ToastType } from '../../Enums/ToastType';
+import { NgClass } from '@angular/common';
 
 @Component({
-  imports: [],
+  imports: [NgClass],
   standalone:true,
   selector: 'app-toasts',
   styleUrl: './toasts.css',
