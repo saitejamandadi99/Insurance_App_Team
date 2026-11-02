@@ -15,10 +15,9 @@ import { ClaimStatus } from '../../../../Enums/ClaimStatus';
 import { ClaimResponseDto } from '../../../../DTO/ClaimResponseDto';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
-// New imports for claim documents
 import { ClaimDocument } from '../../../../services/ClaimDocument/claim-document';
 import { ClaimDocumentResponseDto } from '../../../../DTO/ClaimDocumentResponseDto';
-
+import { HttpClient } from '@angular/common/http';
 @Component({
   imports: [ReactiveFormsModule, CurrencyPipe, DatePipe],
   standalone: true,
@@ -56,7 +55,8 @@ export class AdminClaimReviewComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private toast: ToastService
+    private toast: ToastService,
+    private httpClient: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -143,20 +143,32 @@ export class AdminClaimReviewComponent implements OnInit {
   }
 
   downloadDocument(document: ClaimDocumentResponseDto): void {
-    if (!document.documentReference) {
-      this.toast.error('Document URL is not available.');
-      return;
-    }
-
-    const link = window.document.createElement('a');
-
-    link.href = document.documentReference;
-    link.download = document.documentName;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-
-    link.click();
+  if (!document.documentReference) {
+    this.toast.error('Document URL is not available.');
+    return;
   }
+
+  this.httpClient.get(document.documentReference, {
+    responseType: 'blob'
+  }).subscribe({
+    next: (blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+
+      const link = window.document.createElement('a');
+      link.href = url;
+      link.download = document.documentName || 'claim-document';
+
+      window.document.body.appendChild(link);
+      link.click();
+      window.document.body.removeChild(link);
+
+      window.URL.revokeObjectURL(url);
+    },
+    error: () => {
+      this.toast.error('Unable to download the document.');
+    }
+  });
+}
 
   reviewClaim(): void {
     if (this.reviewForm.invalid || this.isLoading) {

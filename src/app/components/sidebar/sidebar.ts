@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Role } from '../../Enums/Role';
 import { Auth } from '../../services/Auth/auth';
+import { CustomerProfileServices } from '../../services/CustomerProfile/customer-profile-services';
 
 interface SidebarLink {
   icon: string;
@@ -37,7 +38,7 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private authService: Auth,
-    private customerService: Customer,
+    private customerService: CustomerProfileServices,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}

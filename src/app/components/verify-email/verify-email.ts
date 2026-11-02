@@ -7,7 +7,7 @@ import { VerifyEmailRequestDTO } from '../../DTO/VerifyEmailRequestDTO';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorResponseDto } from '../../DTO/ErrorResponseDto';
 import { ResendVerificationRequestDTO } from '../../DTO/ResendVerificationRequestDTO';
-
+import { ChangeDetectorRef } from '@angular/core';
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   standalone:true,
@@ -26,7 +26,7 @@ export class VerifyEmail {
     otp:new FormControl('', [Validators.required, Validators.pattern(/^\d{6}$/)])
   });
 
-  constructor(private authService:Auth, private router:Router, private toastService:ToastService){}
+  constructor(private authService:Auth, private router:Router, private toastService:ToastService, private cdr: ChangeDetectorRef){}
 
   verifyEmail(){
     if (this.verifyForm.invalid || this.isVerifying) {
@@ -52,6 +52,7 @@ export class VerifyEmail {
         const apiError = err.error as ErrorResponseDto;
         this.toastService.error(apiError?.message || 'Email verification failed.'
         );
+        this.cdr.detectChanges();
       }
     });
   }

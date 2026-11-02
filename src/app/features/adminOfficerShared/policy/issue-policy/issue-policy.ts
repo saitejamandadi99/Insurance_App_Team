@@ -9,6 +9,10 @@ import { Policy } from '../../../../services/Policy/policy';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CustomerResponseDto } from '../../../../DTO/CustomerResponseDto';
+import { PolicyPlanResponseDto } from '../../../../DTO/PolicyPlanResponseDto';
+import { PolicyPlanServices } from '../../../../services/PolicyPlan/policy-plan-services';
+import {CustomerProfileServices} from "../../../../services/CustomerProfile/customer-profile-services";
 @Component({
   imports: [ReactiveFormsModule, CurrencyPipe],
   standalone:true,
@@ -38,8 +42,8 @@ export class IssuePolicy implements OnInit {
 
   constructor(
     private policyService: Policy,
-    private policyPlanService: PolicyPlan,
-    private customerService: Customer,
+    private policyPlanService: PolicyPlanServices,
+    private customerService: CustomerProfileServices,
     private toastService: ToastService,
     private router: Router,
     private cdr: ChangeDetectorRef
@@ -54,7 +58,7 @@ export class IssuePolicy implements OnInit {
 
   loadCustomers(): void {
     this.customerService
-      .listCustomers(1, 99, 'email', 'asc', '')
+      .listCustomerProfiles(1, 99, 'email', 'asc', '')
       .subscribe({
         next: (response) => {
           this.lstCustomers = response.data?.records ?? [];

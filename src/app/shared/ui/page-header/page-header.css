@@ -14,7 +14,30 @@
   flex: 1;
   min-width: 0;
 }
+.btn-primary-custom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #173b63;
+  color: #ffffff;
+  border: 1px solid #173b63;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
+.btn-primary-custom:hover {
+  background: #2868a8;
+  border-color: #2868a8;
+}
+
+.btn-primary-custom i {
+  font-size: 16px;
+}
 .page-heading {
   margin: 0;
   font-size: 2rem;

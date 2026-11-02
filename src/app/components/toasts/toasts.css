@@ -10,57 +10,36 @@
     isolation: isolate;
     pointer-events: none;
 }
-
 .toast-card {
     display: flex;
     align-items: center;
     gap: 16px;
     padding: 18px;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(
-        180deg,
-        var(--surface),
-        rgba(17, 24, 39, .75)
-    );
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-card);
+    border-radius: 14px;
+    background: #FFFFFF;
+    border: 1px solid #DCE4EF;
+    box-shadow: 0 8px 28px rgba(23, 59, 99, 0.14);
     animation: slideIn .35s ease;
     pointer-events: auto;
 }
 
-.toast-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    flex-shrink: 0;
-}
-
-.toast-content {
-    flex: 1;
-    min-width: 0;
-    overflow-wrap: anywhere;
-}
-
 .toast-content h6 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
-    color: white;
+    color: #173B63;
 }
 
 .toast-content p {
     margin: 4px 0 0;
-    color: var(--text-secondary);
+    color: #718096;
+    font-size: 14px;
 }
 
 .toast-close {
     background: none;
     border: none;
-    color: var(--text-muted);
+    color: #718096;
     font-size: 18px;
     cursor: pointer;
     transition: color .2s;
@@ -68,48 +47,32 @@
 }
 
 .toast-close:hover {
-    color: white;
-}
-
-.toast-close:focus-visible {
-    outline: 2px solid var(--primary-light);
-    outline-offset: 3px;
-    border-radius: 4px;
+    color: #173B63;
 }
 
 /* Success */
 .success {
-    border-left: 4px solid var(--success);
-}
-
-.success .toast-icon {
-    background: rgba(34, 197, 94, .15);
-    color: var(--success);
+    border-left: 4px solid #16A34A;
 }
 
 /* Error */
 .error {
-    border-left: 4px solid var(--danger);
+    border-left: 4px solid #DC2626;
 }
 
 .error .toast-icon {
-    background: rgba(239, 68, 68, .15);
-    color: var(--danger);
+    background: #FEE2E2;
+    color: #DC2626;
 }
 
 /* Warning */
 .warning {
-    border-left: 4px solid var(--warning);
-}
-
-.warning .toast-icon {
-    background: rgba(245, 158, 11, .15);
-    color: var(--warning);
+    border-left: 4px solid #D97706;
 }
 
 /* Info */
 .info {
-    border-left: 4px solid var(--info);
+    border-left: 4px solid #2563EB;
 }
 
 .info .toast-icon {

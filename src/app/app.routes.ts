@@ -24,6 +24,7 @@ import { ViewDocuments } from './features/adminOfficerShared/document/view-docum
 import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 import { Error } from './components/error/error';
+import { VerifyEmail } from './components/verify-email/verify-email';
 
 export const routes: Routes = [
 
@@ -36,6 +37,9 @@ export const routes: Routes = [
   },
   {
     path: 'register',component: Register
+  },
+  {
+    path: 'verify-email',component: VerifyEmail
   },
 
   // Unauthorized

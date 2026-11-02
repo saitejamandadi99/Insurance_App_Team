@@ -317,13 +317,25 @@
                 </small>
               </div>
 
-              <button
-                class="btn-download"
-                type="button"
-                (click)="downloadDocument(document)">
-                <i class="bi bi-download"></i>
-                <span>Download</span>
-              </button>
+             <div class="document-actions">
+
+  <button
+    class="btn-view"
+    type="button"
+    (click)="viewDocument(document)">
+    <i class="bi bi-eye"></i>
+    <span>View</span>
+  </button>
+
+  <button
+    class="btn-download"
+    type="button"
+    (click)="downloadDocument(document)">
+    <i class="bi bi-download"></i>
+    <span>Download</span>
+  </button>
+
+</div>
 
             </div>
 

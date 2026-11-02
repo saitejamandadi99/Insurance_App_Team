@@ -462,6 +462,46 @@
   cursor: pointer;
 }
 
+.document-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-view,
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-view {
+  color: #2868A8;
+  background: #EDF5FC;
+  border: 1px solid #C9DDF1;
+}
+
+.btn-view:hover {
+  background: #DCEBFA;
+}
+
+.btn-download {
+  color: #fff;
+  background: #173B63;
+  border: 1px solid #173B63;
+}
+
+.btn-download:hover {
+  background: #2868A8;
+}
+
 .btn-back-bottom:hover {
   background: #e8f0fa;
 }

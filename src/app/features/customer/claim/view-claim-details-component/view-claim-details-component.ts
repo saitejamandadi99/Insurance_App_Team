@@ -9,6 +9,7 @@ import { ToastService } from '../../../../services/Toast/toast-service';
 import { ClaimDocument } from '../../../../services/ClaimDocument/claim-document';
 import { ClaimDocumentResponseDto } from '../../../../DTO/ClaimDocumentResponseDto';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 @Component({
   imports: [CurrencyPipe, DatePipe],
   standalone: true,
@@ -32,7 +33,8 @@ export class ViewClaimDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private toastService: ToastService
+    private toast: ToastService,
+    private httpClient: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -71,7 +73,7 @@ export class ViewClaimDetailsComponent implements OnInit {
 
         const apiError = err.error as ErrorResponseDto;
 
-        this.toastService.error(
+        this.toast.error(
           apiError?.message ?? 'Unable to load claim details.'
         );
 
@@ -98,7 +100,7 @@ export class ViewClaimDetailsComponent implements OnInit {
 
           const apiError = err.error as ErrorResponseDto;
 
-          this.toastService.error(
+          this.toast.error(
             apiError?.message ?? 'Unable to load claim documents.'
           );
 
@@ -111,12 +113,40 @@ export class ViewClaimDetailsComponent implements OnInit {
     this.router.navigate(['/myclaims']);
   }
 
-  downloadDocument(doc: ClaimDocumentResponseDto): void {
-  const link = window.document.createElement('a');
-  link.href = doc.documentReference;
-  link.download = doc.documentName;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  link.click();
+  viewDocument(document: ClaimDocumentResponseDto): void {
+  if (!document.documentReference) {
+    this.toast.error('Document URL is not available.');
+    return;
+  }
+
+  window.open(document.documentReference, '_blank', 'noopener,noreferrer');
+}
+
+  downloadDocument(document: ClaimDocumentResponseDto): void {
+  if (!document.documentReference) {
+    this.toast.error('Document URL is not available.');
+    return;
+  }
+
+  this.httpClient.get(document.documentReference, {
+    responseType: 'blob'
+  }).subscribe({
+    next: (blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+
+      const link = window.document.createElement('a');
+      link.href = url;
+      link.download = document.documentName || 'claim-document';
+
+      window.document.body.appendChild(link);
+      link.click();
+      window.document.body.removeChild(link);
+
+      window.URL.revokeObjectURL(url);
+    },
+    error: () => {
+      this.toast.error('Unable to download the document.');
+    }
+  });
 }
 }

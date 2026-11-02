@@ -7,7 +7,7 @@ import { LoginRequestDto } from '../../DTO/LoginRequestDto';
 import { Role } from '../../Enums/Role';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorResponseDto } from '../../DTO/ErrorResponseDto';
-
+import { ChangeDetectorRef } from '@angular/core';
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   standalone:true,
@@ -24,7 +24,7 @@ export class Login {
     password: new FormControl('', [Validators.required]),
   });
 
-  constructor(private authService:Auth, private router:Router, private toastService:ToastService ){}
+  constructor(private authService:Auth, private router:Router, private toastService:ToastService, private cdr:ChangeDetectorRef ){}
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
@@ -57,9 +57,11 @@ export class Login {
         }
       }, error:(err:HttpErrorResponse) =>{
         this.isLoading = false;
+        console.log('Login error:', err.error);
+  console.log('Calling toast service');
         const apiError = err.error as ErrorResponseDto
         this.toastService.error(apiError.message);
-          
+        this.cdr.detectChanges();
       },
     })
   }

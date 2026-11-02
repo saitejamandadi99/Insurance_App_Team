@@ -12,7 +12,7 @@ import { environment } from '../../Environments/environment';
 })
 export class PolicyPlanServices {
 
-    private readonly apiUrl = `${environment.apiUrl}/plan`;
+    private readonly apiUrl = `${environment.apiUrl}/PolicyPlan`;
 
     constructor(private http: HttpClient) { }
 

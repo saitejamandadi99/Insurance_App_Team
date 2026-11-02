@@ -148,7 +148,7 @@
                 </td>
 
                 <td>
-                  {{ policy.dueDate | date:'dd MMM yyyy' }}
+                   {{ policy.dueDate ? (policy.dueDate | date:'dd MMM yyyy') : '---' }}
                 </td>
 
                 <td>
@@ -159,7 +159,7 @@
 
                 <td>
                   <div class="policy-actions">
-
+                  @if (policy.policyStatus !== PolicyStatus.Cancelled) {
                     <button
                       type="button"
                       class="btn btn-payment"
@@ -167,8 +167,8 @@
                       <i class="bi bi-credit-card me-1"></i>
                       Record Payment
                     </button>
-
-                    @if (policy.policyStatus === PolicyStatus.Active) {
+                  }
+                    @if (policy.policyStatus !== PolicyStatus.Cancelled) {
                       <button
                         type="button"
                         class="btn btn-cancel"

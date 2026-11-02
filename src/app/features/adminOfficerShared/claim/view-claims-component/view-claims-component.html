@@ -191,15 +191,17 @@
                 </td>
 
                 <td class="action-column">
-                  <button
-                    type="button"
-                    class="btn-review"
-                    (click)="navigateToReview(claim.claimId)">
+                   @if (claim.claimStatus !== 'Approved' && claim.claimStatus !== 'Rejected') {
+    <button
+      type="button"
+      class="btn-review"
+      (click)="navigateToReview(claim.claimId)">
 
-                    <i class="bi bi-eye"></i>
-                    Review
+      <i class="bi bi-eye"></i>
+      Review
 
-                  </button>
+    </button>
+  }
                 </td>
 
               </tr>

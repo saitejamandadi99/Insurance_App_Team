@@ -169,6 +169,7 @@
               placeholder="Enter your 6-digit OTP"
               maxlength="6"
               inputmode="numeric"
+              pattern="[0-9]*"
               autocomplete="one-time-code"
               [class.input-error]="
                 verifyForm.get('otp')?.touched &&

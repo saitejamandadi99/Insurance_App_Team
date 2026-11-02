@@ -8,7 +8,7 @@ import { LoadingSpinner } from '../../../../shared/ui/loading-spinner/loading-sp
 import { StatusBadge } from '../../../../shared/ui/status-badge/status-badge';
 import { ToastService } from '../../../../services/Toast/toast-service';
 import { PremiumPaymentServices } from '../../../../services/PremiumPayment/premium-payment-services';
-import { PolicyServices } from '../../../../services/Policy/policy';
+import { Policy } from '../../../../services/Policy/policy';
 import { PaymentRequestDto } from '../../../../DTO/PaymentRequestDto';
 import { SuccessResponseDto } from '../../../../DTO/SuccessResponseDto';
 import { PaymentResponseDto } from '../../../../DTO/PaymentResponseDto';
@@ -48,7 +48,7 @@ constructor(
 private readonly route: ActivatedRoute,
 private readonly router: Router,
 private readonly paymentService: PremiumPaymentServices,
-private readonly policyService: PolicyServices,
+private readonly policyService: Policy,
 private readonly toastService: ToastService,
 private readonly cdr: ChangeDetectorRef
 ) {}
