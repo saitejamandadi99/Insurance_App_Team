@@ -1,1 +1,200 @@
-<p>view-documents works!</p>
+<div class="documents-page">
+
+  <app-page-header
+    title="View Documents"
+    subtitle="View and download your uploaded claim documents">
+  </app-page-header>
+
+  <!-- Search and Filters -->
+  <div class="filter-card">
+    <form [formGroup]="filterForm" (ngSubmit)="searchDocuments()">
+
+      <div class="row g-3 align-items-end">
+
+        <div class="col-lg-5 col-md-12">
+          <label class="form-label">Search Documents</label>
+
+          <div class="search-wrapper">
+            <i class="bi bi-search"></i>
+
+            <input
+              type="text"
+              class="form-control"
+              formControlName="search"
+              placeholder="Search by document name, claim number or type">
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <label class="form-label">Sort By</label>
+
+          <select class="form-select" formControlName="sortBy">
+            <option value="uploadeddate">Upload Date</option>
+            <option value="documentname">Document Name</option>
+            <option value="documenttype">Document Type</option>
+          </select>
+        </div>
+
+        <div class="col-lg-2 col-md-4">
+          <label class="form-label">Sort Direction</label>
+
+          <select class="form-select" formControlName="sortDirection">
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+          </select>
+        </div>
+
+        <div class="col-lg-2 col-md-4 d-flex gap-2">
+          <button type="submit" class="btn btn-primary flex-grow-1">
+            <i class="bi bi-search me-1"></i>
+            Search
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            title="Reset filters"
+            (click)="resetFilters()">
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <!-- Documents Table -->
+  <div class="documents-table-card">
+
+    <div class="table-heading">
+      <div>
+        <h5>Claim Documents</h5>
+        <p>Documents uploaded for your claims</p>
+      </div>
+
+      @if (documents) {
+        <span class="record-count">
+          {{ documents.totalRecords }} documents
+        </span>
+      }
+    </div>
+
+    @if (isLoading) {
+      <app-loading-spinner message="Loading documents..."></app-loading-spinner>
+    }
+    @else if (documents?.records?.length) {
+
+      <div class="table-responsive">
+        <table class="table documents-table align-middle">
+
+          <thead>
+            <tr>
+              <th>Document Name</th>
+              <th>Claim Number</th>
+              <th>Document Type</th>
+              <th>Uploaded Date</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (document of documents.records; track document.documentId) {
+              <tr>
+
+                <td>
+                  <div class="document-name">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span>{{ document.documentName }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <span class="claim-number">
+                    {{ document.claimNumber }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="document-type">
+                    {{ document.documentType }}
+                  </span>
+                </td>
+
+                <td>
+                  {{ document.uploadedDate | date:'dd MMM yyyy' }}
+                </td>
+
+                <td>
+                  <div class="document-actions">
+
+                    <button
+                      type="button"
+                      class="btn btn-view"
+                      (click)="navigateToView(document.documentId)">
+                      <i class="bi bi-eye me-1"></i>
+                      View
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn btn-download"
+                      (click)="downloadDocument(document)">
+                      <i class="bi bi-download me-1"></i>
+                      Download
+                    </button>
+
+                  </div>
+                </td>
+
+              </tr>
+            }
+          </tbody>
+
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-container">
+
+        <div class="pagination-info">
+          Showing {{ documents.records.length }} of
+          {{ documents.totalRecords }} documents
+        </div>
+
+        <div class="pagination-controls">
+          <button
+            type="button"
+            class="btn btn-pagination"
+            [disabled]="documents.currentPage <= 1"
+            (click)="previousPage()">
+            <i class="bi bi-chevron-left"></i>
+            Previous
+          </button>
+
+          <span class="page-number">
+            Page {{ documents.currentPage }} of {{ documents.totalPages }}
+          </span>
+
+          <button
+            type="button"
+            class="btn btn-pagination"
+            [disabled]="documents.isLastPage"
+            (click)="nextPage()">
+            Next
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+
+      </div>
+
+    }
+    @else {
+      <app-empty-state
+        icon="bi bi-folder2-open"
+        title="No Documents Found"
+        message="There are no documents matching your search.">
+      </app-empty-state>
+    }
+
+  </div>
+</div>

@@ -1,1 +1,341 @@
-<p>view-products works!</p>
+
+<div class="products-page">
+
+  <!-- Page Header -->
+  <div class="page-heading">
+    <div>
+      <h2>Products</h2>
+      <p>Manage and monitor insurance products.</p>
+    </div>
+
+    @if (isAdmin) {
+      <button
+        type="button"
+        class="btn-primary-custom"
+        (click)="navigateToAddProduct()"
+      >
+        <i class="bi bi-plus-lg"></i>
+        Add Product
+      </button>
+    }
+  </div>
+
+  <!-- Filters -->
+  <div class="products-filter-section">
+
+    <form [formGroup]="filterForm" (ngSubmit)="searchProducts()">
+
+      <div class="search-section">
+
+        <div class="search-input-wrapper">
+          <i class="bi bi-search search-icon"></i>
+
+          <input
+            type="text"
+            class="input-dark search-input"
+            formControlName="search"
+            placeholder="Search products..."
+          />
+
+          @if (searchControl.value) {
+            <button
+              type="button"
+              class="clear-search"
+              (click)="clearSearch()"
+              aria-label="Clear search"
+            >
+              <i class="bi bi-x-lg"></i>
+            </button>
+          }
+        </div>
+
+        <button type="submit" class="btn-primary-custom">
+          <i class="bi bi-search"></i>
+          Search
+        </button>
+
+      </div>
+
+      <div class="filter-controls">
+
+        <div class="filter-field">
+          <label for="sortBy">Sort By</label>
+          <select
+            id="sortBy"
+            class="input-dark"
+            formControlName="sortBy"
+            (change)="searchProducts()"
+          >
+            <option value="productName">Product Name</option>
+            <option value="description">Description</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <label for="sortDirection">Sort Direction</label>
+          <select
+            id="sortDirection"
+            class="input-dark"
+            formControlName="sortDirection"
+            (change)="searchProducts()"
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <label for="pageSize">Records Per Page</label>
+          <select
+            id="pageSize"
+            class="input-dark"
+            formControlName="pageSize"
+            (change)="searchProducts()"
+          >
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="20">20</option>
+            <option [ngValue]="50">50</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button
+            type="button"
+            class="btn-secondary-custom"
+            (click)="resetFilters()"
+          >
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset
+          </button>
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Products Content -->
+  <div class="products-content">
+
+    <!-- Updating Status -->
+    @if (isUpdatingStatus) {
+      <div class="updating-banner">
+        <span class="spinner-border spinner-border-sm"></span>
+        Updating product status...
+      </div>
+    }
+
+    <!-- Loading -->
+    @if (isLoading) {
+      <div class="loading-card">
+        <div class="spinner-border loading-spinner"></div>
+        <h5>Loading Products</h5>
+        <p>Please wait while we retrieve the product details.</p>
+      </div>
+    }
+
+    <!-- Products Table -->
+    @else if (lstProducts && lstProducts.records.length > 0) {
+
+      <div class="products-table-card">
+
+        <div class="table-card-header">
+          <div>
+            <h4>Insurance Products</h4>
+            <p>Available insurance products and their current status.</p>
+          </div>
+
+          <span class="total-products">
+            {{ lstProducts.totalRecords }} Products
+          </span>
+        </div>
+
+        <div class="table-responsive">
+
+          <table class="products-table">
+
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Product Type</th>
+                <th>Description</th>
+                <th>Status</th>
+
+                @if (isAdmin) {
+                  <th class="text-center">Actions</th>
+                }
+              </tr>
+            </thead>
+
+            <tbody>
+
+              @for (product of lstProducts.records; track product.productId) {
+
+                <tr>
+
+                  <!-- Product -->
+                  <td>
+                    <div class="product-info">
+                      <div class="product-icon">
+                        <i class="bi bi-shield-check"></i>
+                      </div>
+
+                      <span class="product-name">
+                        {{ product.productName }}
+                      </span>
+                    </div>
+                  </td>
+
+                  <!-- Product Type -->
+                  <td>
+                    <span class="product-type">
+                      {{ product.productType }}
+                    </span>
+                  </td>
+
+                  <!-- Description -->
+                  <td>
+                    <p class="product-description" [title]="product.description">
+                      {{ product.description }}
+                    </p>
+                  </td>
+
+                  <!-- Status -->
+                  <td>
+                    <span
+                      class="status-badge"
+                      [class.status-active]="product.activeStatus === 'Active'"
+                      [class.status-inactive]="product.activeStatus === 'Inactive'"
+                    >
+                      <span class="status-dot"></span>
+                      {{ product.activeStatus }}
+                    </span>
+                  </td>
+
+                  <!-- Admin Actions -->
+                  @if (isAdmin) {
+                    <td>
+                      <div class="action-buttons">
+
+                        <button
+                          type="button"
+                          class="action-btn edit-btn"
+                          title="Edit Product"
+                          aria-label="Edit Product"
+                          [disabled]="isUpdatingStatus"
+                          (click)="editProduct(product.productId)"
+                        >
+                          <i class="bi bi-pencil-square"></i>
+                        </button>
+
+                        @if (product.activeStatus === 'Active') {
+                          <button
+                            type="button"
+                            class="action-btn deactivate-btn"
+                            title="Deactivate Product"
+                            aria-label="Deactivate Product"
+                            [disabled]="isUpdatingStatus"
+                            (click)="deactivateProduct(product.productId)"
+                          >
+                            <i class="bi bi-toggle-on"></i>
+                          </button>
+                        } @else {
+                          <button
+                            type="button"
+                            class="action-btn activate-btn"
+                            title="Activate Product"
+                            aria-label="Activate Product"
+                            [disabled]="isUpdatingStatus"
+                            (click)="activateProduct(product.productId)"
+                          >
+                            <i class="bi bi-toggle-off"></i>
+                          </button>
+                        }
+
+                      </div>
+                    </td>
+                  }
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <!-- Pagination Footer -->
+        <div class="pagination-footer">
+
+          <div class="pagination-info">
+            Showing
+            <strong>{{ lstProducts.records.length }}</strong>
+            of
+            <strong>{{ lstProducts.totalRecords }}</strong>
+            products
+          </div>
+
+          <div class="pagination-controls">
+
+            <button
+              type="button"
+              class="pagination-btn"
+              [disabled]="lstProducts.currentPage <= 1 || isLoading"
+              (click)="previousPage()"
+            >
+              <i class="bi bi-chevron-left"></i>
+              Previous
+            </button>
+
+            <span class="page-indicator">
+              Page {{ lstProducts.currentPage }} of {{ lstProducts.totalPages }}
+            </span>
+
+            <button
+              type="button"
+              class="pagination-btn"
+              [disabled]="lstProducts.isLastPage || isLoading"
+              (click)="nextPage()"
+            >
+              Next
+              <i class="bi bi-chevron-right"></i>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    }
+
+    <!-- Empty State -->
+    @else if (!isLoading) {
+
+      <div class="empty-state-card">
+        <div class="empty-icon">
+          <i class="bi bi-box-seam"></i>
+        </div>
+
+        <h4>No Products Found</h4>
+
+        <p>
+          There are no products available matching your search criteria.
+        </p>
+
+        <button
+          type="button"
+          class="btn-secondary-custom"
+          (click)="resetFilters()"
+        >
+          <i class="bi bi-arrow-counterclockwise"></i>
+          Reset Filters
+        </button>
+      </div>
+
+    }
+
+  </div>
+
+</div>

@@ -17,6 +17,7 @@ import { ErrorResponseDto } from '../../DTO/ErrorResponseDto';
 })
 export class Login {
   isLoading:boolean = false;
+  showPassword: boolean = false;
   loginForm : FormGroup = new FormGroup({
     email:new FormControl('', [Validators.required, Validators.email]),
 
@@ -24,6 +25,10 @@ export class Login {
   });
 
   constructor(private authService:Auth, private router:Router, private toastService:ToastService ){}
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
 
   loginUser(){
     if(this.loginForm.invalid || this.isLoading 

@@ -1,1 +1,201 @@
-<p>issue-policy works!</p>
+<div class="issue-policy-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>Issue Policy</h2>
+      <p>Select a customer and an active policy plan to issue a new policy.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-back"
+      (click)="navigateToViewPolicies()">
+      <i class="bi bi-arrow-left me-2"></i>
+      View Policies
+    </button>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-container">
+      <div class="spinner-border text-primary"></div>
+      <p>Loading customers and policy plans...</p>
+    </div>
+  }
+  @else {
+
+    <form [formGroup]="issuePolicyForm" (ngSubmit)="issuePolicy()">
+
+      <!-- Customer Selection -->
+      <div class="form-section">
+        <div class="section-heading">
+          <div class="section-icon">
+            <i class="bi bi-person"></i>
+          </div>
+          <div>
+            <h5>Customer Information</h5>
+            <p>Select the customer for whom the policy will be issued.</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="customerId">
+            Select Customer <span class="required">*</span>
+          </label>
+
+          <select
+            id="customerId"
+            class="form-select"
+            formControlName="customerId">
+
+            <option value="" disabled>Choose a customer</option>
+
+            @for (customer of lstCustomers; track customer.customerId) {
+              <option [value]="customer.customerId">
+                {{ customer.fullName }} ({{ customer.email }})
+              </option>
+            }
+          </select>
+
+          @if (
+            issuePolicyForm.get('customerId')?.touched &&
+            issuePolicyForm.get('customerId')?.hasError('required')
+          ) {
+            <small class="validation-error">
+              Please select a customer.
+            </small>
+          }
+
+          @if (customersLoaded && lstCustomers.length === 0) {
+            <small class="info-message">
+              No customers are available.
+            </small>
+          }
+        </div>
+      </div>
+
+      <!-- Policy Plan Selection -->
+      <div class="form-section">
+        <div class="section-heading">
+          <div class="section-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <div>
+            <h5>Policy Plan Details</h5>
+            <p>Select an active policy plan to issue.</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="planId">
+            Select Active Plan <span class="required">*</span>
+          </label>
+
+          <select
+            id="planId"
+            class="form-select"
+            formControlName="planId">
+
+            <option value="" disabled>Choose a policy plan</option>
+
+            @for (plan of lstPlans; track plan.planId) {
+              <option [value]="plan.planId">
+                {{ plan.planName }}
+              </option>
+            }
+          </select>
+
+          @if (
+            issuePolicyForm.get('planId')?.touched &&
+            issuePolicyForm.get('planId')?.hasError('required')
+          ) {
+            <small class="validation-error">
+              Please select a policy plan.
+            </small>
+          }
+
+          @if (plansLoaded && lstPlans.length === 0) {
+            <small class="info-message">
+              No active policy plans are available.
+            </small>
+          }
+        </div>
+
+        <!-- Selected Plan Preview -->
+        @if (selectedPlan; as plan) {
+          <div class="plan-preview">
+
+            <div class="preview-heading">
+              <div>
+                <h6>{{ plan.planName }}</h6>
+                <span>Selected plan information</span>
+              </div>
+
+              <span class="active-badge">
+                <i class="bi bi-check-circle-fill me-1"></i>
+                Active
+              </span>
+            </div>
+
+            <div class="preview-grid">
+
+              <div class="preview-item">
+                <span>Coverage Amount</span>
+                <strong>
+                  {{ plan.coverageAmount | currency:'INR':'symbol':'1.0-0' }}
+                </strong>
+              </div>
+
+              <div class="preview-item">
+                <span>Premium Amount</span>
+                <strong>
+                  {{ plan.premiumAmount | currency:'INR':'symbol':'1.0-0' }}
+                </strong>
+              </div>
+
+              <div class="preview-item">
+                <span>Premium Type</span>
+                <strong>{{ plan.premiumType }}</strong>
+              </div>
+
+              <div class="preview-item">
+                <span>Duration</span>
+                <strong>{{ plan.duration }}</strong>
+              </div>
+
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-cancel"
+          [disabled]="isSubmitting"
+          (click)="navigateToViewPolicies()">
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-issue"
+          [disabled]="isLoading || isSubmitting || lstCustomers.length === 0 || lstPlans.length === 0">
+
+          @if (isSubmitting) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Issuing...
+          }
+          @else {
+            <i class="bi bi-shield-check me-2"></i>
+            Issue Policy
+          }
+        </button>
+
+      </div>
+
+    </form>
+  }
+</div>

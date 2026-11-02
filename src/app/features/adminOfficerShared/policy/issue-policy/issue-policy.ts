@@ -7,9 +7,10 @@ import { Router } from '@angular/router';
 import { ToastService } from '../../../../services/Toast/toast-service';
 import { Policy } from '../../../../services/Policy/policy';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { CurrencyPipe } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 @Component({
-  imports: [],
+  imports: [ReactiveFormsModule, CurrencyPipe],
   standalone:true,
   selector: 'app-issue-policy',
   styleUrl: './issue-policy.css',
@@ -128,8 +129,10 @@ export class IssuePolicy implements OnInit {
 
     this.isSubmitting = true;
 
-    const request: IssuePolicyRequestDto =
-      this.issuePolicyForm.value;
+    const request: IssuePolicyRequestDto = {
+  customerId: Number(this.issuePolicyForm.get('customerId')?.value),
+  planId: Number(this.issuePolicyForm.get('planId')?.value)
+};
 
     this.policyService.issuePolicy(request).subscribe({
       next: (response) => {

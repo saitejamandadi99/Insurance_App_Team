@@ -1,1 +1,230 @@
-<p>add-product works!</p>
+
+<div class="add-product-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-heading">
+    <div>
+      <h2>Add New Product</h2>
+      <p>Create and manage insurance products for your customers.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-back"
+      (click)="navigateToProducts()">
+      <i class="bi bi-arrow-left"></i>
+      Back to Products
+    </button>
+  </div>
+
+
+  <!-- PRODUCT FORM CARD -->
+  <div class="form-card">
+
+    <!-- CARD HEADER -->
+    <div class="form-card-header">
+
+      <div class="header-icon">
+        <i class="bi bi-shield-plus"></i>
+      </div>
+
+      <div>
+        <h4>Product Information</h4>
+        <p>Provide the basic details of the insurance product.</p>
+      </div>
+
+    </div>
+
+
+    <!-- FORM -->
+    <form
+      [formGroup]="productForm"
+      (ngSubmit)="addProduct()">
+
+      <div class="form-body">
+
+        <!-- PRODUCT NAME -->
+        <div class="form-group">
+
+          <label for="productName">
+            Product Name <span class="required">*</span>
+          </label>
+
+          <div class="input-wrapper">
+
+            <i class="bi bi-box-seam input-icon"></i>
+
+            <input
+              id="productName"
+              type="text"
+              class="form-control custom-input"
+              formControlName="productName"
+              placeholder="Enter product name"
+              maxlength="100">
+
+          </div>
+
+          @if (productName.touched && productName.invalid) {
+            <div class="validation-message">
+
+              @if (productName.hasError('required')) {
+                <span>Product name is required.</span>
+              }
+              @else if (productName.hasError('minlength')) {
+                <span>Product name must contain at least 3 characters.</span>
+              }
+              @else if (productName.hasError('maxlength')) {
+                <span>Product name cannot exceed 100 characters.</span>
+              }
+
+            </div>
+          }
+
+        </div>
+
+
+        <!-- PRODUCT TYPE -->
+        <div class="form-group">
+
+          <label for="productType">
+            Product Type <span class="required">*</span>
+          </label>
+
+          <div class="input-wrapper">
+
+            <i class="bi bi-tags input-icon"></i>
+
+            <select
+              id="productType"
+              class="form-select custom-input custom-select"
+              formControlName="productType">
+
+              <option value="" disabled>
+                Select product type
+              </option>
+
+              @for (type of productTypes; track type) {
+                <option [ngValue]="type">
+                  {{ type }}
+                </option>
+              }
+
+            </select>
+
+          </div>
+
+          @if (productType.touched && productType.invalid) {
+            <div class="validation-message">
+              <span>Please select a product type.</span>
+            </div>
+          }
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+        <div class="form-group full-width">
+
+          <label for="description">
+            Product Description <span class="required">*</span>
+          </label>
+
+          <div class="textarea-wrapper">
+
+            <textarea
+              id="description"
+              class="form-control custom-textarea"
+              formControlName="description"
+              placeholder="Enter a brief description of this insurance product..."
+              rows="5"
+              maxlength="200">
+            </textarea>
+
+          </div>
+
+          <div class="description-footer">
+
+            <div>
+              @if (description.touched && description.invalid) {
+
+                <div class="validation-message">
+
+                  @if (description.hasError('required')) {
+                    <span>Description is required.</span>
+                  }
+                  @else if (description.hasError('minlength')) {
+                    <span>Description must contain at least 3 characters.</span>
+                  }
+                  @else if (description.hasError('maxlength')) {
+                    <span>Description cannot exceed 200 characters.</span>
+                  }
+
+                </div>
+
+              }
+            </div>
+
+            <span class="character-count">
+              {{ description.value?.length || 0 }}/200
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- FORM ACTIONS -->
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="btn btn-cancel"
+            (click)="navigateToProducts()"
+            [disabled]="isLoading">
+
+            Cancel
+
+          </button>
+
+
+          <button
+            type="submit"
+            class="btn btn-submit"
+            [disabled]="isLoading">
+
+            @if (isLoading) {
+
+              <span class="spinner-border spinner-border-sm"></span>
+              Creating Product...
+
+            }
+            @else {
+
+              <i class="bi bi-plus-circle"></i>
+              Create Product
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+  <!-- INFORMATION NOTE -->
+  <div class="info-note">
+
+    <i class="bi bi-info-circle"></i>
+
+    <span>
+      Once the product is created, you can configure its insurance plans separately.
+    </span>
+
+  </div>
+
+</div>

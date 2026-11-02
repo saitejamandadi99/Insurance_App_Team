@@ -1,1 +1,222 @@
-<p>view-policies works!</p>
+<div class="policies-page">
+
+  <!-- Page Header -->
+  <app-page-header
+    title="View Policies"
+    subtitle="View and manage all issued insurance policies."
+    buttonText="Issue Policy"
+    buttonIcon="bi bi-plus-lg"
+    (buttonClick)="navigateToIssuePolicy()">
+  </app-page-header>
+
+  <!-- Search and Filters -->
+  <app-filter-card>
+    <form [formGroup]="filterForm" (ngSubmit)="searchPolicies()">
+
+      <div class="row g-3 align-items-end">
+
+        <div class="col-lg-5 col-md-12">
+          <label class="form-label">Search Policies</label>
+
+          <app-search-box
+            [searchControl]="searchControl"
+            placeholder="Search by policy number, customer or plan">
+          </app-search-box>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <label class="form-label">Sort By</label>
+
+          <select class="form-select" formControlName="sortBy">
+            <option value="planName">Plan Name</option>
+            <option value="policyNumber">Policy Number</option>
+            <option value="startDate">Start Date</option>
+            <option value="endDate">End Date</option>
+          </select>
+        </div>
+
+        <div class="col-lg-2 col-md-4">
+          <label class="form-label">Sort Direction</label>
+
+          <select class="form-select" formControlName="sortDirection">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+
+        <div class="col-lg-2 col-md-4">
+          <div class="filter-actions">
+            <button type="submit" class="btn btn-search">
+              <i class="bi bi-search me-1"></i>
+              Search
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-reset"
+              title="Reset filters"
+              (click)="resetFilters()">
+              <i class="bi bi-arrow-counterclockwise"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </app-filter-card>
+
+  <!-- Policies Table -->
+  <div class="policies-table-card">
+
+    <div class="table-heading">
+      <div>
+        <h5>Issued Policies</h5>
+        <p>Manage customer insurance policies and payments.</p>
+      </div>
+
+      @if (lstPolicies) {
+        <span class="record-count">
+          {{ lstPolicies.totalRecords }} Policies
+        </span>
+      }
+    </div>
+
+    @if (isLoading) {
+      <app-loading-spinner
+        message="Loading policies...">
+      </app-loading-spinner>
+    }
+    @else if (lstPolicies?.records?.length) {
+
+      <div class="table-responsive">
+        <table class="table policies-table align-middle">
+
+          <thead>
+            <tr>
+              <th>Policy Number</th>
+              <th>Customer Name</th>
+              <th>Plan Name</th>
+              <th>Coverage Amount</th>
+              <th>Premium Amount</th>
+              <th>Total Premium Paid</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Due Date</th>
+              <th>Policy Status</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (policy of lstPolicies.records; track policy.policyId) {
+              <tr>
+
+                <td>
+                  <span class="policy-number">
+                    {{ policy.policyNumber }}
+                  </span>
+                </td>
+
+                <td class="customer-name">
+                  {{ policy.customerName }}
+                </td>
+
+                <td>
+                  <span class="plan-name">
+                    {{ policy.planName }}
+                  </span>
+                </td>
+
+                <td class="amount-cell">
+                  {{ policy.coverageAmount | currency:'INR':'symbol':'1.0-0' }}
+                </td>
+
+                <td class="amount-cell">
+                  {{ policy.premiumAmount | currency:'INR':'symbol':'1.0-0' }}
+                </td>
+
+                <td class="amount-cell">
+                  {{ policy.totalPremiumPaid | currency:'INR':'symbol':'1.0-0' }}
+                </td>
+
+                <td>
+                  {{ policy.startDate | date:'dd MMM yyyy' }}
+                </td>
+
+                <td>
+                  {{ policy.endDate | date:'dd MMM yyyy' }}
+                </td>
+
+                <td>
+                  {{ policy.dueDate | date:'dd MMM yyyy' }}
+                </td>
+
+                <td>
+                  <app-status-badge
+                    [status]="policy.policyStatus">
+                  </app-status-badge>
+                </td>
+
+                <td>
+                  <div class="policy-actions">
+
+                    <button
+                      type="button"
+                      class="btn btn-payment"
+                      (click)="navigateToRecordPayment(policy.policyId)">
+                      <i class="bi bi-credit-card me-1"></i>
+                      Record Payment
+                    </button>
+
+                    @if (policy.policyStatus === PolicyStatus.Active) {
+                      <button
+                        type="button"
+                        class="btn btn-cancel"
+                        (click)="cancelPolicy(policy.policyId)">
+                        <i class="bi bi-x-circle me-1"></i>
+                        Cancel
+                      </button>
+                    }
+
+                  </div>
+                </td>
+
+              </tr>
+            }
+          </tbody>
+
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-section">
+
+        <div class="pagination-info">
+          Showing {{ lstPolicies.records.length }} of
+          {{ lstPolicies.totalRecords }} policies
+        </div>
+
+        <app-pagination
+          [currentPage]="lstPolicies.currentPage"
+          [totalPages]="lstPolicies.totalPages"
+          [totalRecords]="lstPolicies.totalRecords"
+          [pageSize]="filterForm.get('pageSize')?.value"
+          (pageChange)="filterForm.patchValue({pageNumber: $event}); loadPolicies()">
+        </app-pagination>
+
+      </div>
+
+    }
+    @else {
+      <app-empty-state
+        icon="bi bi-shield-check"
+        title="No Policies Found"
+        message="There are no policies matching your search criteria."
+        buttonText="Issue Policy"
+        (buttonClick)="navigateToIssuePolicy()">
+      </app-empty-state>
+    }
+
+  </div>
+
+</div>

@@ -164,7 +164,7 @@ export class ViewProducts implements OnInit {
         this.isUpdatingStatus = false;
 
         const apiError = err.error as ErrorResponseDto;
-
+        
         this.toastService.error(
           apiError?.message ?? 'Unable to activate product.'
         );

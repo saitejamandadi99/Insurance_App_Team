@@ -1,1 +1,399 @@
-<p>register works!</p>
+
+<div class="auth-page">
+
+  <!-- LEFT BRANDING -->
+  <section class="auth-brand-section">
+
+    <div class="brand-content">
+
+      <a routerLink="/login" class="brand-logo">
+        <div class="brand-icon">
+          <i class="bi bi-shield-check"></i>
+        </div>
+
+        <div class="brand-name">
+          <h1>Insupro</h1>
+          <span>Secure Today, Brighter Tomorrow</span>
+        </div>
+      </a>
+
+      <div class="brand-message">
+
+        <span class="brand-tagline">PROTECTION YOU CAN TRUST</span>
+
+        <h2>
+          Join for a
+          <br />
+          Safer Tomorrow.
+        </h2>
+
+        <p>
+          Create your account and take the first step
+          towards a secure and confident future.
+        </p>
+
+        <div class="brand-features">
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="bi bi-shield-check"></i>
+            </div>
+
+            <div>
+              <h4>Secure Insurance</h4>
+              <span>Reliable policies and protection</span>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="bi bi-file-earmark-check"></i>
+            </div>
+
+            <div>
+              <h4>Simple Claim Process</h4>
+              <span>Manage your claims with ease</span>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="bi bi-headset"></i>
+            </div>
+
+            <div>
+              <h4>Customer Support</h4>
+              <span>We're here when you need us</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="brand-decoration">
+        <i class="bi bi-shield-fill-check"></i>
+      </div>
+
+      <div class="brand-footer">
+        © 2026 Insupro. All rights reserved.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- RIGHT REGISTER FORM -->
+  <section class="auth-form-section">
+
+    <div class="register-card">
+
+      <div class="form-heading">
+
+        <div class="mobile-brand">
+          <i class="bi bi-shield-check"></i>
+          <span>Insupro</span>
+        </div>
+
+        <span class="welcome-label">GET STARTED</span>
+
+        <h2>Create Your Account</h2>
+
+        <p>
+          Enter your details to create your Insupro account.
+        </p>
+
+      </div>
+
+
+      <form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+
+        <!-- FULL NAME -->
+        <div class="form-group">
+
+          <label for="fullName">Full Name</label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-person input-icon"></i>
+
+            <input
+              type="text"
+              id="fullName"
+              formControlName="fullName"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              [class.input-error]="
+                registerForm.get('fullName')?.touched &&
+                registerForm.get('fullName')?.invalid
+              "
+            />
+          </div>
+
+          @if (registerForm.get('fullName')?.touched) {
+
+            @if (registerForm.get('fullName')?.hasError('required')) {
+              <small class="error-message">
+                Full name is required.
+              </small>
+            }
+
+            @if (
+              registerForm.get('fullName')?.hasError('minlength') ||
+              registerForm.get('fullName')?.hasError('maxlength')
+            ) {
+              <small class="error-message">
+                Name must contain 3 to 50 characters.
+              </small>
+            }
+
+          }
+
+        </div>
+
+
+        <!-- EMAIL -->
+        <div class="form-group">
+
+          <label for="email">Email Address</label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-envelope input-icon"></i>
+
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="Enter your email address"
+              autocomplete="email"
+              [class.input-error]="
+                registerForm.get('email')?.touched &&
+                registerForm.get('email')?.invalid
+              "
+            />
+          </div>
+
+          @if (
+            registerForm.get('email')?.touched &&
+            registerForm.get('email')?.hasError('required')
+          ) {
+            <small class="error-message">
+              Email address is required.
+            </small>
+          }
+
+          @if (
+            registerForm.get('email')?.touched &&
+            registerForm.get('email')?.hasError('email')
+          ) {
+            <small class="error-message">
+              Enter a valid email address.
+            </small>
+          }
+
+        </div>
+
+
+        <!-- MOBILE NUMBER -->
+        <div class="form-group">
+
+          <label for="mobileNumber">Mobile Number</label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-telephone input-icon"></i>
+
+            <input
+              type="tel"
+              id="mobileNumber"
+              formControlName="mobileNumber"
+              placeholder="Enter your 10-digit mobile number"
+              maxlength="10"
+              inputmode="numeric"
+              autocomplete="tel"
+              [class.input-error]="
+                registerForm.get('mobileNumber')?.touched &&
+                registerForm.get('mobileNumber')?.invalid
+              "
+            />
+          </div>
+
+          @if (
+            registerForm.get('mobileNumber')?.touched &&
+            registerForm.get('mobileNumber')?.hasError('required')
+          ) {
+            <small class="error-message">
+              Mobile number is required.
+            </small>
+          }
+
+          @if (
+            registerForm.get('mobileNumber')?.touched &&
+            registerForm.get('mobileNumber')?.hasError('pattern')
+          ) {
+            <small class="error-message">
+              Enter a valid 10-digit mobile number.
+            </small>
+          }
+
+        </div>
+
+
+        <!-- PASSWORD -->
+        <div class="form-group">
+
+          <label for="password">Password</label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-lock input-icon"></i>
+
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              placeholder="Create your password"
+              autocomplete="new-password"
+              [class.input-error]="
+                registerForm.get('password')?.touched &&
+                registerForm.get('password')?.invalid
+              "
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            >
+              <i
+                [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
+              ></i>
+            </button>
+
+          </div>
+
+          @if (
+            registerForm.get('password')?.touched &&
+            registerForm.get('password')?.hasError('required')
+          ) {
+            <small class="error-message">
+              Password is required.
+            </small>
+          }
+
+          @if (
+            registerForm.get('password')?.touched &&
+            registerForm.get('password')?.hasError('pattern')
+          ) {
+            <small class="error-message">
+              Password must contain 8–20 characters, uppercase,
+              lowercase, a number and one special character (@#$!).
+            </small>
+          }
+
+        </div>
+
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="form-group">
+
+          <label for="confirmPassword">Confirm Password</label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-lock input-icon"></i>
+
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              placeholder="Re-enter your password"
+              autocomplete="new-password"
+              [class.input-error]="
+                registerForm.get('confirmPassword')?.touched &&
+                (
+                  registerForm.get('confirmPassword')?.invalid ||
+                  registerForm.hasError('passwordMismatch')
+                )
+              "
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="toggleConfirmPasswordVisibility()"
+              [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
+            >
+              <i
+                [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
+              ></i>
+            </button>
+
+          </div>
+
+          @if (
+            registerForm.get('confirmPassword')?.touched &&
+            registerForm.get('confirmPassword')?.hasError('required')
+          ) {
+            <small class="error-message">
+              Please confirm your password.
+            </small>
+          }
+
+          @if (
+            registerForm.get('confirmPassword')?.touched &&
+            registerForm.hasError('passwordMismatch')
+          ) {
+            <small class="error-message">
+              Passwords do not match.
+            </small>
+          }
+
+        </div>
+
+
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="isLoading"
+        >
+
+          @if (isLoading) {
+            <span class="spinner"></span>
+            Creating Account...
+          } @else {
+            Create Account
+            <i class="bi bi-arrow-right"></i>
+          }
+
+        </button>
+
+      </form>
+
+
+      <!-- LOGIN LINK -->
+      <div class="form-footer">
+        <span>Already have an account?</span>
+
+        <a routerLink="/login">
+          Sign In
+        </a>
+      </div>
+
+      <!-- VERIFY EMAIL LINK -->
+      <div class="verification-link">
+        <span>Already registered?</span>
+
+        <a routerLink="/verify-email">
+          Verify Email
+        </a>
+      </div>
+
+    </div>
+
+    <div class="auth-bottom-text">
+      Your security matters to us.
+    </div>
+
+  </section>
+
+</div>

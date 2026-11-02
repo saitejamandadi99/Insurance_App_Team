@@ -1,1 +1,336 @@
-<p>raise-claim-component works!</p>
+
+<div class="raise-claim-page">
+
+  <div class="page-heading">
+    <div>
+      <h2>Raise a Claim</h2>
+      <p>Submit a new insurance claim against your policy.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-back"
+      (click)="navigateToMyPolicies()">
+      <i class="bi bi-arrow-left"></i>
+      My Policies
+    </button>
+  </div>
+
+  @if (isLoading && !policy) {
+    <div class="loading-card">
+      <div class="spinner-border" role="status"></div>
+      <p>Loading policy information...</p>
+    </div>
+  } @else if (policy) {
+
+    <div class="claim-layout">
+
+      <div class="form-card">
+
+        <div class="form-card-header">
+          <div class="header-icon">
+            <i class="bi bi-file-earmark-medical"></i>
+          </div>
+
+          <div>
+            <h3>Claim Information</h3>
+            <p>Provide the details of your insurance claim.</p>
+          </div>
+        </div>
+
+        <form [formGroup]="raiseClaimForm" (ngSubmit)="raiseClaim()">
+
+          <div class="form-body">
+
+            <!-- Policy Summary -->
+            <div class="policy-summary">
+              <div class="section-heading">
+                <i class="bi bi-shield-check"></i>
+                <h4>Selected Policy</h4>
+              </div>
+
+              <div class="policy-details-grid">
+
+                <div class="policy-detail">
+                  <span>Policy Number</span>
+                  <strong>{{ policy.policyNumber }}</strong>
+                </div>
+
+                <div class="policy-detail">
+                  <span>Plan Name</span>
+                  <strong>{{ policy.planName }}</strong>
+                </div>
+
+                <div class="policy-detail">
+                  <span>Start Date</span>
+                  <strong>{{ policy.startDate | date:'dd MMM yyyy' }}</strong>
+                </div>
+
+                <div class="policy-detail">
+                  <span>End Date</span>
+                  <strong>{{ policy.endDate | date:'dd MMM yyyy' }}</strong>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Claim Amount -->
+            <div class="form-group">
+              <label for="claimAmount">
+                Claim Amount <span class="required">*</span>
+              </label>
+
+              <div class="input-with-prefix">
+                <span class="input-prefix">₹</span>
+
+                <input
+                  id="claimAmount"
+                  type="number"
+                  class="custom-input amount-input"
+                  formControlName="claimAmount"
+                  placeholder="Enter claim amount"
+                  min="1">
+              </div>
+
+              @if (raiseClaimForm.get('claimAmount')?.touched &&
+                   raiseClaimForm.get('claimAmount')?.errors) {
+                <small class="validation-message">
+                  @if (raiseClaimForm.get('claimAmount')?.errors?.['required']) {
+                    Claim amount is required.
+                  } @else if (raiseClaimForm.get('claimAmount')?.errors?.['min']) {
+                    Claim amount must be greater than zero.
+                  }
+                </small>
+              }
+            </div>
+
+            <!-- Incident Date -->
+            <div class="form-group">
+              <label for="incidentDate">
+                Incident Date <span class="required">*</span>
+              </label>
+
+              <input
+                id="incidentDate"
+                type="date"
+                class="custom-input"
+                formControlName="incidentDate"
+                [min]="minIncidentDate"
+                [max]="today">
+
+              @if (raiseClaimForm.get('incidentDate')?.touched &&
+                   raiseClaimForm.get('incidentDate')?.errors) {
+                <small class="validation-message">
+                  @if (raiseClaimForm.get('incidentDate')?.errors?.['required']) {
+                    Incident date is required.
+                  } @else if (raiseClaimForm.get('incidentDate')?.errors?.['futureDate']) {
+                    Incident date cannot be greater than today.
+                  } @else if (raiseClaimForm.get('incidentDate')?.errors?.['beforePolicyStart']) {
+                    Incident date cannot be before the policy start date.
+                  }
+                </small>
+              }
+
+              <small class="field-hint">
+                You can select an incident date between your policy start date and today.
+              </small>
+            </div>
+
+            <!-- Claim Reason -->
+            <div class="form-group">
+              <label for="claimReason">
+                Claim Reason <span class="required">*</span>
+              </label>
+
+              <textarea
+                id="claimReason"
+                class="custom-input custom-textarea"
+                formControlName="claimReason"
+                placeholder="Describe what happened"
+                rows="5"
+                maxlength="300"></textarea>
+
+              <div class="textarea-footer">
+                @if (raiseClaimForm.get('claimReason')?.touched &&
+                     raiseClaimForm.get('claimReason')?.errors) {
+                  <small class="validation-message">
+                    @if (raiseClaimForm.get('claimReason')?.errors?.['required']) {
+                      Claim reason is required.
+                    } @else if (raiseClaimForm.get('claimReason')?.errors?.['minlength']) {
+                      Minimum 5 characters required.
+                    } @else if (raiseClaimForm.get('claimReason')?.errors?.['maxlength']) {
+                      Maximum 300 characters allowed.
+                    }
+                  </small>
+                }
+
+                <span class="character-count">
+                  {{ raiseClaimForm.get('claimReason')?.value?.length || 0 }}/300
+                </span>
+              </div>
+            </div>
+
+            <!-- Supporting Documents -->
+            <div class="form-group">
+              <label>
+                Supporting Documents <span class="required">*</span>
+              </label>
+
+              <div class="upload-area">
+                <input
+                  type="file"
+                  id="claimFiles"
+                  class="file-input"
+                  multiple
+                  (change)="onFilesSelected($event)">
+
+                <label for="claimFiles" class="upload-content">
+                  <div class="upload-icon">
+                    <i class="bi bi-cloud-arrow-up"></i>
+                  </div>
+
+                  <h4>Upload supporting documents</h4>
+                  <p>Select multiple files related to your claim.</p>
+
+                  <span class="browse-button">
+                    <i class="bi bi-folder2-open"></i>
+                    Browse Files
+                  </span>
+                </label>
+              </div>
+
+              @if (filesTouched && selectedFiles.length === 0) {
+                <small class="validation-message">
+                  At least one document is required.
+                </small>
+              }
+            </div>
+
+            <!-- Selected Files -->
+            @if (selectedFiles.length > 0) {
+              <div class="selected-files-section">
+
+                <div class="selected-files-header">
+                  <div>
+                    <h4>Selected Documents</h4>
+                    <p>Review your documents before submitting.</p>
+                  </div>
+
+                  <span class="file-count">
+                    {{ selectedFiles.length }}
+                    {{ selectedFiles.length === 1 ? 'File' : 'Files' }}
+                  </span>
+                </div>
+
+                <div class="selected-files-list">
+                  @for (file of selectedFiles; track $index; let i = $index) {
+                    <div class="selected-file">
+
+                      <div class="file-details">
+                        <div class="file-icon">
+                          <i class="bi bi-file-earmark-text"></i>
+                        </div>
+
+                        <div class="file-info">
+                          <span class="file-name">{{ file.name }}</span>
+                          <span class="file-size">
+                            {{ (file.size / 1024 / 1024).toFixed(2) }} MB
+                          </span>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        class="remove-file-btn"
+                        title="Remove file"
+                        aria-label="Remove selected file"
+                        (click)="removeFile(i)">
+                        <i class="bi bi-trash3"></i>
+                      </button>
+
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="btn-cancel"
+              (click)="navigateToMyPolicies()"
+              [disabled]="isLoading">
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              class="btn-submit"
+              [disabled]="raiseClaimForm.invalid || selectedFiles.length === 0 || isLoading">
+
+              @if (isLoading) {
+                <span class="spinner-border spinner-border-sm"></span>
+                Submitting...
+              } @else {
+                <i class="bi bi-send"></i>
+                Submit Claim
+              }
+
+            </button>
+
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Information Panel -->
+      <div class="info-card">
+
+        <div class="info-card-icon">
+          <i class="bi bi-info-circle"></i>
+        </div>
+
+        <h3>Important Information</h3>
+
+        <p>
+          Please ensure that the information provided is accurate before
+          submitting your claim.
+        </p>
+
+        <div class="info-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Verify the selected policy details.</span>
+        </div>
+
+        <div class="info-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Enter the correct claim amount.</span>
+        </div>
+
+        <div class="info-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Provide an accurate incident date and description.</span>
+        </div>
+
+        <div class="info-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Attach relevant supporting documents.</span>
+        </div>
+
+        <div class="info-note">
+          <i class="bi bi-shield-check"></i>
+          <span>
+            Your claim will be reviewed by the assigned insurance officer.
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+  }
+
+</div>

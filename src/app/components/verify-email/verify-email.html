@@ -1,1 +1,268 @@
-<p>verify-email works!</p>
+
+<div class="auth-page">
+
+  <!-- LEFT BRANDING -->
+  <section class="auth-brand-section">
+
+    <div class="brand-content">
+
+      <a routerLink="/login" class="brand-logo">
+        <div class="brand-icon">
+          <i class="bi bi-shield-check"></i>
+        </div>
+
+        <div class="brand-name">
+          <h1>Insupro</h1>
+          <span>Secure Today, Brighter Tomorrow</span>
+        </div>
+      </a>
+
+      <div class="brand-message">
+
+        <span class="brand-tagline">ONE MORE STEP</span>
+
+        <h2>
+          Your Security
+          <br />
+          Starts Here.
+        </h2>
+
+        <p>
+          Verify your email address to activate your account
+          and access your insurance services.
+        </p>
+
+        <div class="brand-features">
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="bi bi-envelope-check"></i>
+            </div>
+
+            <div>
+              <h4>Email Verification</h4>
+              <span>Confirm your email address securely</span>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="bi bi-shield-lock"></i>
+            </div>
+
+            <div>
+              <h4>Account Protection</h4>
+              <span>Keep your account safe and verified</span>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+              <h4>Almost There</h4>
+              <span>Complete verification to get started</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="brand-decoration">
+        <i class="bi bi-shield-fill-check"></i>
+      </div>
+
+      <div class="brand-footer">
+        © 2026 Insupro. All rights reserved.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- RIGHT VERIFICATION FORM -->
+  <section class="auth-form-section">
+
+    <div class="verify-card">
+
+      <div class="verify-icon">
+        <i class="bi bi-envelope-check"></i>
+      </div>
+
+      <div class="form-heading">
+
+        <span class="welcome-label">EMAIL VERIFICATION</span>
+
+        <h2>Verify Your Email</h2>
+
+        <p>
+          Enter your registered email address and the
+          six-digit OTP sent to your inbox.
+        </p>
+
+      </div>
+
+
+      <form [formGroup]="verifyForm" (ngSubmit)="verifyEmail()">
+
+        <!-- EMAIL -->
+        <div class="form-group">
+
+          <label for="email">Email Address</label>
+
+          <div class="input-wrapper">
+
+            <i class="bi bi-envelope input-icon"></i>
+
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="Enter your email address"
+              autocomplete="email"
+              [class.input-error]="
+                verifyForm.get('email')?.touched &&
+                verifyForm.get('email')?.invalid
+              "
+            />
+
+          </div>
+
+          @if (
+            verifyForm.get('email')?.touched &&
+            verifyForm.get('email')?.hasError('required')
+          ) {
+            <small class="error-message">
+              Email address is required.
+            </small>
+          }
+
+          @if (
+            verifyForm.get('email')?.touched &&
+            verifyForm.get('email')?.hasError('email')
+          ) {
+            <small class="error-message">
+              Enter a valid email address.
+            </small>
+          }
+
+        </div>
+
+
+        <!-- OTP -->
+        <div class="form-group">
+
+          <label for="otp">Verification OTP</label>
+
+          <div class="input-wrapper">
+
+            <i class="bi bi-key input-icon"></i>
+
+            <input
+              type="text"
+              id="otp"
+              formControlName="otp"
+              placeholder="Enter your 6-digit OTP"
+              maxlength="6"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              [class.input-error]="
+                verifyForm.get('otp')?.touched &&
+                verifyForm.get('otp')?.invalid
+              "
+            />
+
+          </div>
+
+          @if (
+            verifyForm.get('otp')?.touched &&
+            verifyForm.get('otp')?.hasError('required')
+          ) {
+            <small class="error-message">
+              Verification OTP is required.
+            </small>
+          }
+
+          @if (
+            verifyForm.get('otp')?.touched &&
+            verifyForm.get('otp')?.hasError('pattern')
+          ) {
+            <small class="error-message">
+              Please enter a valid 6-digit OTP.
+            </small>
+          }
+
+        </div>
+
+
+        <!-- RESEND OTP -->
+        <div class="resend-section">
+
+          <span>Didn't receive the OTP?</span>
+
+          <button
+            type="button"
+            class="resend-button"
+            (click)="resendOtp()"
+            [disabled]="isResending || isVerifying"
+          >
+
+            @if (isResending) {
+              <span class="small-spinner"></span>
+              Sending...
+            } @else {
+              Resend OTP
+            }
+
+          </button>
+
+        </div>
+
+
+        <!-- VERIFY BUTTON -->
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="isVerifying || isResending"
+        >
+
+          @if (isVerifying) {
+            <span class="spinner"></span>
+            Verifying...
+          } @else {
+            Verify Email
+            <i class="bi bi-arrow-right"></i>
+          }
+
+        </button>
+
+      </form>
+
+
+      <!-- BACK TO LOGIN -->
+      <div class="form-footer">
+        <span>Already verified?</span>
+
+        <a routerLink="/login">
+          Sign In
+        </a>
+      </div>
+
+      <div class="edit-email-note">
+        <i class="bi bi-info-circle"></i>
+        You can edit your email address above if needed.
+      </div>
+
+    </div>
+
+    <div class="auth-bottom-text">
+      Your security matters to us.
+    </div>
+
+  </section>
+
+</div>

@@ -53,6 +53,8 @@ export class AddProduct {
         this.toastService.error(
           apiError?.message ?? 'Unable to add product. Please try again.'
         );
+
+         this.router.navigate(['/viewproducts']);
       }
     });
   }

@@ -1,1 +1,217 @@
-<p>add-user works!</p>
+
+<div class="add-user-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-heading">
+    <div>
+      <h2>Add New User</h2>
+      <p>Create a customer account and provide access to the insurance portal.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-back"
+      (click)="navigateToUsers()">
+      <i class="bi bi-arrow-left"></i>
+      Back to Users
+    </button>
+  </div>
+
+
+  <!-- FORM CARD -->
+  <div class="form-card">
+
+    <div class="form-card-header">
+      <div class="header-icon">
+        <i class="bi bi-person-plus"></i>
+      </div>
+
+      <div>
+        <h4>Customer Information</h4>
+        <p>Enter the details below to register a new customer.</p>
+      </div>
+    </div>
+
+
+    <form [formGroup]="userForm" (ngSubmit)="addOfficer()">
+
+      <div class="form-body">
+
+        <!-- FULL NAME -->
+        <div class="form-group">
+          <label for="fullName">
+            Full Name <span class="required">*</span>
+          </label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-person input-icon"></i>
+
+            <input
+              id="fullName"
+              type="text"
+              class="form-control custom-input"
+              formControlName="fullName"
+              placeholder="Enter customer's full name"
+              autocomplete="name">
+          </div>
+
+          @if (getfullName().touched && getfullName().invalid) {
+            <div class="validation-message">
+              @if (getfullName().hasError('required')) {
+                <span>Full name is required.</span>
+              }
+              @else if (getfullName().hasError('minlength')) {
+                <span>Full name must contain at least 3 characters.</span>
+              }
+              @else if (getfullName().hasError('maxlength')) {
+                <span>Full name cannot exceed 50 characters.</span>
+              }
+            </div>
+          }
+        </div>
+
+
+        <!-- EMAIL -->
+        <div class="form-group">
+          <label for="email">
+            Email Address <span class="required">*</span>
+          </label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-envelope input-icon"></i>
+
+            <input
+              id="email"
+              type="email"
+              class="form-control custom-input"
+              formControlName="email"
+              placeholder="Enter customer's email address"
+              autocomplete="email">
+          </div>
+
+          @if (getemail().touched && getemail().invalid) {
+            <div class="validation-message">
+              @if (getemail().hasError('required')) {
+                <span>Email address is required.</span>
+              }
+              @else if (getemail().hasError('email')) {
+                <span>Please enter a valid email address.</span>
+              }
+            </div>
+          }
+        </div>
+
+
+        <!-- MOBILE NUMBER -->
+        <div class="form-group">
+          <label for="mobileNumber">
+            Mobile Number <span class="required">*</span>
+          </label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-phone input-icon"></i>
+
+            <input
+              id="mobileNumber"
+              type="tel"
+              class="form-control custom-input"
+              formControlName="mobileNumber"
+              placeholder="Enter 10-digit mobile number"
+              maxlength="10"
+              inputmode="numeric"
+              autocomplete="tel">
+          </div>
+
+          @if (getmobileNumber().touched && getmobileNumber().invalid) {
+            <div class="validation-message">
+              @if (getmobileNumber().hasError('required')) {
+                <span>Mobile number is required.</span>
+              }
+              @else if (getmobileNumber().hasError('pattern')) {
+                <span>Enter a valid 10-digit Indian mobile number.</span>
+              }
+            </div>
+          }
+        </div>
+
+
+        <!-- PASSWORD -->
+        <div class="form-group">
+          <label for="password">
+            Password <span class="required">*</span>
+          </label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-lock input-icon"></i>
+
+            <input
+              id="password"
+              type="password"
+              class="form-control custom-input"
+              formControlName="password"
+              placeholder="Create a password"
+              autocomplete="new-password">
+          </div>
+
+          <small class="field-hint">
+            8–20 characters, including uppercase, lowercase, number and one special character (@, #, $, !).
+          </small>
+
+          @if (getpassword().touched && getpassword().invalid) {
+            <div class="validation-message">
+              @if (getpassword().hasError('required')) {
+                <span>Password is required.</span>
+              }
+              @else if (getpassword().hasError('pattern')) {
+                <span>Password does not meet the required format.</span>
+              }
+            </div>
+          }
+        </div>
+
+
+        <!-- FORM ACTIONS -->
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="btn btn-cancel"
+            (click)="navigateToUsers()"
+            [disabled]="isLoading">
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-submit"
+            [disabled]="isLoading">
+
+            @if (isLoading) {
+              <span class="spinner-border spinner-border-sm"></span>
+              Creating Account...
+            }
+            @else {
+              <i class="bi bi-person-check"></i>
+              Create Customer
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+  <!-- INFORMATION -->
+  <div class="info-note">
+    <i class="bi bi-info-circle"></i>
+    <span>
+      The new customer account will be created with the default account settings configured by the system.
+    </span>
+  </div>
+
+</div>

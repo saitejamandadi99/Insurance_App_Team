@@ -1,1 +1,358 @@
-<p>view-claim-details-component works!</p>
+
+<div class="claim-details-page">
+
+  <!-- Loading Claim -->
+  @if (isLoading) {
+    <div class="loading-card">
+      <div class="spinner-border" role="status"></div>
+      <p>Loading claim details...</p>
+    </div>
+  }
+
+  @else if (claim) {
+
+    <!-- Page Header -->
+    <div class="page-header">
+
+      <button class="btn-back" (click)="navigateToMyClaims()">
+        <i class="bi bi-arrow-left"></i>
+        Back to My Claims
+      </button>
+
+      <div class="header-content">
+        <div>
+          <h2>Claim Details</h2>
+          <p>
+            Claim Number:
+            <strong>{{ claim.claimNumber }}</strong>
+          </p>
+        </div>
+
+        <span
+          class="status-badge"
+          [class.status-pending]="claim.claimStatus === 'Pending'"
+          [class.status-recommended-approval]="claim.claimStatus === 'RecommendedForApproval'"
+          [class.status-recommended-rejection]="claim.claimStatus === 'RecommendedForRejection'"
+          [class.status-approved]="claim.claimStatus === 'Approved'"
+          [class.status-rejected]="claim.claimStatus === 'Rejected'">
+          {{ claim.claimStatus }}
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Claim Status Timeline -->
+    <div class="details-card timeline-card">
+
+      <div class="card-heading">
+        <div class="heading-icon">
+          <i class="bi bi-diagram-3"></i>
+        </div>
+
+        <div>
+          <h3>Claim Status Timeline</h3>
+          <p>Track the progress of your insurance claim</p>
+        </div>
+      </div>
+
+      <div class="timeline">
+
+        <!-- Step 1: Claim Submitted -->
+        <div class="timeline-item completed">
+
+          <div class="timeline-marker">
+            <i class="bi bi-check-lg"></i>
+          </div>
+
+          <div class="timeline-content">
+            <h4>Claim Submitted</h4>
+            <p>Your claim has been successfully submitted.</p>
+
+            @if (claim.createdDate) {
+              <span>{{ claim.createdDate | date:'dd MMM yyyy, hh:mm a' }}</span>
+            }
+          </div>
+
+        </div>
+
+        <!-- Step 2: Officer Review -->
+        <div
+          class="timeline-item"
+          [class.completed]="claim.claimStatus !== 'Pending'"
+          [class.current]="claim.claimStatus === 'Pending'">
+
+          <div class="timeline-marker">
+            @if (claim.claimStatus !== 'Pending') {
+              <i class="bi bi-check-lg"></i>
+            }
+            @else {
+              <i class="bi bi-clock"></i>
+            }
+          </div>
+
+          <div class="timeline-content">
+            <h4>Officer Review</h4>
+
+            @if (claim.claimStatus === 'Pending') {
+              <p>Your claim is awaiting officer review.</p>
+            }
+            @else if (claim.claimStatus === 'RecommendedForApproval') {
+              <p>The officer has recommended approval.</p>
+            }
+            @else if (claim.claimStatus === 'RecommendedForRejection') {
+              <p>The officer has recommended rejection.</p>
+            }
+            @else {
+              <p>Officer review has been completed.</p>
+            }
+          </div>
+
+        </div>
+
+        <!-- Step 3: Admin Decision -->
+        <div
+          class="timeline-item"
+          [class.completed]="claim.claimStatus === 'Approved' || claim.claimStatus === 'Rejected'"
+          [class.current]="claim.claimStatus === 'RecommendedForApproval' || claim.claimStatus === 'RecommendedForRejection'">
+
+          <div class="timeline-marker">
+            @if (claim.claimStatus === 'Approved' || claim.claimStatus === 'Rejected') {
+              <i class="bi bi-check-lg"></i>
+            }
+            @else {
+              <i class="bi bi-clock"></i>
+            }
+          </div>
+
+          <div class="timeline-content">
+            <h4>Admin Decision</h4>
+
+            @if (claim.claimStatus === 'Approved') {
+              <p>Your claim has been approved by the admin.</p>
+            }
+            @else if (claim.claimStatus === 'Rejected') {
+              <p>Your claim has been rejected by the admin.</p>
+            }
+            @else if (claim.claimStatus === 'RecommendedForApproval' || claim.claimStatus === 'RecommendedForRejection') {
+              <p>Your claim is awaiting the final admin decision.</p>
+            }
+            @else {
+              <p>Admin review will begin after officer review.</p>
+            }
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Claim Information -->
+    <div class="details-card">
+
+      <div class="card-heading">
+        <div class="heading-icon">
+          <i class="bi bi-file-earmark-text"></i>
+        </div>
+
+        <div>
+          <h3>Claim Information</h3>
+          <p>Details about your submitted claim</p>
+        </div>
+      </div>
+
+      <div class="information-grid">
+
+        <div class="information-item">
+          <span>Claim Number</span>
+          <strong>{{ claim.claimNumber }}</strong>
+        </div>
+
+        <div class="information-item">
+          <span>Claim Amount</span>
+          <strong>{{ claim.claimAmount | currency:'INR':'symbol':'1.0-2' }}</strong>
+        </div>
+
+        <div class="information-item">
+          <span>Incident Date</span>
+          <strong>{{ claim.incidentDate | date:'dd MMM yyyy' }}</strong>
+        </div>
+
+        <div class="information-item">
+          <span>Claim Created Date</span>
+          <strong>{{ claim.createdDate | date:'dd MMM yyyy' }}</strong>
+        </div>
+
+        <div class="information-item">
+          <span>Updated By</span>
+          <strong>{{ claim.UpdatedByName }}</strong>
+        </div>
+
+        <div class="information-item">
+          <span>Claim Status</span>
+          <strong>{{ claim.claimStatus }}</strong>
+        </div>
+
+      </div>
+
+      <div class="reason-section">
+        <h4>Claim Reason</h4>
+        <p>{{ claim.claimReason || 'No claim reason available.' }}</p>
+      </div>
+
+    </div>
+
+    <!-- Policy Information -->
+    <div class="details-card">
+
+      <div class="card-heading">
+        <div class="heading-icon">
+          <i class="bi bi-shield-check"></i>
+        </div>
+
+        <div>
+          <h3>Policy Information</h3>
+          <p>Insurance policy associated with this claim</p>
+        </div>
+      </div>
+
+      <div class="information-grid">
+
+        <div class="information-item">
+          <span>Policy Number</span>
+          <strong>{{ claim.policyNumber }}</strong>
+        </div>
+
+        <div class="information-item">
+          <span>Customer Name</span>
+          <strong>{{ claim.customerName }}</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Review Remarks -->
+    <div class="details-card">
+
+      <div class="card-heading">
+        <div class="heading-icon">
+          <i class="bi bi-chat-left-text"></i>
+        </div>
+
+        <div>
+          <h3>Review Remarks</h3>
+          <p>Feedback provided during the claim review process</p>
+        </div>
+      </div>
+
+      <div class="remarks-grid">
+
+        <div class="remark-box">
+          <div class="remark-heading">
+            <i class="bi bi-person-badge"></i>
+            <h4>Officer Remarks</h4>
+          </div>
+
+          <p>
+            {{ claim.officerRemarks || 'No officer remarks available yet.' }}
+          </p>
+        </div>
+
+        <div class="remark-box">
+          <div class="remark-heading">
+            <i class="bi bi-person-check"></i>
+            <h4>Admin Remarks</h4>
+          </div>
+
+          <p>
+            {{ claim.adminRemarks || 'No admin remarks available yet.' }}
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Claim Documents -->
+    <div class="details-card documents-card">
+
+      <div class="card-heading">
+        <div class="heading-icon">
+          <i class="bi bi-folder2-open"></i>
+        </div>
+
+        <div>
+          <h3>Claim Documents</h3>
+          <p>Documents uploaded as supporting evidence for your claim</p>
+        </div>
+      </div>
+
+      @if (isDocumentsLoading) {
+
+        <div class="documents-loading">
+          <div class="spinner-border spinner-border-sm" role="status"></div>
+          <span>Loading claim documents...</span>
+        </div>
+
+      }
+
+      @else if (lstClaimDocuments.length > 0) {
+
+        <div class="documents-list">
+
+          @for (document of lstClaimDocuments; track document.documentId) {
+
+            <div class="document-item">
+
+              <div class="document-icon">
+                <i class="bi bi-file-earmark-text"></i>
+              </div>
+
+              <div class="document-info">
+                <h4>{{ document.documentName }}</h4>
+                <span>{{ document.documentType }}</span>
+                <small>
+                  Uploaded on {{ document.uploadedDate | date:'dd MMM yyyy' }}
+                </small>
+              </div>
+
+              <button
+                class="btn-download"
+                type="button"
+                (click)="downloadDocument(document)">
+                <i class="bi bi-download"></i>
+                <span>Download</span>
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+      @else {
+
+        <div class="documents-empty">
+          <i class="bi bi-file-earmark-x"></i>
+          <h4>No Documents Found</h4>
+          <p>No supporting documents are available for this claim.</p>
+        </div>
+
+      }
+
+    </div>
+
+    <!-- Bottom Action -->
+    <div class="bottom-actions">
+      <button class="btn-back-bottom" (click)="navigateToMyClaims()">
+        <i class="bi bi-arrow-left"></i>
+        Back to My Claims
+      </button>
+    </div>
+
+  }
+
+</div>

@@ -36,6 +36,7 @@ export class EditProduct implements OnInit {
   productTypes = Object.values(ProductType);
 
   isLoading = false;
+  isUpdating = false; 
   id!: number;
 
   constructor(
@@ -88,23 +89,25 @@ export class EditProduct implements OnInit {
         );
 
         this.cdr.detectChanges();
+         this.router.navigate(['/viewproducts']);
+
       }
     });
   }
 
   editProduct(): void {
-    if (this.productForm.invalid || this.isLoading) {
+    if (this.productForm.invalid || this.isLoading || this.isUpdating) {
       this.productForm.markAllAsTouched();
       return;
     }
 
-    this.isLoading = true;
+    this.isUpdating = true;
 
     const request: ProductRequestDto = this.productForm.value;
 
     this.prodService.updateProduct(this.id, request).subscribe({
       next: (response) => {
-        this.isLoading = false;
+        this.isUpdating = false;
 
         this.toastService.success(response.message);
         this.cdr.detectChanges();
@@ -112,7 +115,7 @@ export class EditProduct implements OnInit {
         this.router.navigate(['/viewproducts']);
       },
       error: (err: HttpErrorResponse) => {
-        this.isLoading = false;
+        this.isUpdating = false;
 
         const apiError = err.error as ErrorResponseDto;
 

@@ -19,8 +19,8 @@ interface SidebarSection {
   selector: 'app-sidebar-component',
   standalone: true,
   imports: [NgFor, NgIf, NgClass, RouterLink, RouterLinkActive],
-  templateUrl: './sidebar-component.html',
-  styleUrl: './sidebar-component.css',
+  templateUrl: './sidebar.html',
+  styleUrl: './sidebar.css',
 })
 export class SidebarComponent implements OnInit {
 

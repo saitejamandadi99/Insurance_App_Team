@@ -6,9 +6,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ToastService } from '../../../../services/Toast/toast-service';
 import { Router } from '@angular/router';
 import { Policy } from '../../../../services/Policy/policy';
-
+import { DatePipe, CurrencyPipe } from '@angular/common';
 @Component({
-  imports: [],
+  imports: [DatePipe, CurrencyPipe],
   selector: 'app-view-my-policies',
   styleUrl: './view-my-policies.css',
   templateUrl: './view-my-policies.html',

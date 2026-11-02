@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ErrorResponseDto } from '../../../../DTO/ErrorResponseDto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OfficerRemarkRequestDto } from '../../../../DTO/OfficerRemarkRequestDto';
@@ -8,19 +8,34 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Claim } from '../../../../services/Claim/claim';
 import { ClaimStatus } from '../../../../Enums/ClaimStatus';
 import { ClaimResponseDto } from '../../../../DTO/ClaimResponseDto';
+import { DatePipe, CurrencyPipe } from '@angular/common';
+
+// New imports for claim documents
+import { ClaimDocument } from '../../../../services/ClaimDocument/claim-document';
+import { ClaimDocumentResponseDto } from '../../../../DTO/ClaimDocumentResponseDto';
 
 @Component({
-  imports: [],
-  standalone:true,
+  imports: [ReactiveFormsModule, DatePipe, CurrencyPipe],
+  standalone: true,
   selector: 'app-officer-claim-review-component',
   styleUrl: './officer-claim-review-component.css',
   templateUrl: './officer-claim-review-component.html',
 })
 export class OfficerClaimReviewComponent implements OnInit {
+
   claimId!: number;
   claim!: ClaimResponseDto;
+
   isLoading = false;
-  claimStatus = ClaimStatus;
+
+  // Claim Documents
+  lstClaimDocuments: ClaimDocumentResponseDto[] = [];
+  isDocumentsLoading = false;
+
+  officerClaimStatuses: ClaimStatus[] = [
+    ClaimStatus.RecommendedForApproval,
+    ClaimStatus.RecommendedForRejection
+  ];
 
   reviewForm: FormGroup = new FormGroup({
     claimStatus: new FormControl('', [Validators.required]),
@@ -33,6 +48,7 @@ export class OfficerClaimReviewComponent implements OnInit {
 
   constructor(
     private claimService: Claim,
+    private claimDocumentService: ClaimDocument,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -60,19 +76,86 @@ export class OfficerClaimReviewComponent implements OnInit {
       next: (response) => {
         this.claim = response.data;
         this.isLoading = false;
+
+        // Load documents after successfully loading the claim
+        this.loadClaimDocuments();
+
         this.cdr.detectChanges();
       },
       error: (err: HttpErrorResponse) => {
         this.isLoading = false;
 
         const apiError = err.error as ErrorResponseDto;
-        this.toast.error(apiError?.message ?? 'Unable to load claim details.');
+        this.toast.error(
+          apiError?.message ?? 'Unable to load claim details.'
+        );
 
         this.cdr.detectChanges();
+        this.router.navigate(['/viewclaims']);
       }
     });
   }
 
+  // Load documents belonging to this claim
+  loadClaimDocuments(): void {
+    this.isDocumentsLoading = true;
+
+    this.claimDocumentService
+      .getClaimDocumentsByClaimId(this.claimId)
+      .subscribe({
+        next: (response) => {
+          this.lstClaimDocuments = response.data ?? [];
+          this.isDocumentsLoading = false;
+
+          this.cdr.detectChanges();
+        },
+        error: (err: HttpErrorResponse) => {
+          this.isDocumentsLoading = false;
+          this.lstClaimDocuments = [];
+
+          const apiError = err.error as ErrorResponseDto;
+
+          this.toast.error(
+            apiError?.message ?? 'Unable to load claim documents.'
+          );
+
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+  // View document in a new browser tab
+  viewDocument(document: ClaimDocumentResponseDto): void {
+    if (!document.documentReference) {
+      this.toast.error('Document URL is not available.');
+      return;
+    }
+
+    window.open(
+      document.documentReference,
+      '_blank',
+      'noopener,noreferrer'
+    );
+  }
+
+  // Download document
+  downloadDocument(document: ClaimDocumentResponseDto): void {
+    if (!document.documentReference) {
+      this.toast.error('Document URL is not available.');
+      return;
+    }
+
+    const link = window.document.createElement('a');
+
+    link.href = document.documentReference;
+    link.download = document.documentName;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+
+    link.click();
+  }
+
+  // Existing officer review functionality
   reviewClaim(): void {
     if (this.reviewForm.invalid || this.isLoading) {
       this.reviewForm.markAllAsTouched();
@@ -94,7 +177,9 @@ export class OfficerClaimReviewComponent implements OnInit {
         this.isLoading = false;
 
         const apiError = err.error as ErrorResponseDto;
-        this.toast.error(apiError?.message ?? 'Unable to review claim.');
+        this.toast.error(
+          apiError?.message ?? 'Unable to review claim.'
+        );
 
         this.cdr.detectChanges();
       }

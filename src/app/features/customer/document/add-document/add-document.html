@@ -1,1 +1,305 @@
-<p>add-document works!</p>
+
+<div class="add-document-page">
+
+  <!-- Page Header -->
+  <div class="page-heading">
+    <div>
+      <h2>Upload Documents</h2>
+      <p>Upload supporting documents for your pending claims.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-back"
+      (click)="navigateToMyDocuments()">
+      <i class="bi bi-arrow-left"></i>
+      <span>My Documents</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading && claims.length === 0) {
+    <div class="loading-card">
+      <div class="spinner-border" role="status"></div>
+      <p>Loading your claims...</p>
+    </div>
+  } @else {
+
+    <div class="document-layout">
+
+      <!-- Upload Form -->
+      <div class="form-card">
+
+        <div class="form-card-header">
+          <div class="header-icon">
+            <i class="bi bi-cloud-arrow-up"></i>
+          </div>
+          <div>
+            <h3>Document Information</h3>
+            <p>Enter the details and select the claim.</p>
+          </div>
+        </div>
+
+        <form [formGroup]="documentForm" (ngSubmit)="addDocument()">
+
+          <div class="form-body">
+
+            <!-- Claim Selection -->
+            <div class="form-group">
+              <label for="claimId">
+                Select Claim <span class="required">*</span>
+              </label>
+
+              <select
+                id="claimId"
+                class="custom-input custom-select"
+                formControlName="claimId">
+
+                <option value="" disabled>Select a claim</option>
+
+                @for (claim of claims; track claim.claimId) {
+                  <option [value]="claim.claimId">
+                    {{ claim.claimNumber }} - {{ claim.claimStatus }}
+                  </option>
+                }
+              </select>
+
+              @if (claimId.touched && claimId.invalid) {
+                <small class="validation-message">
+                  Please select a claim.
+                </small>
+              }
+            </div>
+
+            <!-- Document Name -->
+            <div class="form-group">
+              <label for="documentName">
+                Document Name <span class="required">*</span>
+              </label>
+
+              <input
+                id="documentName"
+                type="text"
+                class="custom-input"
+                formControlName="documentName"
+                placeholder="Enter document name"
+                maxlength="100">
+
+              @if (documentName.touched && documentName.errors) {
+                <small class="validation-message">
+                  @if (documentName.errors['required']) {
+                    Document name is required.
+                  } @else if (documentName.errors['minlength']) {
+                    Document name must contain at least 3 characters.
+                  } @else if (documentName.errors['maxlength']) {
+                    Document name cannot exceed 100 characters.
+                  }
+                </small>
+              }
+            </div>
+
+            <!-- Document Type -->
+            <div class="form-group">
+              <label for="documentType">
+                Document Type <span class="required">*</span>
+              </label>
+
+              <input
+                id="documentType"
+                type="text"
+                class="custom-input"
+                formControlName="documentType"
+                placeholder="Example: Medical Report, Invoice, ID Proof"
+                maxlength="50">
+
+              @if (documentType.touched && documentType.errors) {
+                <small class="validation-message">
+                  @if (documentType.errors['required']) {
+                    Document type is required.
+                  } @else if (documentType.errors['minlength']) {
+                    Document type must contain at least 3 characters.
+                  } @else if (documentType.errors['maxlength']) {
+                    Document type cannot exceed 50 characters.
+                  }
+                </small>
+              }
+            </div>
+
+            <!-- File Upload -->
+            <div class="form-group">
+              <label>
+                Select Documents <span class="required">*</span>
+              </label>
+
+              <div class="upload-area">
+                <input
+                  #fileInput
+                  type="file"
+                  id="documentFiles"
+                  multiple
+                  class="file-input"
+                  (change)="onFilesSelected($event)">
+
+                <label for="documentFiles" class="upload-content">
+                  <div class="upload-icon">
+                    <i class="bi bi-cloud-arrow-up"></i>
+                  </div>
+
+                  <h4>Choose files to upload</h4>
+                  <p>Click here to browse and select multiple documents.</p>
+
+                  <span class="browse-button">
+                    <i class="bi bi-folder2-open"></i>
+                    Browse Files
+                  </span>
+                </label>
+              </div>
+
+              @if (filesTouched && selectedFiles.length === 0) {
+                <small class="validation-message">
+                  Please select at least one document.
+                </small>
+              }
+            </div>
+
+            <!-- Selected Files -->
+            @if (selectedFiles.length > 0) {
+              <div class="selected-files-section">
+
+                <div class="selected-files-header">
+                  <div>
+                    <h4>Selected Documents</h4>
+                    <p>Review your files before uploading.</p>
+                  </div>
+
+                  <span class="file-count">
+                    {{ selectedFiles.length }}
+                    {{ selectedFiles.length === 1 ? 'File' : 'Files' }}
+                  </span>
+                </div>
+
+                <div class="selected-files-list">
+                  @for (file of selectedFiles; track $index; let i = $index) {
+                    <div class="selected-file">
+
+                      <div class="file-details">
+                        <div class="file-icon">
+                          <i class="bi bi-file-earmark-text"></i>
+                        </div>
+
+                        <div class="file-info">
+                          <span class="file-name">{{ file.name }}</span>
+                          <span class="file-size">
+                            {{ (file.size / 1024 / 1024).toFixed(2) }} MB
+                          </span>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        class="remove-file-btn"
+                        title="Remove file"
+                        aria-label="Remove selected file"
+                        (click)="removeFile(i)">
+                        <i class="bi bi-trash3"></i>
+                      </button>
+
+                    </div>
+                  }
+                </div>
+
+              </div>
+            }
+
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn-cancel"
+              (click)="navigateToMyDocuments()"
+              [disabled]="isLoading">
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              class="btn-submit"
+              [disabled]="isLoading || claims.length === 0">
+
+              @if (isLoading) {
+                <span class="spinner-border spinner-border-sm"></span>
+                Uploading...
+              } @else {
+                <i class="bi bi-cloud-upload"></i>
+                Upload Documents
+              }
+
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Information Panel -->
+      <div class="info-card">
+        <div class="info-card-icon">
+          <i class="bi bi-info-circle"></i>
+        </div>
+
+        <h3>Before You Upload</h3>
+
+        <p>
+          Make sure you select the correct claim and provide meaningful
+          document details.
+        </p>
+
+        <div class="info-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Select the claim associated with your documents.</span>
+        </div>
+
+        <div class="info-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Provide a clear document name and type.</span>
+        </div>
+
+        <div class="info-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Review the selected files before submitting.</span>
+        </div>
+
+        <div class="info-note">
+          <i class="bi bi-shield-check"></i>
+          <span>
+            Upload documents relevant to your insurance claim.
+          </span>
+        </div>
+      </div>
+
+    </div>
+  }
+
+  @if (!isLoading && claims.length === 0) {
+    <div class="empty-claims-card">
+      <div class="empty-icon">
+        <i class="bi bi-folder-x"></i>
+      </div>
+
+      <h3>No Eligible Claims Found</h3>
+
+      <p>
+        You currently have no pending claims for which documents can be uploaded.
+      </p>
+
+      <button
+        type="button"
+        class="btn-back-empty"
+        (click)="navigateToMyDocuments()">
+        Go to My Documents
+      </button>
+    </div>
+  }
+
+</div>

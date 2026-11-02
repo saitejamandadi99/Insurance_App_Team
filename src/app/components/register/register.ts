@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Auth } from '../../services/Auth/auth';
 import { Router, RouterLink } from '@angular/router';
 import { Toast } from '../../Enums/Toast';
@@ -17,6 +17,8 @@ import { ErrorResponseDto } from '../../DTO/ErrorResponseDto';
 })
 export class Register {
   isLoading:boolean = false;
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
   registerForm :FormGroup = new FormGroup({
     fullName:new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
 
@@ -24,20 +26,56 @@ export class Register {
 
     password: new FormControl('', [Validators.required, Validators.pattern('^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$!]).{8,20}$')]),
 
-    mobileNumber: new FormControl('', [Validators.required, Validators.pattern("^[6-9][0-9]{9}$")])
+    mobileNumber: new FormControl('', [Validators.required, Validators.pattern("^[6-9][0-9]{9}$")]),
+
+    confirmPassword: new FormControl('', [
+      Validators.required
+    ])
+
+  }, {
+    validators: this.passwordMatchValidator
   }); 
 
   constructor(private authService: Auth, private router:Router, private toastServcie:ToastService){}
 
-  registerUser(){
-    if(this.registerForm.invalid ||  this.isLoading) return;
+  passwordMatchValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
 
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+
+    if (!confirmPassword) {
+      return null;
+    }
+
+    return password === confirmPassword
+      ? null
+      : { passwordMismatch: true };
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  registerUser(){
+    if(this.registerForm.invalid ||  this.isLoading)  {
+      this.registerForm.markAllAsTouched();
+    return;
+    }
     this.isLoading = true;
-    const request:RegisterRequestDto = this.registerForm.value;
+    const { confirmPassword, ...registrationData } =
+      this.registerForm.getRawValue();
+    const request:RegisterRequestDto = registrationData;
 
     this.authService.registerUser(request).subscribe({
       next:(response)=>{
         this.isLoading = false;
+        localStorage.setItem('registeredEmail', request.email);
         this.toastServcie.success(response.message);
         this.router.navigate(['/verify-email']);
       }, 

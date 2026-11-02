@@ -29,7 +29,7 @@ export class AddUser {
 
   addOfficer(){
     if(this.userForm.invalid || this.isLoading ){
-      this.userForm.markAsTouched();
+      this.userForm.markAllAsTouched();
       return;
     }
 

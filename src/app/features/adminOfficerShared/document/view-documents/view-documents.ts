@@ -7,9 +7,14 @@ import { Router } from '@angular/router';
 import { ClaimDocument } from '../../../../services/ClaimDocument/claim-document';
 import { PaginationResponseDto } from '../../../../DTO/PaginationResponseDto';
 import { ClaimDocumentResponseDto } from '../../../../DTO/ClaimDocumentResponseDto';
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { PageHeader } from '../../../../shared/ui/page-header/page-header';
+import { LoadingSpinner } from '../../../../shared/ui/loading-spinner/loading-spinner';
+import { EmptyState } from '../../../../shared/ui/empty-state/empty-state';
+import { Pagination } from '../../../../shared/ui/pagination/pagination';
 @Component({
-  imports: [],
+  imports: [ReactiveFormsModule, DatePipe, PageHeader, LoadingSpinner, EmptyState, Pagination],
   standalone:true,
   selector: 'app-view-documents',
   styleUrl: './view-documents.css',
@@ -135,4 +140,18 @@ export class ViewDocuments implements OnInit {
       'noopener,noreferrer'
     );
   }
+
+  downloadDocument(document: ClaimDocumentResponseDto): void {
+  if (!document.documentReference) {
+    this.toastServices.error('Document URL is not available.');
+    return;
+  }
+
+  const link = window.document.createElement('a');
+  link.href = document.documentReference;
+  link.download = document.documentName;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.click();
+}
 }

@@ -1,1 +1,397 @@
-<p>officer-claim-review-component works!</p>
+<div class="claim-review-page">
+
+  <!-- Page Header -->
+  <div class="page-heading">
+    <div>
+      <h2>Review Claim</h2>
+      <p>Evaluate the submitted claim and provide your recommendation.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-back"
+      (click)="navigateToClaims()"
+      [disabled]="isLoading"
+    >
+      <i class="bi bi-arrow-left"></i>
+      Back to Claims
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading && !claim) {
+    <div class="loading-card">
+      <div class="spinner-border loading-spinner" role="status"></div>
+      <h5>Loading Claim Details</h5>
+      <p>Please wait while we retrieve the claim information.</p>
+    </div>
+  }
+
+  @else if (claim) {
+
+    <div class="review-layout">
+
+      <!-- Left Column -->
+      <div class="claim-left-column">
+
+        <!-- Claim Information -->
+        <div class="form-card claim-details-card">
+
+          <div class="form-card-header">
+            <div class="header-icon">
+              <i class="bi bi-file-earmark-text"></i>
+            </div>
+
+            <div>
+              <h4>Claim Information</h4>
+              <p>Review the submitted claim details before making a recommendation.</p>
+            </div>
+          </div>
+
+          <div class="details-body">
+
+            <div class="details-grid">
+
+              <div class="detail-item">
+                <label>Claim Number</label>
+                <p>{{ claim.claimNumber }}</p>
+              </div>
+
+              <div class="detail-item">
+                <label>Policy Number</label>
+                <p>{{ claim.policyNumber }}</p>
+              </div>
+
+              <div class="detail-item">
+                <label>Customer Name</label>
+                <p>{{ claim.customerName }}</p>
+              </div>
+
+              <div class="detail-item">
+                <label>Claim Amount</label>
+                <p class="claim-amount">
+                  {{ claim.claimAmount | currency:'INR':'symbol':'1.2-2' }}
+                </p>
+              </div>
+
+              <div class="detail-item">
+                <label>Incident Date</label>
+                <p>{{ claim.incidentDate | date:'dd MMM yyyy' }}</p>
+              </div>
+
+              <div class="detail-item">
+                <label>Current Claim Status</label>
+                <p>
+                  <span class="status-label">
+                    {{ claim.claimStatus }}
+                  </span>
+                </p>
+              </div>
+
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-item full-width">
+              <label>Claim Reason</label>
+              <p class="description-text">
+                {{ claim.claimReason }}
+              </p>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-item full-width">
+              <label>Previous Officer Remarks</label>
+              <p class="description-text">
+                {{ claim.officerRemarks || 'No officer remarks provided.' }}
+              </p>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-item full-width">
+              <label>Admin Remarks</label>
+              <p class="description-text">
+                {{ claim.adminRemarks || 'No admin remarks provided.' }}
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Claim Documents -->
+        <div class="form-card documents-card">
+
+          <div class="form-card-header">
+            <div class="header-icon documents-icon">
+              <i class="bi bi-folder2-open"></i>
+            </div>
+
+            <div>
+              <h4>Claim Documents</h4>
+              <p>Review the documents submitted for this claim.</p>
+            </div>
+          </div>
+
+          <div class="documents-body">
+
+            @if (isDocumentsLoading) {
+              <div class="documents-loading">
+                <span class="spinner-border spinner-border-sm"></span>
+                <span>Loading claim documents...</span>
+              </div>
+            }
+
+            @else if (lstClaimDocuments.length > 0) {
+
+              <div class="table-responsive">
+                <table class="table documents-table align-middle">
+
+                  <thead>
+                    <tr>
+                      <th>Document Name</th>
+                      <th>Document Type</th>
+                      <th>Uploaded Date</th>
+                      <th class="text-center">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    @for (
+                      document of lstClaimDocuments;
+                      track document.documentId
+                    ) {
+                      <tr>
+
+                        <td>
+                          <div class="document-name">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span>{{ document.documentName }}</span>
+                          </div>
+                        </td>
+
+                        <td>
+                          <span class="document-type">
+                            {{ document.documentType }}
+                          </span>
+                        </td>
+
+                        <td>
+                          {{ document.uploadedDate | date:'dd MMM yyyy' }}
+                        </td>
+
+                        <td>
+                          <div class="document-actions">
+
+                            <button
+                              type="button"
+                              class="btn btn-view-document"
+                              (click)="viewDocument(document)">
+                              <i class="bi bi-eye"></i>
+                              View
+                            </button>
+
+                            <button
+                              type="button"
+                              class="btn btn-download-document"
+                              (click)="downloadDocument(document)">
+                              <i class="bi bi-download"></i>
+                              Download
+                            </button>
+
+                          </div>
+                        </td>
+
+                      </tr>
+                    }
+                  </tbody>
+
+                </table>
+              </div>
+
+            }
+
+            @else {
+              <div class="documents-empty">
+                <i class="bi bi-folder2-open"></i>
+                <h6>No Documents Found</h6>
+                <p>No documents have been uploaded for this claim.</p>
+              </div>
+            }
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Officer Review Form -->
+      <div class="form-card review-form-card">
+
+        <div class="form-card-header">
+          <div class="header-icon review-icon">
+            <i class="bi bi-clipboard-check"></i>
+          </div>
+
+          <div>
+            <h4>Officer Recommendation</h4>
+            <p>Submit your recommendation and supporting remarks.</p>
+          </div>
+        </div>
+
+        <div class="form-body">
+
+          @if (isLoading) {
+            <div class="updating-banner">
+              <span class="spinner-border spinner-border-sm"></span>
+              Submitting your recommendation...
+            </div>
+          }
+
+          <form
+            [formGroup]="reviewForm"
+            (ngSubmit)="reviewClaim()"
+            novalidate
+          >
+
+            <!-- Recommendation -->
+            <div class="form-group">
+              <label for="claimStatus">
+                Recommendation <span class="required">*</span>
+              </label>
+
+              <select
+                id="claimStatus"
+                class="custom-select"
+                formControlName="claimStatus"
+                [class.invalid-input]="
+                  claimStatusControl.invalid &&
+                  claimStatusControl.touched
+                "
+              >
+                <option value="" disabled>
+                  Select your recommendation
+                </option>
+
+                @for (status of officerClaimStatuses; track status) {
+                  <option [ngValue]="status">
+                    {{
+                      status === 'RecommendedForApproval'
+                        ? 'Recommend for Approval'
+                        : 'Recommend for Rejection'
+                    }}
+                  </option>
+                }
+              </select>
+
+              @if (
+                claimStatusControl.hasError('required') &&
+                claimStatusControl.touched
+              ) {
+                <small class="validation-message">
+                  Please select a recommendation.
+                </small>
+              }
+            </div>
+
+            <!-- Officer Remarks -->
+            <div class="form-group">
+              <label for="officerRemarks">
+                Officer Remarks <span class="required">*</span>
+              </label>
+
+              <textarea
+                id="officerRemarks"
+                class="custom-textarea"
+                formControlName="officerRemarks"
+                rows="5"
+                maxlength="300"
+                placeholder="Enter your assessment and supporting remarks..."
+                [class.invalid-input]="
+                  officerRemarks.invalid &&
+                  officerRemarks.touched
+                "
+              ></textarea>
+
+              <div class="textarea-footer">
+
+                <div>
+                  @if (
+                    officerRemarks.hasError('required') &&
+                    officerRemarks.touched
+                  ) {
+                    <small class="validation-message">
+                      Officer remarks are required.
+                    </small>
+                  }
+
+                  @if (
+                    officerRemarks.hasError('minlength') &&
+                    officerRemarks.touched
+                  ) {
+                    <small class="validation-message">
+                      Remarks must contain at least 5 characters.
+                    </small>
+                  }
+
+                  @if (
+                    officerRemarks.hasError('maxlength') &&
+                    officerRemarks.touched
+                  ) {
+                    <small class="validation-message">
+                      Remarks cannot exceed 300 characters.
+                    </small>
+                  }
+                </div>
+
+                <span class="character-count">
+                  {{ officerRemarks.value?.length || 0 }}/300
+                </span>
+
+              </div>
+            </div>
+
+            <!-- Information Note -->
+            <div class="info-note">
+              <i class="bi bi-info-circle"></i>
+              <p>
+                Your recommendation will be forwarded to the Admin
+                for the final claim decision.
+              </p>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+
+              <button
+                type="button"
+                class="btn-cancel"
+                (click)="navigateToClaims()"
+                [disabled]="isLoading"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                class="btn-submit"
+                [disabled]="isLoading"
+              >
+                @if (isLoading) {
+                  <span class="spinner-border spinner-border-sm"></span>
+                  Submitting...
+                } @else {
+                  <i class="bi bi-send"></i>
+                  Submit Recommendation
+                }
+              </button>
+
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  }
+</div>
