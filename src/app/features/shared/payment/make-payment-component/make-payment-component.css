@@ -1,0 +1,400 @@
+.payment-page {
+min-height: 100vh;
+background: var(--surface);
+}
+
+/* PAYMENT SUMMARY */
+
+.payment-summary,
+.payment-card {
+background: #fff;
+border: 1px solid var(--border);
+border-radius: var(--radius-lg);
+box-shadow: var(--shadow-soft);
+}
+
+.payment-summary {
+padding: 24px;
+position: sticky;
+top: 20px;
+}
+
+.summary-header {
+display: flex;
+align-items: center;
+gap: 14px;
+}
+
+.summary-icon,
+.payment-header-icon {
+width: 48px;
+height: 48px;
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: var(--primary-light);
+color: var(--primary);
+font-size: 23px;
+}
+
+.summary-header h5,
+.payment-card-header h4 {
+color: var(--text-primary);
+font-weight: 700;
+margin: 0;
+}
+
+.summary-header p,
+.payment-card-header p {
+color: var(--text-muted);
+margin: 5px 0 0;
+font-size: 13px;
+}
+
+.summary-divider,
+.section-divider {
+border-top: 1px solid var(--border);
+margin: 22px 0;
+}
+
+.summary-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 12px;
+margin-bottom: 18px;
+font-size: 13px;
+}
+
+.summary-item span {
+color: var(--text-muted);
+}
+
+.summary-item strong {
+color: var(--text-primary);
+text-align: right;
+font-weight: 600;
+}
+
+.amount-box {
+padding: 18px;
+background: var(--primary-light);
+border-radius: var(--radius-md);
+}
+
+.amount-box span {
+color: var(--text-muted);
+font-size: 13px;
+}
+
+.amount-box h3 {
+color: var(--primary);
+font-weight: 800;
+margin: 8px 0 0;
+}
+
+.secure-note {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+margin-top: 20px;
+color: var(--success);
+font-size: 12px;
+}
+
+/* PAYMENT CARD */
+
+.payment-card {
+padding: 28px;
+}
+
+.payment-card-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 28px;
+}
+
+.payment-card-header h4 {
+font-size: 21px;
+}
+
+.payment-header-icon {
+width: 52px;
+height: 52px;
+}
+
+/* SECTION TITLES */
+
+.section-title {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 20px;
+}
+
+.section-title h5 {
+margin: 0;
+color: var(--text-primary);
+font-size: 16px;
+font-weight: 700;
+}
+
+.step-number {
+width: 30px;
+height: 30px;
+border-radius: 50%;
+background: var(--primary-light);
+color: var(--primary);
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 700;
+font-size: 13px;
+}
+
+/* PAYMENT METHOD OPTIONS */
+
+.payment-method {
+min-height: 125px;
+padding: 16px 8px;
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 8px;
+cursor: pointer;
+transition: all 0.2s ease;
+text-align: center;
+position: relative;
+}
+
+.payment-method:hover {
+border-color: var(--primary);
+background: var(--surface-hover);
+transform: translateY(-2px);
+}
+
+.payment-method.selected {
+border: 2px solid var(--primary);
+background: var(--primary-light);
+}
+
+.payment-method input {
+position: absolute;
+top: 10px;
+right: 10px;
+accent-color: var(--primary);
+}
+
+.payment-method > i {
+color: var(--primary);
+font-size: 26px;
+}
+
+.payment-method span {
+color: var(--text-primary);
+font-weight: 700;
+font-size: 13px;
+}
+
+.payment-method small {
+color: var(--text-muted);
+font-size: 10px;
+}
+
+/* PAYMENT DETAILS */
+
+.payment-details {
+animation: fadeIn 0.25s ease-in-out;
+padding-top: 4px;
+}
+
+.form-label {
+color: var(--text-primary);
+font-size: 13px;
+font-weight: 600;
+margin-bottom: 8px;
+}
+
+.required {
+color: var(--danger);
+}
+
+.form-control,
+.form-select {
+min-height: 44px;
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+color: var(--text-primary);
+font-size: 13px;
+padding: 10px 13px;
+box-shadow: none;
+}
+
+.form-control:focus,
+.form-select:focus {
+border-color: var(--primary);
+box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-control::placeholder {
+color: #9ca3af;
+}
+
+/* INFO BOX */
+
+.info-box {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+background: var(--info);
+background: color-mix(in srgb, var(--info) 10%, white);
+padding: 13px 15px;
+border-radius: var(--radius-md);
+margin-top: 20px;
+color: var(--text-primary);
+font-size: 12px;
+line-height: 1.6;
+}
+
+.info-box i {
+color: var(--primary);
+font-size: 17px;
+flex-shrink: 0;
+}
+
+/* CASH SECTION */
+
+.cash-box {
+display: flex;
+gap: 18px;
+align-items: flex-start;
+padding: 20px;
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+background: var(--surface);
+}
+
+.cash-icon {
+min-width: 48px;
+height: 48px;
+border-radius: 12px;
+background: var(--success);
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 23px;
+}
+
+.cash-box h6 {
+color: var(--text-primary);
+font-weight: 700;
+margin-bottom: 8px;
+}
+
+.cash-box p {
+color: var(--text-muted);
+font-size: 13px;
+line-height: 1.6;
+margin-bottom: 8px;
+}
+
+/* VALIDATION */
+
+.validation-message {
+display: block;
+color: var(--danger);
+font-size: 12px;
+margin-top: 6px;
+}
+
+/* ACTION BUTTONS */
+
+.form-actions {
+display: flex;
+justify-content: space-between;
+gap: 12px;
+border-top: 1px solid var(--border);
+padding-top: 22px;
+margin-top: 28px;
+}
+
+.form-actions button {
+min-height: 44px;
+padding: 10px 22px;
+border-radius: var(--radius-md);
+font-size: 13px;
+font-weight: 600;
+}
+
+.btn-pay {
+background: var(--primary);
+color: white;
+border: 1px solid var(--primary);
+transition: all 0.2s ease;
+}
+
+.btn-pay:hover:not(:disabled) {
+filter: brightness(1.1);
+transform: translateY(-1px);
+}
+
+.btn-pay:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+}
+
+/* ANIMATION */
+
+@keyframes fadeIn {
+from {
+opacity: 0;
+transform: translateY(5px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 991px) {
+.payment-summary {
+position: static;
+}
+}
+
+@media (max-width: 576px) {
+.payment-card {
+padding: 18px;
+}
+
+.payment-summary {
+padding: 18px;
+}
+
+.payment-card-header h4 {
+font-size: 18px;
+}
+
+.payment-method {
+min-height: 110px;
+}
+
+.form-actions button {
+flex: 1;
+padding: 10px;
+}
+
+.summary-item {
+font-size: 12px;
+}
+}

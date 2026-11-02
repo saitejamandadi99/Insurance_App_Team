@@ -1,26 +1,23 @@
 import { NgIf } from '@angular/common';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { CustomerProfileServices } from '../../../services/CustomerProfile/customer-profile-services';
+import { PageHeader } from '../../../shared/ui/page-header/page-header';
 import { ToastService } from '../../../services/Toast/toast-service';
 
 @Component({
   selector: 'app-edit-customer',
+  imports: [ReactiveFormsModule,
+    NgIf,
+    PageHeader
+  ],
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './edit-customer-profile.html',
   styleUrl: './edit-customer-profile.css'
 })
-export class EditCustomer implements OnInit {
-
+export class EditCustomer implements OnInit, OnDestroy {
   customerId!: number;
   isLoading = false;
   isSubmitting = false;
@@ -67,6 +64,33 @@ export class EditCustomer implements OnInit {
       Validators.maxLength(50)
     ])
   });
+
+get dateOfBirth(): FormControl {
+    return this.customerForm.get('dateOfBirth') as FormControl;
+  }
+  get pincode(): FormControl {
+  return this.customerForm.get('pincode') as FormControl;
+}
+
+get state(): FormControl {
+  return this.customerForm.get('state') as FormControl;
+}
+
+get city(): FormControl {
+  return this.customerForm.get('city') as FormControl;
+}
+
+get address(): FormControl {
+  return this.customerForm.get('address') as FormControl;
+}
+
+get nomineeName(): FormControl {
+  return this.customerForm.get('nomineeName') as FormControl;
+}
+
+get nomineeRelationship(): FormControl {
+  return this.customerForm.get('nomineeRelationship') as FormControl;
+}
 
   constructor(
     private customerProfileService: CustomerProfileServices,

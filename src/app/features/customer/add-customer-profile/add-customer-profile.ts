@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+ import { NgIf } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import {
   FormControl,
@@ -13,12 +13,22 @@ import { CustomerProfileServices } from '../../../services/CustomerProfile/custo
 import { ErrorResponseDto } from '../../../DTO/ErrorResponseDto';
 import { ToastService } from '../../../services/Toast/toast-service';
 
+import { PageHeader } from '../../../shared/ui/page-header/page-header';
+import { LoadingSpinner } from '../../../shared/ui/loading-spinner/loading-spinner';
+import { EmptyState } from '../../../shared/ui/empty-state/empty-state';
+
 @Component({
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    PageHeader,
+    LoadingSpinner,
+    EmptyState
+  ],
   standalone: true,
   selector: 'app-add-customer',
   styleUrl: './add-customer-profile.css',
-templateUrl: './add-customer-profile.html'
+  templateUrl: './add-customer-profile.html'
 })
 export class AddCustomer implements OnDestroy {
 

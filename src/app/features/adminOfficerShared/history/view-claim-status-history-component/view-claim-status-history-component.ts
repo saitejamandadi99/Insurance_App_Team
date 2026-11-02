@@ -134,4 +134,15 @@ pageNumber: this.histories.currentPage + 1
 get searchControl(): FormControl {
 return this.filterForm.get('search') as FormControl;
 }
+onPageChange(page: number): void {
+  if (page < 1 || page > this.histories.totalPages) {
+    return;
+  }
+
+  this.filterForm.patchValue({
+    pageNumber: page
+  });
+
+  this.loadHistories();
+}
 }

@@ -1,1 +1,316 @@
-<p>view-premium-payment-component works!</p>
+<div class="payments-page">
+
+  <!-- Page Header -->
+  <app-page-header
+    title="All Payments"
+    subtitle="Manage and monitor customer premium payment transactions">
+  </app-page-header>
+
+  <!-- Loading Spinner -->
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <div class="payments-container" *ngIf="!isLoading">
+
+    <!-- Summary Section -->
+    <div class="summary-section">
+
+      <div class="summary-card">
+
+        <div class="summary-icon">
+          <i class="bi bi-wallet2"></i>
+        </div>
+
+        <div class="summary-content">
+          <span>Total Payments</span>
+          <h3>{{ payments?.totalRecords ?? 0 }}</h3>
+          <small>All customer transactions</small>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Filter Card -->
+    <app-filter-card>
+
+      <form [formGroup]="filterForm"
+            (ngSubmit)="searchPayments()">
+
+        <div class="filter-grid">
+
+          <!-- Search -->
+          <div class="filter-field search-field">
+
+            <label for="paymentSearch">Search Payments</label>
+
+            <app-search-box
+              [searchControl]="searchControl"
+              (search)="searchPayments()"
+              (clear)="clearSearch()">
+            </app-search-box>
+
+          </div>
+
+          <!-- Sort By -->
+          <div class="filter-field">
+
+            <label for="sortBy">Sort By</label>
+
+            <select
+              id="sortBy"
+              class="form-select"
+              formControlName="sortBy">
+
+              <option value="paymentDate">Payment Date</option>
+              <option value="amount">Amount</option>
+              <option value="paymentId">Payment ID</option>
+
+            </select>
+
+          </div>
+
+          <!-- Sort Direction -->
+          <div class="filter-field">
+
+            <label for="sortDirection">Sort Direction</label>
+
+            <select
+              id="sortDirection"
+              class="form-select"
+              formControlName="sortDirection">
+
+              <option value="desc">Descending</option>
+              <option value="asc">Ascending</option>
+
+            </select>
+
+          </div>
+
+          <!-- Page Size -->
+          <div class="filter-field">
+
+            <label for="pageSize">Records Per Page</label>
+
+            <select
+              id="pageSize"
+              class="form-select"
+              formControlName="pageSize">
+
+              <option [ngValue]="5">5</option>
+              <option [ngValue]="10">10</option>
+              <option [ngValue]="20">20</option>
+              <option [ngValue]="50">50</option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <!-- Filter Actions -->
+        <div class="filter-actions">
+
+          <button
+            type="submit"
+            class="btn btn-search">
+
+            <i class="bi bi-search"></i>
+            Search
+
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-reset"
+            (click)="resetFilters()">
+
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </app-filter-card>
+
+    <!-- Payments Table Card -->
+    <div class="payment-table-card">
+
+      <!-- Table Header -->
+      <div class="table-header">
+
+        <div>
+          <h5>
+            <i class="bi bi-receipt"></i>
+            Payment Transactions
+          </h5>
+
+          <p>View all registered customer payments</p>
+        </div>
+
+        <span class="record-badge">
+          {{ payments?.totalRecords ?? 0 }} Records
+        </span>
+
+      </div>
+
+      <!-- Payment Table -->
+      <div class="table-responsive"
+           *ngIf="payments?.records?.length">
+
+        <table class="table payment-table">
+
+          <thead>
+            <tr>
+
+              <th>#</th>
+
+              <th>Payment ID</th>
+
+              <th>Transaction Reference</th>
+
+              <th>Policy ID</th>
+
+              <th>Payment Date</th>
+
+              <th>Payment Mode</th>
+
+              <th>Amount</th>
+
+              <th>Status</th>
+
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr
+              *ngFor="let payment of payments.records; let i = index">
+
+              <td class="row-number">
+                {{ (payments.currentPage - 1) * payments.pageSize + i + 1 }}
+              </td>
+
+              <td>
+                <span class="payment-id">
+                  #{{ payment.paymentId }}
+                </span>
+              </td>
+
+              <td>
+                <span class="transaction-reference">
+                  {{ payment.transactionReference || 'N/A' }}
+                </span>
+              </td>
+
+              <td>
+                <span class="policy-id">
+                  #{{ payment.policyId }}
+                </span>
+              </td>
+
+              <td>
+                {{ payment.paymentDate | date:'dd MMM yyyy, hh:mm a' }}
+              </td>
+
+              <td>
+                <span class="mode-badge">
+                  <i class="bi bi-credit-card"></i>
+                  {{ payment.paymentMode }}
+                </span>
+              </td>
+
+              <td class="amount">
+                {{ payment.amount | number:'1.2-2' }}
+              </td>
+
+              <td>
+                <app-status-badge
+                  [status]="payment.paymentStatus">
+                </app-status-badge>
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+     <div class="empty-container"
+     *ngIf="!isLoading && !payments?.records?.length">
+  <app-empty-state
+    icon="bi bi-credit-card"
+    title="No Payments Found"
+    message="There are no payment records available."
+  ></app-empty-state>
+
+</div>
+ 
+
+      <!-- Pagination -->
+      <div class="pagination-wrapper"
+           *ngIf="payments?.records?.length">
+
+        <div class="pagination-info">
+
+          Showing
+
+          <strong>
+            {{ (payments.currentPage - 1) * payments.pageSize + 1 }}
+          </strong>
+
+          to
+
+          <strong>
+            {{ (payments.currentPage - 1) * payments.pageSize + payments.records.length }}
+          </strong>
+
+          of
+
+          <strong>{{ payments.totalRecords }}</strong>
+
+          payments
+
+        </div>
+
+        <div class="pagination-controls">
+
+          <button
+            type="button"
+            class="pagination-btn"
+            (click)="previousPage()"
+            [disabled]="payments.currentPage <= 1">
+
+            <i class="bi bi-chevron-left"></i>
+            Previous
+
+          </button>
+
+          <span class="page-number">
+            Page {{ payments.currentPage }} of {{ payments.totalPages }}
+          </span>
+
+          <button
+            type="button"
+            class="pagination-btn"
+            (click)="nextPage()"
+            [disabled]="payments.isLastPage">
+
+            Next
+            <i class="bi bi-chevron-right"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

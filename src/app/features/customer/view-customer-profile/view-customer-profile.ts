@@ -1,20 +1,38 @@
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-
 import { PaginationResponseDto } from '../../../DTO/PaginationResponseDto';
 import { CustomerResponseDto } from '../../../DTO/CustomerResponseDto';
 import { CustomerProfileServices } from '../../../services/CustomerProfile/customer-profile-services';
 import { ToastService } from '../../../services/Toast/toast-service';
+import { Pagination } from '../../../shared/ui/pagination/pagination';
+import { FilterCard } from '../../../shared/ui/filter-card/filter-card';
+import { PageHeader } from '../../../shared/ui/page-header/page-header';
+import { SearchBox } from '../../../shared/ui/search-box/search-box';
+import { LoadingSpinner } from '../../../shared/ui/loading-spinner/loading-spinner';
+import { StatusBadge } from '../../../shared/ui/status-badge/status-badge';
+import { ActionButtons } from '../../../shared/ui/action-buttons/action-buttons';
+import { EmptyState } from '../../../shared/ui/empty-state/empty-state';
 
 @Component({
-imports: [ReactiveFormsModule, DatePipe, NgIf, NgFor],
-standalone: true,
-selector: 'app-view-customer',
-styleUrl: './view-customer-profile.css',
-templateUrl: './view-customer-profile.html',
+imports: [
+  ReactiveFormsModule,
+  DatePipe,
+  NgIf,
+  Pagination,
+  FilterCard,
+  PageHeader,
+  SearchBox,
+  LoadingSpinner,
+  StatusBadge,
+  ActionButtons,
+  EmptyState
+],  standalone: true,
+  selector: 'app-view-customer',
+  styleUrl: './view-customer-profile.css',
+  templateUrl: './view-customer-profile.html',
 })
 export class ViewCustomer implements OnInit {
 
@@ -138,7 +156,9 @@ this.router.navigate(['/customer-profile/view', id]);
 navigateToAddCustomer(): void {
 this.router.navigate(['/customer-profile/add']);
 }
-
+editCustomer(customerId: number): void {
+  this.router.navigate(['/customer-profile/edit', customerId]);
+}
 get searchControl(): FormControl {
 return this.filterForm.get('search') as FormControl;
 }

@@ -1,1 +1,150 @@
-<p>payment-details-component works!</p>
+<div class="payment-details-page">
+
+  <!-- Page Header -->
+  <app-page-header
+    title="Payment Details"
+    subtitle="View complete premium payment information">
+  </app-page-header>
+
+  <!-- Loading -->
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <!-- Error Message -->
+  <div class="alert alert-danger error-alert"
+       *ngIf="!isLoading && errorMessage">
+
+    <i class="bi bi-exclamation-triangle-fill"></i>
+
+    <span>{{ errorMessage }}</span>
+
+    <button type="button"
+            class="btn btn-outline-danger btn-sm"
+            (click)="navigateBack()">
+      Go Back
+    </button>
+
+  </div>
+
+  <!-- Payment Details -->
+  <div class="payment-details-container"
+       *ngIf="!isLoading && payment && !errorMessage">
+
+    <!-- Header Card -->
+    <div class="details-header">
+
+      <div class="header-left">
+        <div class="header-icon">
+          <i class="bi bi-receipt"></i>
+        </div>
+
+        <div>
+          <h4>Payment Information</h4>
+          <p>Transaction ID: {{ payment.transactionReference }}</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <app-status-badge
+          [status]="payment.paymentStatus">
+        </app-status-badge>
+      </div>
+
+    </div>
+
+    <!-- Amount Card -->
+    <div class="amount-card">
+
+      <div class="amount-icon">
+        <i class="bi bi-currency-rupee"></i>
+      </div>
+
+      <div>
+        <span class="amount-label">Payment Amount</span>
+
+        <h2>
+          {{ payment.amount | currency:'INR':'symbol':'1.2-2' }}
+        </h2>
+      </div>
+
+    </div>
+
+    <!-- Main Details -->
+    <div class="details-card">
+
+      <div class="section-heading">
+        <i class="bi bi-info-circle"></i>
+        <h5>Transaction Details</h5>
+      </div>
+
+      <div class="details-grid">
+
+        <div class="detail-item">
+          <span>Payment ID</span>
+          <strong>{{ payment.paymentId }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Transaction Reference</span>
+          <strong>{{ payment.transactionReference || 'N/A' }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Payment Mode</span>
+          <strong>{{ payment.paymentMode }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Payment Status</span>
+          <app-status-badge
+            [status]="payment.paymentStatus">
+          </app-status-badge>
+        </div>
+
+        <div class="detail-item">
+          <span>Payment Date</span>
+          <strong>
+            {{ payment.paymentDate ? (payment.paymentDate | date:'dd MMM yyyy, hh:mm a') : 'N/A' }}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Customer / Additional Information -->
+    <div class="details-card">
+
+      <div class="section-heading">
+        <i class="bi bi-card-list"></i>
+        <h5>Additional Information</h5>
+      </div>
+
+      <div class="details-grid">
+
+
+        <div class="detail-item">
+          <span>Policy Number</span>
+          <strong>{{ payment.policyNumber || 'N/A' }}</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="action-buttons">
+
+      <button type="button"
+              class="btn btn-back"
+              (click)="navigateBack()">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Payments
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

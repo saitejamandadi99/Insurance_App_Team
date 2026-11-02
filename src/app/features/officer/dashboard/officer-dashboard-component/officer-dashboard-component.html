@@ -1,1 +1,91 @@
-<p>officer-dashboard-component works!</p>
+<div class="container-fluid py-4 officer-dashboard-page">
+
+  <!-- DASHBOARD HEADER -->
+
+  <div class="dashboard-header mb-5">
+<div class="dashboard-icon">
+  <i class="bi bi-person-badge-fill"></i>
+</div>
+
+<h1 class="page-title">
+  Officer Dashboard
+</h1>
+
+<p class="page-subtitle">
+  Review claims, manage policies, and track customer records.
+</p>
+  </div>
+
+  <!-- DASHBOARD SECTIONS -->
+
+  <div class="dashboard-sections">
+@for (section of sections; track section.heading) {
+
+  <div class="dashboard-section">
+
+    <!-- SECTION HEADING -->
+    <div class="section-heading">
+
+      <h5>
+        {{ section.heading }}
+      </h5>
+
+      <span class="section-count">
+        {{ section.cards.length }}
+        {{ section.cards.length === 1 ? 'Option' : 'Options' }}
+      </span>
+
+    </div>
+
+    <!-- DASHBOARD CARDS -->
+    <div class="dashboard-grid">
+
+      @for (card of section.cards; track card.title) {
+
+        <a
+          class="app-card dashboard-card"
+          [routerLink]="card.route">
+
+          <div class="card-top">
+
+            <div
+              class="icon-chip"
+              [ngClass]="'chip-' + card.color">
+
+              <i [class]="card.icon"></i>
+
+            </div>
+
+            <i class="bi bi-arrow-up-right card-arrow"></i>
+
+          </div>
+
+          <div class="card-content">
+
+            <h6 class="card-title-custom">
+              {{ card.title }}
+            </h6>
+
+            <p class="card-subtitle-custom">
+              {{ card.subtitle }}
+            </p>
+
+          </div>
+
+          <div class="card-action">
+            <span>Open</span>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+
+        </a>
+
+      }
+
+    </div>
+
+  </div>
+
+}
+  </div>
+
+</div>
