@@ -1,0 +1,288 @@
+.customer-page {
+padding: 24px;
+background: #f5f7fb;
+min-height: 100vh;
+}
+
+/* Page Header */
+.page-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 15px;
+margin-bottom: 24px;
+}
+
+.page-header h2 {
+color: #1e293b;
+font-size: 25px;
+font-weight: 700;
+margin-bottom: 6px;
+}
+
+.page-description {
+color: #64748b;
+font-size: 14px;
+margin: 0;
+}
+
+/* Form Card */
+.form-card {
+background: #ffffff;
+border-radius: 12px;
+padding: 28px;
+box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+border: 1px solid #e8edf5;
+}
+
+/* Section Heading */
+.section-heading {
+margin-bottom: 22px;
+}
+
+.section-heading h3 {
+color: #1e293b;
+font-size: 18px;
+font-weight: 650;
+margin-bottom: 6px;
+}
+
+.section-heading p {
+color: #64748b;
+font-size: 13px;
+margin: 0;
+}
+
+/* Profile Image */
+.profile-image-section {
+display: flex;
+align-items: center;
+gap: 25px;
+margin-bottom: 25px;
+}
+
+.image-preview {
+width: 115px;
+height: 115px;
+min-width: 115px;
+border-radius: 50%;
+overflow: hidden;
+border: 3px solid #dbeafe;
+background: #eff6ff;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.image-preview img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.default-avatar {
+color: #2563eb;
+font-size: 65px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.image-upload-content {
+flex: 1;
+}
+
+.image-input {
+max-width: 400px;
+}
+
+.form-hint {
+display: block;
+color: #64748b;
+font-size: 12px;
+margin-top: 8px;
+}
+
+/* Divider */
+.divider {
+border-top: 1px solid #e2e8f0;
+margin: 25px 0;
+}
+
+/* Form Grid */
+.form-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 20px 25px;
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+}
+
+.full-width {
+grid-column: 1 / -1;
+}
+
+/* Labels */
+.form-label {
+color: #334155;
+font-size: 14px;
+font-weight: 600;
+margin-bottom: 8px;
+}
+
+.required {
+color: #dc2626;
+}
+
+/* Form Controls */
+.form-control {
+width: 100%;
+border: 1px solid #cbd5e1;
+border-radius: 7px;
+padding: 10px 12px;
+font-size: 14px;
+color: #334155;
+background-color: #ffffff;
+transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+border-color: #2563eb;
+box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+outline: none;
+}
+
+.form-control::placeholder {
+color: #94a3b8;
+}
+
+textarea.form-control {
+resize: vertical;
+}
+
+/* Validation */
+.error-message {
+color: #dc2626;
+font-size: 12px;
+margin-top: 6px;
+}
+
+.form-control.ng-invalid.ng-touched {
+border-color: #dc2626;
+}
+
+/* Form Actions */
+.form-actions {
+display: flex;
+justify-content: flex-end;
+align-items: center;
+gap: 12px;
+border-top: 1px solid #e2e8f0;
+padding-top: 22px;
+margin-top: 30px;
+}
+
+/* Buttons */
+.btn {
+padding: 10px 20px;
+border-radius: 7px;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+
+.btn-primary {
+background: #2563eb;
+color: #ffffff;
+border: 1px solid #2563eb;
+}
+
+.btn-primary:hover:not(:disabled) {
+background: #1d4ed8;
+border-color: #1d4ed8;
+}
+
+.btn-outline {
+background: #ffffff;
+color: #2563eb;
+border: 1px solid #2563eb;
+}
+
+.btn-outline:hover {
+background: #eff6ff;
+}
+
+.btn-cancel {
+background: #ffffff;
+color: #475569;
+border: 1px solid #cbd5e1;
+}
+
+.btn-cancel:hover:not(:disabled) {
+background: #f1f5f9;
+}
+
+.btn:disabled {
+opacity: 0.65;
+cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+.customer-page {
+padding: 15px;
+}
+
+.form-card {
+padding: 20px;
+}
+
+.form-grid {
+grid-template-columns: 1fr;
+gap: 16px;
+}
+
+.full-width {
+grid-column: auto;
+}
+
+.page-header {
+align-items: flex-start;
+}
+
+.page-header h2 {
+font-size: 21px;
+}
+}
+
+@media (max-width: 480px) {
+.profile-image-section {
+flex-direction: column;
+align-items: flex-start;
+}
+
+.image-upload-content {
+width: 100%;
+}
+
+.image-input {
+max-width: 100%;
+}
+
+.form-actions {
+flex-direction: column-reverse;
+align-items: stretch;
+}
+
+.form-actions .btn {
+width: 100%;
+}
+
+.page-header {
+flex-direction: column;
+}
+}

@@ -1,0 +1,275 @@
+/* Main Page */
+
+.payment-details-page {
+  padding: 24px;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+/* Container */
+
+.payment-details-container {
+  max-width: 1100px;
+  margin: 25px auto;
+}
+
+/* Header */
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 22px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eaf2ff;
+  color: #2563eb;
+  border-radius: 12px;
+  font-size: 25px;
+}
+
+.header-left h4 {
+  margin: 0 0 6px;
+  font-size: 19px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.header-left p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+/* Amount Card */
+
+.amount-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 28px;
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  border-radius: 14px;
+  color: #ffffff;
+  margin-bottom: 22px;
+  box-shadow: 0 5px 15px rgba(37, 99, 235, 0.15);
+}
+
+.amount-icon {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  font-size: 30px;
+}
+
+.amount-label {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.amount-card h2 {
+  margin: 7px 0 0;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+/* Details Card */
+
+.details-card {
+  padding: 25px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  margin-bottom: 22px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* Section Heading */
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 17px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.section-heading i {
+  font-size: 20px;
+  color: #2563eb;
+}
+
+.section-heading h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* Details Grid */
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.detail-item span {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.detail-item strong {
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Error Alert */
+
+.error-alert {
+  max-width: 1100px;
+  margin: 25px auto;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.error-alert span {
+  flex: 1;
+}
+
+/* Action Buttons */
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+.btn-back {
+  padding: 11px 22px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-back i {
+  margin-right: 7px;
+}
+
+.btn-back:hover {
+  background: #1d4ed8;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.btn-back:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.3);
+  outline-offset: 3px;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  .payment-details-page {
+    padding: 15px;
+  }
+
+  .details-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .amount-card {
+    padding: 22px;
+  }
+
+  .amount-card h2 {
+    font-size: 25px;
+  }
+
+  .details-card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .header-left h4 {
+    font-size: 16px;
+  }
+
+  .header-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 21px;
+  }
+
+  .amount-card {
+    gap: 12px;
+  }
+
+  .amount-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
+
+  .amount-card h2 {
+    font-size: 21px;
+  }
+
+  .action-buttons {
+    justify-content: stretch;
+  }
+
+  .btn-back {
+    width: 100%;
+  }
+}

@@ -3,12 +3,10 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-
 import { PolicyPlanServices } from '../../../../services/PolicyPlan/policy-plan-services';
 import { PaginationResponseDto } from '../../../../DTO/PaginationResponseDto';
 import { PolicyPlanResponseDto } from '../../../../DTO/PolicyPlanResponseDto';
 import { ErrorResponseDto } from '../../../../DTO/ErrorResponseDto';
-
 import { PageHeader } from '../../../../shared/ui/page-header/page-header';
 import { FilterCard } from '../../../../shared/ui/filter-card/filter-card';
 import { SearchBox } from '../../../../shared/ui/search-box/search-box';
@@ -17,7 +15,6 @@ import { ActionButtons } from '../../../../shared/ui/action-buttons/action-butto
 import { Pagination } from '../../../../shared/ui/pagination/pagination';
 import { LoadingSpinner } from '../../../../shared/ui/loading-spinner/loading-spinner';
 import { EmptyState } from '../../../../shared/ui/empty-state/empty-state';
-
 import { Role } from '../../../../Enums/Role';
 import { ActiveStatus } from '../../../../Enums/ActiveStatus';
 import { ToastService } from '../../../../services/Toast/toast-service';
@@ -200,5 +197,12 @@ this.router.navigate(['/addplan']);
 
 get searchControl(): FormControl {
 return this.filterForm.get('search') as FormControl;
+}
+onPageChange(page: number): void {
+  this.filterForm.patchValue({
+    pageNumber: page
+  });
+
+  this.loadPlans();
 }
 }

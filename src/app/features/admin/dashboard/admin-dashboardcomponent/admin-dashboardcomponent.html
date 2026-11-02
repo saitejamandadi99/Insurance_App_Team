@@ -1,1 +1,260 @@
-<p>admin-dashboardcomponent works!</p>
+<div class="container-fluid py-4 admin-dashboard">
+
+  <!-- DASHBOARD HEADER -->
+  <div class="dashboard-header mb-4">
+    <h1 class="page-title">
+      <i class="bi bi-shield-lock-fill me-2"></i>
+      Admin Dashboard
+    </h1>
+
+    <p class="page-subtitle">
+      Manage users, customers, products, policies, claims and payments.
+    </p>
+  </div>
+
+  <!-- LOADING -->
+  @if (isLoading) {
+
+    <div class="loading-container">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+
+      <p>Loading dashboard data...</p>
+    </div>
+
+  }
+
+  <!-- ERROR -->
+  @else if (errorMessage) {
+
+    <div class="error-card">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+
+      <h5>Unable to Load Dashboard</h5>
+
+      <p>{{ errorMessage }}</p>
+
+    </div>
+
+  }
+
+  @else if (dashboard) {
+
+    <!-- DASHBOARD STATISTICS -->
+    <div class="dashboard-stats">
+
+      <!-- ACTIVE USERS -->
+      <div class="stat-card">
+        <div class="stat-icon chip-success">
+          <i class="bi bi-person-check-fill"></i>
+        </div>
+
+        <div class="stat-content">
+          <p>Active Users</p>
+          <h3>{{ dashboard.activeUsers }}</h3>
+          <span>Currently active users</span>
+        </div>
+      </div>
+
+      <!-- INACTIVE USERS -->
+      <div class="stat-card">
+        <div class="stat-icon chip-warning">
+          <i class="bi bi-person-x-fill"></i>
+        </div>
+
+        <div class="stat-content">
+          <p>Inactive Users</p>
+          <h3>{{ dashboard.inactiveUsers }}</h3>
+          <span>Currently inactive users</span>
+        </div>
+      </div>
+
+      <!-- PENDING CLAIMS -->
+      <div class="stat-card">
+        <div class="stat-icon chip-info">
+          <i class="bi bi-file-earmark-medical"></i>
+        </div>
+
+        <div class="stat-content">
+          <p>Pending Claims</p>
+          <h3>{{ dashboard.pendingClaimsCount }}</h3>
+          <span>Claims awaiting review</span>
+        </div>
+      </div>
+
+      <!-- PENDING CLAIM AMOUNT -->
+      <div class="stat-card">
+        <div class="stat-icon chip-primary">
+          <i class="bi bi-currency-rupee"></i>
+        </div>
+
+        <div class="stat-content">
+          <p>Pending Claims Amount</p>
+
+          <h3>
+            {{ dashboard.pendingClaimsAmount | currency:'INR':'symbol':'1.0-0' }}
+          </h3>
+
+          <span>Total pending claim value</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TOP CLAIMS -->
+    <div class="dashboard-section">
+
+      <div class="section-header">
+        <div>
+          <h4>
+            <i class="bi bi-file-earmark-text me-2"></i>
+            Top Claims
+          </h4>
+
+          <p>Overview of the claims recorded in the system.</p>
+        </div>
+
+        <a routerLink="/viewclaims" class="view-all-link">
+          View All Claims
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
+      @if (dashboard.topClaims && dashboard.topClaims.length > 0) {
+
+        <div class="table-responsive">
+
+          <table class="table dashboard-table">
+
+            <thead>
+              <tr>
+                <th>CLAIM ID</th>
+                <th>CLAIM NUMBER</th>
+                <th>CLAIM AMOUNT</th>
+                <th>CLAIM STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              @for (claim of dashboard.topClaims; track claim.claimId) {
+
+                <tr>
+
+                  <td>#{{ claim.claimId }}</td>
+
+                  <td>
+                    <span class="claim-number">
+                      {{ claim.claimNumber }}
+                    </span>
+                  </td>
+
+                  <td class="claim-amount">
+                    {{ claim.claimAmount | currency:'INR':'symbol':'1.2-2' }}
+                  </td>
+
+                  <td>
+                    <span class="claim-status">
+                      {{ claim.claimStatus }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <a
+                      routerLink="/viewclaims"
+                      class="claim-action"
+                      title="View Claims">
+
+                      <i class="bi bi-eye"></i>
+
+                    </a>
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      }
+
+      @else {
+
+        <div class="empty-claims">
+          <i class="bi bi-inbox"></i>
+          <p>No claims available.</p>
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+  <!-- ADMIN NAVIGATION SECTIONS -->
+  <div class="navigation-section">
+
+    <div class="section-heading">
+      <h4>
+        <i class="bi bi-grid-fill me-2"></i>
+        Administration
+      </h4>
+
+      <p>Quick access to all administration modules.</p>
+    </div>
+
+    @for (section of sections; track section.heading) {
+
+      <div class="dashboard-group">
+
+        <h5 class="group-heading">
+          {{ section.heading }}
+        </h5>
+
+        <div class="dashboard-grid">
+
+          @for (card of section.cards; track card.title) {
+
+            <div
+              class="app-card dashboard-card"
+              [routerLink]="card.route">
+
+              <div
+                class="icon-chip"
+                [ngClass]="'chip-' + card.color">
+
+                <i [class]="card.icon"></i>
+
+              </div>
+
+              <h6 class="card-title-custom">
+                {{ card.title }}
+              </h6>
+
+              <p class="card-subtitle-custom">
+                {{ card.subtitle }}
+              </p>
+
+              <div class="card-arrow">
+                <i class="bi bi-arrow-right"></i>
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

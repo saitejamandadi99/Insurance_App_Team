@@ -1,1 +1,164 @@
-<p>customer-dashboard-component works!</p>
+<div class="customer-dashboard-page">
+<!-- Dashboard Header -->
+<div class="dashboard-header">
+    <div>
+        <h2 class="dashboard-title">
+            <i class="bi bi-speedometer2 me-2"></i>
+            Customer Dashboard
+        </h2>
+
+        <p class="dashboard-subtitle">
+            Manage your insurance policies, claims, payments and profile.
+        </p>
+    </div>
+
+    <div class="dashboard-header-icon">
+        <i class="bi bi-shield-check"></i>
+    </div>
+</div>
+
+<!-- Loading -->
+<div class="dashboard-loading" *ngIf="isLoading">
+
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+
+    <p>Loading your dashboard...</p>
+
+</div>
+
+<!-- Profile Check Error -->
+<div class="profile-error" *ngIf="!isLoading && profileCheckFailed">
+
+    <i class="bi bi-exclamation-triangle-fill"></i>
+
+    <h5>Unable to Load Profile</h5>
+
+    <p>
+        We couldn't check your customer profile.
+        Please try again.
+    </p>
+
+    <button
+        type="button"
+        class="btn btn-primary"
+        (click)="checkCustomerProfile()">
+
+        <i class="bi bi-arrow-clockwise me-2"></i>
+        Retry
+
+    </button>
+
+</div>
+
+<!-- Dashboard Content -->
+<div *ngIf="!isLoading && !profileCheckFailed">
+
+    <!-- Profile Section -->
+    <div class="dashboard-section">
+
+        <div class="section-header">
+            <div>
+                <h4>
+                    <i class="bi bi-person-circle me-2"></i>
+                    My Account
+                </h4>
+
+                <p>Manage your customer profile.</p>
+            </div>
+        </div>
+
+        <div class="dashboard-grid profile-grid">
+
+            <!-- Create Profile / My Profile -->
+            <a
+                class="dashboard-card"
+                [ngClass]="'accent-' + profileCard.color"
+                [routerLink]="profileCard.route">
+
+                <div class="card-icon">
+                    <i [class]="profileCard.icon"></i>
+                </div>
+
+                <div class="card-content">
+                    <h5>{{ profileCard.title }}</h5>
+                    <p>{{ profileCard.subtitle }}</p>
+                </div>
+
+                <div class="card-arrow">
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+
+            </a>
+
+            <!-- Edit Profile -->
+            <a
+                *ngIf="hasProfile"
+                class="dashboard-card accent-info"
+                [routerLink]="editProfileCard.route">
+
+                <div class="card-icon">
+                    <i [class]="editProfileCard.icon"></i>
+                </div>
+
+                <div class="card-content">
+                    <h5>{{ editProfileCard.title }}</h5>
+                    <p>{{ editProfileCard.subtitle }}</p>
+                </div>
+
+                <div class="card-arrow">
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Other Dashboard Sections -->
+    <div
+        class="dashboard-section"
+        *ngFor="let section of sections">
+
+        <div class="section-header">
+
+            <div>
+                <h4>{{ section.heading }}</h4>
+            </div>
+
+        </div>
+
+        <div class="dashboard-grid">
+
+            <a
+                *ngFor="let card of section.cards"
+                class="dashboard-card"
+                [ngClass]="'accent-' + card.color"
+                [routerLink]="card.route">
+
+                <div class="card-icon">
+                    <i [class]="card.icon"></i>
+                </div>
+
+                <div class="card-content">
+
+                    <h5>{{ card.title }}</h5>
+
+                    <p>{{ card.subtitle }}</p>
+
+                </div>
+
+                <div class="card-arrow">
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+</div>
