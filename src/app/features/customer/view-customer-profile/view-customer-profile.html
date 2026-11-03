@@ -1,303 +1,188 @@
-<div class="customers-page">
 
-  <!-- PAGE HEADER -->
+<div class="container-fluid py-4 customer-details-page">
 
-<app-page-header
-title="Customer Management"
-subtitle="Manage customer profiles, view personal information and monitor registered customers."
-buttonText="Add Customer"
-buttonIcon="bi bi-person-plus"
-(buttonClick)="navigateToAddCustomer()"> </app-page-header>
+  <app-page-header
+    title="My Profile"
+    subtitle="View and manage your personal information.">
+  </app-page-header>
 
-  <!-- FILTER SECTION -->
+  @if (isLoading) {
 
-  <form [formGroup]="filterForm" (ngSubmit)="searchCustomers()">
-<app-filter-card>
-  <div class="customers-filter-section">
+    <app-loading-spinner
+      message="Loading your profile..."
+      size="md">
+    </app-loading-spinner>
 
-    <!-- SEARCH -->
-    <div class="search-section">
-      <label class="filter-label">Search Customers</label>
+  } @else if (profileDetails?.data) {
 
-      <app-search-box
-        [searchControl]="searchControl"
-        placeholder="Search by name, email or mobile number..."
-        ariaLabel="Search customers"
-        (clear)="clearSearch()">
-      </app-search-box>
+    <div class="row justify-content-center">
+
+      <div class="col-lg-9 col-md-11">
+
+        <div class="app-card">
+
+          <div class="card-header-custom d-flex justify-content-between align-items-center">
+
+            <h4>
+              <i class="bi bi-person-circle me-2"></i>
+              My Profile
+            </h4>
+
+            <button
+              type="button"
+              class="btn btn-primary-custom"
+              (click)="editProfile()">
+
+              <i class="bi bi-pencil-square me-2"></i>
+              Edit Profile
+
+            </button>
+
+          </div>
+
+          <div class="card-body">
+
+            <!-- Profile Header -->
+            <div class="text-center mb-5">
+
+              @if (profileDetails.data.profileImageUrl) {
+
+                <img
+                  [src]="profileDetails.data.profileImageUrl"
+                  alt="My Profile"
+                  class="profile-image">
+
+              } @else {
+
+                <div class="profile-image-placeholder">
+                  <i class="bi bi-person-fill"></i>
+                </div>
+
+              }
+
+              <h3 class="mt-3 mb-1 form-value-heading">
+                {{ profileDetails.data.fullName }}
+              </h3>
+
+              <p class="form-value">
+                <i class="bi bi-envelope me-2"></i>
+                {{ profileDetails.data.email }}
+              </p>
+
+            </div>
+
+            <hr class="mb-4">
+
+            <!-- Personal Information -->
+            <div class="section-heading mb-4">
+              <i class="bi bi-person-vcard me-2"></i>
+              Personal Information
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label-custom">Mobile Number</label>
+                <p class="form-value">
+                  {{ profileDetails.data.mobileNumber || 'N/A' }}
+                </p>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label-custom">Date of Birth</label>
+                <p class="form-value">
+                  {{ profileDetails.data.dateOfBirth | date:'dd-MM-yyyy' }}
+                </p>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label-custom">Address</label>
+                <p class="form-value">
+                  {{ profileDetails.data.address || 'N/A' }}
+                </p>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label-custom">City</label>
+                <p class="form-value">
+                  {{ profileDetails.data.city || 'N/A' }}
+                </p>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label-custom">State</label>
+                <p class="form-value">
+                  {{ profileDetails.data.state || 'N/A' }}
+                </p>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label-custom">Pincode</label>
+                <p class="form-value">
+                  {{ profileDetails.data.pincode || 'N/A' }}
+                </p>
+              </div>
+
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Nominee Information -->
+            <div class="section-heading mb-4">
+              <i class="bi bi-people me-2"></i>
+              Nominee Information
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label-custom">Nominee Name</label>
+                <p class="form-value">
+                  {{ profileDetails.data.nomineeName || 'N/A' }}
+                </p>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label-custom">Nominee Relationship</label>
+                <p class="form-value">
+                  {{ profileDetails.data.nomineeRelationship || 'N/A' }}
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <!-- FILTER CONTROLS -->
-    <div class="filter-controls">
+  } @else {
 
-      <div class="filter-field">
-        <label class="filter-label">Sort By</label>
+    <div class="empty-profile text-center">
 
-        <select
-          class="form-select input-dark"
-          formControlName="sortBy">
+      <i class="bi bi-person-exclamation"></i>
 
-          <option value="fullName">Full Name</option>
-          <option value="email">Email</option>
-          <option value="mobileNumber">Mobile Number</option>
-          <option value="city">City</option>
-          <option value="state">State</option>
+      <h4>Profile Not Found</h4>
 
-        </select>
-      </div>
-
-      <div class="filter-field">
-        <label class="filter-label">Sort Direction</label>
-
-        <select
-          class="form-select input-dark"
-          formControlName="sortDirection">
-
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-
-        </select>
-      </div>
-
-      <div class="filter-field">
-        <label class="filter-label">Rows Per Page</label>
-
-        <select
-          class="form-select input-dark"
-          formControlName="pageSize"
-          (change)="searchCustomers()">
-
-          <option [ngValue]="5">5</option>
-          <option [ngValue]="10">10</option>
-          <option [ngValue]="20">20</option>
-          <option [ngValue]="50">50</option>
-
-        </select>
-      </div>
-
-    </div>
-
-    <!-- FILTER ACTIONS -->
-    <div class="filter-actions">
+      <p>
+        You haven't created your customer profile yet.
+      </p>
 
       <button
         type="button"
-        class="btn btn-secondary-custom"
-        (click)="resetFilters()"
-        [disabled]="isLoading">
-
-        <i class="bi bi-arrow-counterclockwise"></i>
-        Reset Filters
-
-      </button>
-
-      <button
-        type="submit"
         class="btn btn-primary-custom"
-        [disabled]="isLoading">
+        (click)="createProfile()">
 
-        <i class="bi bi-search"></i>
-        Apply Filters
+        <i class="bi bi-person-plus me-2"></i>
+        Create Profile
 
       </button>
 
     </div>
 
-  </div>
-</app-filter-card>
-
-  </form>
-
-  <!-- CUSTOMERS CONTENT -->
-
-  <div class="customers-content">
-
-<!-- LOADING STATE -->
-@if (isLoading) {
-
-  <app-loading-spinner
-    message="Loading customer profiles..."
-    size="md">
-  </app-loading-spinner>
-
-}
-
-@else {
-
-  <!-- CUSTOMERS AVAILABLE -->
-  @if (customers && customers.records.length > 0) {
-
-    <div class="customers-table-card">
-
-      <!-- TABLE HEADER -->
-      <div class="table-card-header">
-
-        <div>
-          <h3>Registered Customers</h3>
-          <p>View customer profile information.</p>
-        </div>
-
-        <div class="total-customers">
-          <i class="bi bi-people"></i>
-          <span>{{ customers.totalRecords }} Customers</span>
-        </div>
-
-      </div>
-
-      <!-- TABLE -->
-      <div class="table-responsive">
-
-        <table class="table customers-table align-middle">
-
-          <thead>
-            <tr>
-              <th>CUSTOMER</th>
-              <th>EMAIL ADDRESS</th>
-              <th>MOBILE NUMBER</th>
-              <th>DATE OF BIRTH</th>
-              <th>LOCATION</th>
-              <th>PINCODE</th>
-              <th>NOMINEE</th>
-              <th class="text-center">ACTIONS</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            @for (customer of customers.records; track customer.customerId) {
-
-              <tr>
-
-                <!-- CUSTOMER NAME -->
-                <td>
-                  <div class="customer-info">
-
-                    @if (customer.profileImageUrl) {
-
-                      <img
-                        [src]="customer.profileImageUrl"
-                        alt="Customer Profile"
-                        class="customer-avatar">
-
-                    }
-
-                    @else {
-
-                      <div class="customer-avatar">
-                        {{ customer.fullName?.charAt(0)?.toUpperCase() || 'C' }}
-                      </div>
-
-                    }
-
-                    <span class="customer-name">
-                      {{ customer.fullName }}
-                    </span>
-
-                  </div>
-                </td>
-
-                <!-- EMAIL -->
-                <td>
-                  <span class="customer-email">
-                    {{ customer.email }}
-                  </span>
-                </td>
-
-                <!-- MOBILE -->
-                <td>
-                  <span class="customer-mobile">
-                    {{ customer.mobileNumber }}
-                  </span>
-                </td>
-
-                <!-- DATE OF BIRTH -->
-                <td>
-                  <span class="customer-date">
-                    {{ customer.dateOfBirth | date:'dd MMM yyyy' }}
-                  </span>
-                </td>
-
-                <!-- LOCATION -->
-                <td>
-                  <div class="customer-location">
-                    <span>{{ customer.city }}</span>
-                    <small>{{ customer.state }}</small>
-                  </div>
-                </td>
-
-                <!-- PINCODE -->
-                <td>
-                  <span class="customer-mobile">
-                    {{ customer.pincode }}
-                  </span>
-                </td>
-
-                <!-- NOMINEE -->
-                <td>
-                  <div class="nominee-info">
-                    <span class="nominee-name">
-                      {{ customer.nomineeName }}
-                    </span>
-
-                    <small>
-                      {{ customer.nomineeRelationship }}
-                    </small>
-                  </div>
-                </td>
-
-                <!-- ACTIONS -->
-                <td class="text-center">
-
-                  <app-action-buttons
-                    [actions]="['view']"
-                    (actionClick)="viewCustomerProfile(customer.customerId)">
-                  </app-action-buttons>
-
-                </td>
-
-              </tr>
-
-            }
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-      <!-- PAGINATION -->
-      <div class="table-pagination">
-
-        <app-pagination
-          [currentPage]="customers.currentPage"
-          [totalPages]="customers.totalPages"
-          [totalRecords]="customers.totalRecords"
-          [pageSize]="customers.pageSize"
-          (pageChange)="$event < customers.currentPage
-            ? previousPage()
-            : nextPage()">
-        </app-pagination>
-
-      </div>
-
-    </div>
-
   }
-
-  <!-- EMPTY STATE -->
-  @else {
-
-    <app-empty-state
-      icon="bi bi-people"
-      title="No Customers Found"
-      message="We couldn't find any customer profiles matching your search. Try adjusting your search criteria."
-      buttonText="Reset Filters"
-      (buttonClick)="resetFilters()">
-    </app-empty-state>
-
-  }
-
-}
-  </div>
 
 </div>

@@ -86,6 +86,13 @@
         *ngIf="getdateOfBirth().touched && getdateOfBirth().hasError('required')">
         Date of birth is required.
       </small>
+
+        <div
+          *ngIf="getdateOfBirth().touched && getdateOfBirth().hasError('minimumAge')"
+          class="text-danger"
+        >
+          You must be at least 18 years old to create a customer profile.
+  </div>
     </div>
 
     <!-- Address -->

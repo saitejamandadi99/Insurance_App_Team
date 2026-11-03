@@ -1,678 +1,639 @@
+
 <div class="container-fluid payment-page py-4">
-  <!-- PAGE HEADER -->
-<app-page-header
- title="Make Payment"
- subtitle="Complete your insurance premium payment securely."> </app-page-header>
+
+  <app-page-header
+    title="Make Premium Payment"
+    subtitle="Review your policy details and complete your premium payment.">
+  </app-page-header>
 
   <!-- LOADING -->
+  @if (loading) {
 
-@if (loading) {
-<app-loading-spinner></app-loading-spinner>
+    <app-loading-spinner
+      message="Loading policy details..."
+      size="md">
+    </app-loading-spinner>
 
-} @else {
-<!-- ERROR MESSAGE -->
-@if (errorMessage) {
-  <div class="alert alert-danger mt-3" role="alert">
-    <i class="bi bi-exclamation-circle me-2"></i>
-    {{ errorMessage }}
-  </div>
-}
+  } @else {
 
-<!-- SUCCESS MESSAGE -->
-@if (successMessage) {
-  <div class="alert alert-success mt-3" role="alert">
-    <i class="bi bi-check-circle me-2"></i>
-    {{ successMessage }}
-  </div>
-}
+    <!-- ERROR -->
+    @if (errorMessage) {
 
-<!-- POLICY NOT AVAILABLE -->
-@if (errorMessage && !policy) {
-
-  <div class="text-center mt-4">
-
-    <button
-      type="button"
-      class="btn btn-outline-secondary"
-      (click)="goBack()">
-
-      <i class="bi bi-arrow-left me-2"></i>
-      Back to My Policies
-
-    </button>
-
-  </div>
-
-}
-
-<!-- PAYMENT CONTENT -->
-@if (policy) {
-
-  <div class="row justify-content-center mt-4">
-
-    <!-- POLICY SUMMARY -->
-    <div class="col-12 col-lg-4 mb-4">
-
-      <div class="payment-summary">
-
-        <div class="summary-header">
-
-          <div class="summary-icon">
-            <i class="bi bi-shield-check"></i>
-          </div>
-
-          <div>
-            <h5>Policy Summary</h5>
-            <p>Your premium details</p>
-          </div>
-
-        </div>
-
-        <div class="summary-divider"></div>
-
-        <div class="summary-item">
-          <span>Policy Number</span>
-          <strong>{{ policy.policyNumber }}</strong>
-        </div>
-
-        <div class="summary-item">
-          <span>Policy ID</span>
-          <strong>{{ policy.policyId }}</strong>
-        </div>
-
-        <div class="summary-item">
-          <span>Policy Status</span>
-
-          <app-status-badge
-            [status]="policy.policyStatus">
-          </app-status-badge>
-
-        </div>
-
-        <div class="summary-item">
-          <span>Start Date</span>
-          <strong>
-            {{ policy.startDate | date:'dd MMM yyyy' }}
-          </strong>
-        </div>
-
-        <div class="summary-item">
-          <span>End Date</span>
-          <strong>
-            {{ policy.endDate | date:'dd MMM yyyy' }}
-          </strong>
-        </div>
-
-        <div class="summary-divider"></div>
-
-        <div class="amount-box">
-
-          <span>Premium Amount</span>
-
-          <h3>
-            {{ policy.premiumAmount | currency:'INR':'symbol':'1.2-2' }}
-          </h3>
-
-        </div>
-
-        <div class="secure-note">
-          <i class="bi bi-lock-fill"></i>
-          <span>Secure demo payment interface</span>
-        </div>
-
+      <div class="alert alert-danger payment-alert mt-3">
+        <i class="bi bi-exclamation-circle me-2"></i>
+        {{ errorMessage }}
       </div>
 
-    </div>
+    }
 
-    <!-- PAYMENT FORM -->
-    <div class="col-12 col-lg-8">
+    <!-- POLICY NOT AVAILABLE -->
+    @if (!policy) {
 
-      <div class="payment-card">
+      @if (errorMessage) {
+        <div class="text-center mt-4">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="goBack()">
 
-        <!-- CARD HEADER -->
-        <div class="payment-card-header">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to My Policies
 
-          <div>
-            <h4>Choose Payment Method</h4>
-            <p>Select how you would like to pay.</p>
-          </div>
+          </button>
+        </div>
+      }
 
-          <div class="payment-header-icon">
-            <i class="bi bi-credit-card-2-front"></i>
+    } @else {
+
+      <div class="row g-4 mt-2">
+
+        <!-- POLICY SUMMARY -->
+        <div class="col-12 col-lg-4">
+
+          <div class="payment-summary">
+
+            <div class="summary-header">
+
+              <div class="summary-icon">
+                <i class="bi bi-shield-check"></i>
+              </div>
+
+              <div>
+                <h5>Policy Summary</h5>
+                <p>Review your policy details</p>
+              </div>
+
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-item">
+              <span>Policy Number</span>
+              <strong>{{ policy.policyNumber }}</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>Policy ID</span>
+              <strong>{{ policy.policyId }}</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>Policy Name</span>
+              <strong>{{ policy.planName }}</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>Status</span>
+              <app-status-badge [status]="policy.policyStatus">
+              </app-status-badge>
+            </div>
+
+            <div class="summary-item">
+              <span>Start Date</span>
+              <strong>
+                {{ policy.startDate | date:'dd MMM yyyy' }}
+              </strong>
+            </div>
+
+            <div class="summary-item">
+              <span>End Date</span>
+              <strong>
+                {{ policy.endDate | date:'dd MMM yyyy' }}
+              </strong>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="amount-box">
+
+              <div class="amount-label">
+                <i class="bi bi-wallet2"></i>
+                Premium Amount
+              </div>
+
+              <h3>
+                {{ policy.premiumAmount | currency:'INR':'symbol':'1.2-2' }}
+              </h3>
+
+            </div>
+
+            <div class="secure-note">
+              <i class="bi bi-shield-lock-fill"></i>
+              <span>Secure demo payment interface</span>
+            </div>
+
           </div>
 
         </div>
 
-        <form
-          [formGroup]="paymentForm"
-          (ngSubmit)="makePayment()"
-          novalidate>
+        <!-- PAYMENT SECTION -->
+        <div class="col-12 col-lg-8">
 
-          <!-- STEP 1: PAYMENT METHOD -->
-          <div class="section-title">
+          <div class="payment-card">
 
-            <span class="step-number">1</span>
+            <div class="payment-card-header">
 
-            <h5>Select Payment Method</h5>
+              <div>
+                <span class="section-eyebrow">PAYMENT</span>
+                <h4>Choose Payment Method</h4>
+                <p>Select your preferred payment method.</p>
+              </div>
 
-          </div>
-
-          <div class="row g-3 payment-methods">
-
-            <!-- UPI -->
-            <div class="col-6 col-md-3">
-
-              <label
-                class="payment-method"
-                [class.selected]="paymentMode.value === PaymentMode.UPI">
-
-                <input
-                  type="radio"
-                  formControlName="paymentMode"
-                  [value]="PaymentMode.UPI"
-                  aria-label="UPI payment">
-
-                <i class="bi bi-phone"></i>
-
-                <span>UPI</span>
-
-                <small>Google Pay, PhonePe</small>
-
-              </label>
+              <div class="payment-header-icon">
+                <i class="bi bi-credit-card-2-front"></i>
+              </div>
 
             </div>
 
-            <!-- CARD -->
-            <div class="col-6 col-md-3">
+            <form
+              [formGroup]="paymentForm"
+              (ngSubmit)="makePayment()"
+              novalidate>
 
-              <label
-                class="payment-method"
-                [class.selected]="paymentMode.value === PaymentMode.Card">
-
-                <input
-                  type="radio"
-                  formControlName="paymentMode"
-                  [value]="PaymentMode.Card"
-                  aria-label="Debit or credit card payment">
-
-                <i class="bi bi-credit-card"></i>
-
-                <span>Debit / Credit</span>
-
-                <small>Card payment demo</small>
-
-              </label>
-
-            </div>
-
-            <!-- NET BANKING -->
-            <div class="col-6 col-md-3">
-
-              <label
-                class="payment-method"
-                [class.selected]="paymentMode.value === PaymentMode.Net_Banking">
-
-                <input
-                  type="radio"
-                  formControlName="paymentMode"
-                  [value]="PaymentMode.Net_Banking"
-                  aria-label="Net banking payment">
-
-                <i class="bi bi-bank"></i>
-
-                <span>Net Banking</span>
-
-                <small>All major banks</small>
-
-              </label>
-
-            </div>
-
-            <!-- CASH -->
-            <div class="col-6 col-md-3">
-
-              <label
-                class="payment-method"
-                [class.selected]="paymentMode.value === PaymentMode.Cash">
-
-                <input
-                  type="radio"
-                  formControlName="paymentMode"
-                  [value]="PaymentMode.Cash"
-                  aria-label="Cash payment">
-
-                <i class="bi bi-cash-stack"></i>
-
-                <span>Cash</span>
-
-                <small>Office payment</small>
-
-              </label>
-
-            </div>
-
-          </div>
-
-          <!-- PAYMENT MODE VALIDATION -->
-          @if (paymentMode.invalid && paymentMode.touched) {
-
-            <div class="validation-message">
-              Please select a payment method.
-            </div>
-
-          }
-
-          <div class="section-divider"></div>
-
-          <!-- STEP 2: UPI DETAILS -->
-          @if (paymentMode.value === PaymentMode.UPI) {
-
-            <div class="payment-details">
-
+              <!-- PAYMENT METHODS -->
               <div class="section-title">
-
-                <span class="step-number">2</span>
-
-                <h5>UPI Details</h5>
-
+                <span class="step-number">1</span>
+                <h5>Select Payment Method</h5>
               </div>
 
-              <div class="row g-3">
+              <div class="row g-3 payment-methods">
 
-                <!-- UPI ID -->
-                <div class="col-12">
+                <!-- UPI -->
+                <div class="col-6 col-md-3">
 
-                  <label class="form-label">
-                    UPI ID <span class="required">*</span>
+                  <label
+                    class="payment-method"
+                    [class.selected]="paymentMode.value === PaymentMode.UPI">
+
+                    <input
+                      type="radio"
+                      formControlName="paymentMode"
+                      [value]="PaymentMode.UPI">
+
+                    <i class="bi bi-phone"></i>
+                    <span>UPI</span>
+                    <small>Google Pay, PhonePe</small>
+
                   </label>
 
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="upiId"
-                    placeholder="example@okaxis"
-                    autocomplete="off">
-
-                  @if (
-                    paymentForm.controls.upiId.touched &&
-                    paymentForm.controls.upiId.invalid
-                  ) {
-
-                    <small class="validation-message">
-                      Enter a valid UPI ID.
-                    </small>
-
-                  }
-
                 </div>
 
-                <!-- UPI APPLICATION -->
-                <div class="col-12">
+                <!-- CARD -->
+                <div class="col-6 col-md-3">
 
-                  <label class="form-label">
-                    Select UPI Application
-                    <span class="required">*</span>
+                  <label
+                    class="payment-method"
+                    [class.selected]="paymentMode.value === PaymentMode.Card">
+
+                    <input
+                      type="radio"
+                      formControlName="paymentMode"
+                      [value]="PaymentMode.Card">
+
+                    <i class="bi bi-credit-card"></i>
+                    <span>Debit / Credit</span>
+                    <small>Demo card payment</small>
+
                   </label>
 
-                  <select
-                    class="form-select"
-                    formControlName="upiApp">
-
-                    <option value="">Choose UPI App</option>
-                    <option value="Google Pay">Google Pay</option>
-                    <option value="PhonePe">PhonePe</option>
-                    <option value="Paytm">Paytm</option>
-                    <option value="BHIM">BHIM</option>
-
-                  </select>
-
-                  @if (
-                    paymentForm.controls.upiApp.touched &&
-                    paymentForm.controls.upiApp.invalid
-                  ) {
-
-                    <small class="validation-message">
-                      Please select a UPI application.
-                    </small>
-
-                  }
-
                 </div>
 
-              </div>
+                <!-- NET BANKING -->
+                <div class="col-6 col-md-3">
 
-              <div class="info-box">
+                  <label
+                    class="payment-method"
+                    [class.selected]="paymentMode.value === PaymentMode.Net_Banking">
 
-                <i class="bi bi-info-circle"></i>
+                    <input
+                      type="radio"
+                      formControlName="paymentMode"
+                      [value]="PaymentMode.Net_Banking">
 
-                <span>
-                  Demo only. No actual UPI transaction or PIN
-                  verification will take place.
-                </span>
+                    <i class="bi bi-bank"></i>
+                    <span>Net Banking</span>
+                    <small>Bank transfer demo</small>
 
-              </div>
-
-            </div>
-
-          }
-
-          <!-- STEP 2: CARD DETAILS -->
-          @if (paymentMode.value === PaymentMode.Card) {
-
-            <div class="payment-details">
-
-              <div class="section-title">
-
-                <span class="step-number">2</span>
-
-                <h5>Card Details</h5>
-
-              </div>
-
-              <div class="row g-3">
-
-                <!-- CARDHOLDER NAME -->
-                <div class="col-12">
-
-                  <label class="form-label">
-                    Cardholder Name
-                    <span class="required">*</span>
                   </label>
 
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="cardHolderName"
-                    placeholder="Enter cardholder name"
-                    autocomplete="off">
-
-                  @if (
-                    paymentForm.controls.cardHolderName.touched &&
-                    paymentForm.controls.cardHolderName.invalid
-                  ) {
-
-                    <small class="validation-message">
-                      Enter a valid cardholder name.
-                    </small>
-
-                  }
-
                 </div>
 
-                <!-- CARD NUMBER -->
-                <div class="col-12">
+                <!-- CASH -->
+                <div class="col-6 col-md-3">
 
-                  <label class="form-label">
-                    Card Number
-                    <span class="required">*</span>
+                  <label
+                    class="payment-method"
+                    [class.selected]="paymentMode.value === PaymentMode.Cash">
+
+                    <input
+                      type="radio"
+                      formControlName="paymentMode"
+                      [value]="PaymentMode.Cash">
+
+                    <i class="bi bi-cash-stack"></i>
+                    <span>Cash</span>
+                    <small>Office payment</small>
+
                   </label>
 
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="cardNumber"
-                    placeholder="Enter demo card number"
-                    maxlength="23"
-                    autocomplete="off"
-                    inputmode="numeric">
-
-                  @if (
-                    paymentForm.controls.cardNumber.touched &&
-                    paymentForm.controls.cardNumber.invalid
-                  ) {
-
-                    <small class="validation-message">
-                      Enter a valid card number format.
-                    </small>
-
-                  }
-
-                </div>
-
-                <!-- EXPIRY DATE -->
-                <div class="col-md-6">
-
-                  <label class="form-label">
-                    Expiry Date
-                    <span class="required">*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="expiryDate"
-                    placeholder="MM/YY"
-                    maxlength="5"
-                    autocomplete="off">
-
-                  @if (
-                    paymentForm.controls.expiryDate.touched &&
-                    paymentForm.controls.expiryDate.invalid
-                  ) {
-
-                    <small class="validation-message">
-                      Enter expiry in MM/YY format.
-                    </small>
-
-                  }
-
-                </div>
-
-                <!-- CVV -->
-                <div class="col-md-6">
-
-                  <label class="form-label">
-                    CVV
-                    <span class="required">*</span>
-                  </label>
-
-                  <input
-                    type="password"
-                    class="form-control"
-                    formControlName="cvv"
-                    placeholder="Demo CVV"
-                    maxlength="4"
-                    autocomplete="off"
-                    inputmode="numeric">
-
-                  @if (
-                    paymentForm.controls.cvv.touched &&
-                    paymentForm.controls.cvv.invalid
-                  ) {
-
-                    <small class="validation-message">
-                      Enter a 3 or 4 digit demo CVV.
-                    </small>
-
-                  }
-
                 </div>
 
               </div>
 
-              <div class="info-box">
+              @if (paymentMode.invalid && paymentMode.touched) {
 
-                <i class="bi bi-shield-lock"></i>
-
-                <span>
-                  Demo card details only. Never enter real card
-                  details or CVV. These details are not sent to
-                  the backend.
-                </span>
-
-              </div>
-
-            </div>
-
-          }
-
-          <!-- STEP 2: NET BANKING -->
-          @if (paymentMode.value === PaymentMode.Net_Banking) {
-
-            <div class="payment-details">
-
-              <div class="section-title">
-
-                <span class="step-number">2</span>
-
-                <h5>Net Banking Details</h5>
-
-              </div>
-
-              <div class="mb-3">
-
-                <label class="form-label">
-                  Select Your Bank
-                  <span class="required">*</span>
-                </label>
-
-                <select
-                  class="form-select"
-                  formControlName="bankName">
-
-                  <option value="">Select Bank</option>
-                  <option value="SBI">State Bank of India</option>
-                  <option value="HDFC">HDFC Bank</option>
-                  <option value="ICICI">ICICI Bank</option>
-                  <option value="Axis">Axis Bank</option>
-                  <option value="Kotak">Kotak Mahindra Bank</option>
-                  <option value="BOB">Bank of Baroda</option>
-                  <option value="PNB">Punjab National Bank</option>
-                  <option value="Canara">Canara Bank</option>
-                  <option value="Union">Union Bank of India</option>
-                  <option value="IDBI">IDBI Bank</option>
-
-                </select>
-
-                @if (
-                  paymentForm.controls.bankName.touched &&
-                  paymentForm.controls.bankName.invalid
-                ) {
-
-                  <small class="validation-message">
-                    Please select your bank.
-                  </small>
-
-                }
-
-              </div>
-
-              <div class="info-box">
-
-                <i class="bi bi-info-circle"></i>
-
-                <span>
-                  Demo only. No bank login, password or OTP
-                  is required.
-                </span>
-
-              </div>
-
-            </div>
-
-          }
-
-          <!-- STEP 2: CASH -->
-          @if (paymentMode.value === PaymentMode.Cash) {
-
-            <div class="payment-details">
-
-              <div class="section-title">
-
-                <span class="step-number">2</span>
-
-                <h5>Cash Payment Instructions</h5>
-
-              </div>
-
-              <div class="cash-box">
-
-                <div class="cash-icon">
-                  <i class="bi bi-cash-coin"></i>
+                <div class="validation-message">
+                  Please select a payment method.
                 </div>
-
-                <div>
-
-                  <h6>Pay at an Authorized Office</h6>
-
-                  <p>
-                    Visit an authorized insurance office and
-                    hand over the premium amount to an authorized
-                    officer.
-                  </p>
-
-                  <p>
-                    Collect your official payment receipt.
-                  </p>
-
-                </div>
-
-              </div>
-
-              <div class="info-box">
-
-                <i class="bi bi-exclamation-circle"></i>
-
-                <span>
-                  This project demo records cash payment
-                  immediately. In a real system, payment should
-                  be recorded only after cash is received and
-                  verified.
-                </span>
-
-              </div>
-
-            </div>
-
-          }
-
-          <!-- ACTION BUTTONS -->
-          <div class="form-actions">
-
-            <button
-              type="button"
-              class="btn btn-outline-secondary"
-              (click)="goBack()"
-              [disabled]="submitting">
-
-              <i class="bi bi-arrow-left me-2"></i>
-              Back
-
-            </button>
-
-            <button
-              type="submit"
-              class="btn btn-pay"
-              [disabled]="submitting || paymentForm.invalid || !policy">
-
-              @if (submitting) {
-
-                <span
-                  class="spinner-border spinner-border-sm me-2">
-                </span>
-
-                Processing...
-
-              } @else {
-
-                <i class="bi bi-lock-fill me-2"></i>
-                Pay Now
 
               }
 
-            </button>
+              <div class="section-divider"></div>
+
+              <!-- UPI DETAILS -->
+              @if (paymentMode.value === PaymentMode.UPI) {
+
+                <div class="payment-details">
+
+                  <div class="section-title">
+                    <span class="step-number">2</span>
+                    <h5>UPI Details</h5>
+                  </div>
+
+                  <div class="row g-3">
+
+                    <div class="col-12">
+
+                      <label class="form-label">
+                        UPI ID <span class="required">*</span>
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="upiId"
+                        placeholder="example@okaxis"
+                        autocomplete="off">
+
+                      @if (
+                        paymentForm.controls.upiId.touched &&
+                        paymentForm.controls.upiId.invalid
+                      ) {
+
+                        <small class="validation-message">
+                          Enter a valid UPI ID.
+                        </small>
+
+                      }
+
+                    </div>
+
+                    <div class="col-12">
+
+                      <label class="form-label">
+                        UPI Application <span class="required">*</span>
+                      </label>
+
+                      <select
+                        class="form-select"
+                        formControlName="upiApp">
+
+                        <option value="">Choose UPI App</option>
+                        <option value="Google Pay">Google Pay</option>
+                        <option value="PhonePe">PhonePe</option>
+                        <option value="Paytm">Paytm</option>
+                        <option value="BHIM">BHIM</option>
+
+                      </select>
+
+                      @if (
+                        paymentForm.controls.upiApp.touched &&
+                        paymentForm.controls.upiApp.invalid
+                      ) {
+
+                        <small class="validation-message">
+                          Please select a UPI application.
+                        </small>
+
+                      }
+
+                    </div>
+
+                  </div>
+
+                  <div class="info-box">
+                    <i class="bi bi-info-circle"></i>
+                    <span>
+                      Demo only. No actual UPI transaction or PIN
+                      verification takes place.
+                    </span>
+                  </div>
+
+                </div>
+
+              }
+
+              <!-- CARD DETAILS -->
+              @if (paymentMode.value === PaymentMode.Card) {
+
+                <div class="payment-details">
+
+                  <div class="section-title">
+                    <span class="step-number">2</span>
+                    <h5>Card Details</h5>
+                  </div>
+
+                  <div class="row g-3">
+
+                    <div class="col-12">
+
+                      <label class="form-label">
+                        Cardholder Name <span class="required">*</span>
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="cardHolderName"
+                        placeholder="Enter cardholder name"
+                        autocomplete="off">
+
+                      @if (
+                        paymentForm.controls.cardHolderName.touched &&
+                        paymentForm.controls.cardHolderName.invalid
+                      ) {
+
+                        <small class="validation-message">
+                          Enter a valid cardholder name.
+                        </small>
+
+                      }
+
+                    </div>
+
+                    <div class="col-12">
+
+                      <label class="form-label">
+                        Card Number <span class="required">*</span>
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="cardNumber"
+                        placeholder="Enter demo card number"
+                        maxlength="23"
+                        autocomplete="off"
+                        inputmode="numeric">
+
+                      @if (
+                        paymentForm.controls.cardNumber.touched &&
+                        paymentForm.controls.cardNumber.invalid
+                      ) {
+
+                        <small class="validation-message">
+                          Enter a valid card number format.
+                        </small>
+
+                      }
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                      <label class="form-label">
+                        Expiry Date <span class="required">*</span>
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="expiryDate"
+                        placeholder="MM/YY"
+                        maxlength="5"
+                        autocomplete="off">
+
+                      @if (
+                        paymentForm.controls.expiryDate.touched &&
+                        paymentForm.controls.expiryDate.invalid
+                      ) {
+
+                        <small class="validation-message">
+                          Enter expiry in MM/YY format.
+                        </small>
+
+                      }
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                      <label class="form-label">
+                        CVV <span class="required">*</span>
+                      </label>
+
+                      <input
+                        type="password"
+                        class="form-control"
+                        formControlName="cvv"
+                        placeholder="Demo CVV"
+                        maxlength="4"
+                        autocomplete="off"
+                        inputmode="numeric">
+
+                      @if (
+                        paymentForm.controls.cvv.touched &&
+                        paymentForm.controls.cvv.invalid
+                      ) {
+
+                        <small class="validation-message">
+                          Enter a 3 or 4 digit demo CVV.
+                        </small>
+
+                      }
+
+                    </div>
+
+                  </div>
+
+                  <div class="info-box">
+                    <i class="bi bi-shield-lock"></i>
+                    <span>
+                      Demo card details only. Never enter real card
+                      details or CVV. These details are not sent to
+                      the backend.
+                    </span>
+                  </div>
+
+                </div>
+
+              }
+
+              <!-- NET BANKING -->
+              @if (paymentMode.value === PaymentMode.Net_Banking) {
+
+                <div class="payment-details">
+
+                  <div class="section-title">
+                    <span class="step-number">2</span>
+                    <h5>Net Banking Details</h5>
+                  </div>
+
+                  <div class="mb-3">
+
+                    <label class="form-label">
+                      Select Your Bank <span class="required">*</span>
+                    </label>
+
+                    <select
+                      class="form-select"
+                      formControlName="bankName">
+
+                      <option value="">Select Bank</option>
+                      <option value="SBI">State Bank of India</option>
+                      <option value="HDFC">HDFC Bank</option>
+                      <option value="ICICI">ICICI Bank</option>
+                      <option value="Axis">Axis Bank</option>
+                      <option value="Kotak">Kotak Mahindra Bank</option>
+                      <option value="BOB">Bank of Baroda</option>
+                      <option value="PNB">Punjab National Bank</option>
+                      <option value="Canara">Canara Bank</option>
+                      <option value="Union">Union Bank of India</option>
+                      <option value="IDBI">IDBI Bank</option>
+
+                    </select>
+
+                    @if (
+                      paymentForm.controls.bankName.touched &&
+                      paymentForm.controls.bankName.invalid
+                    ) {
+
+                      <small class="validation-message">
+                        Please select your bank.
+                      </small>
+
+                    }
+
+                  </div>
+
+                  <div class="info-box">
+                    <i class="bi bi-info-circle"></i>
+                    <span>
+                      Demo only. No bank login, password or OTP is required.
+                    </span>
+                  </div>
+
+                </div>
+
+              }
+
+              <!-- CASH -->
+              @if (paymentMode.value === PaymentMode.Cash) {
+
+                <div class="payment-details">
+
+                  <div class="section-title">
+                    <span class="step-number">2</span>
+                    <h5>Cash Payment Instructions</h5>
+                  </div>
+
+                  <div class="cash-box">
+
+                    <div class="cash-icon">
+                      <i class="bi bi-cash-coin"></i>
+                    </div>
+
+                    <div>
+                      <h6>Pay at an Authorized Office</h6>
+
+                      <p>
+                        Visit an authorized insurance office and hand
+                        over the premium amount to an authorized officer.
+                      </p>
+
+                      <p>
+                        Collect your official payment receipt.
+                      </p>
+                    </div>
+
+                  </div>
+
+                  <div class="info-box">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <span>
+                      This project demo records cash payment immediately.
+                      In a real system, payment should be recorded only
+                      after cash is received and verified.
+                    </span>
+                  </div>
+
+                </div>
+
+              }
+
+              <!-- PAYMENT AMOUNT -->
+              <div class="payment-total">
+
+                <div>
+                  <span>Amount to Pay</span>
+                  <small>Policy premium</small>
+                </div>
+
+                <strong>
+                  {{ policy.premiumAmount | currency:'INR':'symbol':'1.2-2' }}
+                </strong>
+
+              </div>
+
+              <!-- ACTION BUTTONS -->
+              <div class="form-actions">
+
+                <button
+                  type="button"
+                  class="btn btn-back"
+                  (click)="goBack()"
+                  [disabled]="submitting">
+
+                  <i class="bi bi-arrow-left me-2"></i>
+                  Back
+
+                </button>
+
+                <button
+                  type="submit"
+                  class="btn btn-pay"
+                  [disabled]="submitting || !policy">
+
+                  @if (submitting) {
+
+                    <span
+                      class="spinner-border spinner-border-sm me-2"
+                      aria-hidden="true">
+                    </span>
+
+                    Processing...
+
+                  } @else {
+
+                    <i class="bi bi-lock-fill me-2"></i>
+                    Pay Now
+
+                  }
+
+                </button>
+
+              </div>
+
+            </form>
 
           </div>
 
-        </form>
+        </div>
 
       </div>
 
-    </div>
+    }
 
-  </div>
-
-}
-}
+  }
 
 </div>

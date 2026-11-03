@@ -1,15 +1,27 @@
+
 import { NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+
 import { CustomerProfileServices } from '../../../services/CustomerProfile/customer-profile-services';
+import { CustomerResponseDto } from '../../../DTO/CustomerResponseDto';
+import { SuccessResponseDto } from '../../../DTO/SuccessResponseDto';
+import { ErrorResponseDto } from '../../../DTO/ErrorResponseDto';
+
 import { PageHeader } from '../../../shared/ui/page-header/page-header';
 import { ToastService } from '../../../services/Toast/toast-service';
 
 @Component({
   selector: 'app-edit-customer',
-  imports: [ReactiveFormsModule,
+  imports: [
+    ReactiveFormsModule,
     NgIf,
     PageHeader
   ],
@@ -18,7 +30,9 @@ import { ToastService } from '../../../services/Toast/toast-service';
   styleUrl: './edit-customer-profile.css'
 })
 export class EditCustomer implements OnInit, OnDestroy {
+
   customerId!: number;
+
   isLoading = false;
   isSubmitting = false;
 
@@ -65,94 +79,99 @@ export class EditCustomer implements OnInit, OnDestroy {
     ])
   });
 
-get dateOfBirth(): FormControl {
+  get dateOfBirth(): FormControl {
     return this.customerForm.get('dateOfBirth') as FormControl;
   }
+
   get pincode(): FormControl {
-  return this.customerForm.get('pincode') as FormControl;
-}
+    return this.customerForm.get('pincode') as FormControl;
+  }
 
-get state(): FormControl {
-  return this.customerForm.get('state') as FormControl;
-}
+  get state(): FormControl {
+    return this.customerForm.get('state') as FormControl;
+  }
 
-get city(): FormControl {
-  return this.customerForm.get('city') as FormControl;
-}
+  get city(): FormControl {
+    return this.customerForm.get('city') as FormControl;
+  }
 
-get address(): FormControl {
-  return this.customerForm.get('address') as FormControl;
-}
+  get address(): FormControl {
+    return this.customerForm.get('address') as FormControl;
+  }
 
-get nomineeName(): FormControl {
-  return this.customerForm.get('nomineeName') as FormControl;
-}
+  get nomineeName(): FormControl {
+    return this.customerForm.get('nomineeName') as FormControl;
+  }
 
-get nomineeRelationship(): FormControl {
-  return this.customerForm.get('nomineeRelationship') as FormControl;
-}
+  get nomineeRelationship(): FormControl {
+    return this.customerForm.get('nomineeRelationship') as FormControl;
+  }
 
   constructor(
     private customerProfileService: CustomerProfileServices,
     private toastService: ToastService,
-    private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-
-    if (!Number.isInteger(id) || id <= 0) {
-      this.toastService.error('Invalid customer ID.');
-      return;
-    }
-
-    this.customerId = id;
     this.loadCustomerProfile();
   }
 
   loadCustomerProfile(): void {
+
     this.isLoading = true;
 
-    // Replace with the correct method for your customer-facing API.
-this.customerProfileService.getCustomerDetailsById(this.customerId)
-      .subscribe({
-        next: (response: any) => {
-          const customer = response.data;
+    this.customerProfileService.getMyProfile().subscribe({
 
-          if (!customer) {
-            this.toastService.error('Customer profile not found.');
-            this.isLoading = false;
-            return;
-          }
+      next: (response: SuccessResponseDto<CustomerResponseDto>) => {
 
-          this.customerForm.patchValue({
-            dateOfBirth: customer.dateOfBirth,
-            address: customer.address,
-            city: customer.city,
-            state: customer.state,
-            pincode: customer.pincode,
-            nomineeName: customer.nomineeName,
-            nomineeRelationship: customer.nomineeRelationship
-          });
+        const customer = response.data;
 
-          this.existingImageUrl = customer.profileImageUrl ?? null;
+        if (!customer) {
           this.isLoading = false;
+          this.toastService.error('Customer profile not found.');
           this.cdr.detectChanges();
-        },
-
-        error: (err: HttpErrorResponse) => {
-          this.isLoading = false;
-          this.toastService.error(
-            err.error?.message ?? 'Unable to load customer profile.'
-          );
-          this.cdr.detectChanges();
+          return;
         }
-      });
+
+        this.customerId = customer.customerId;
+
+        this.customerForm.patchValue({
+          dateOfBirth: customer.dateOfBirth
+            ? new Date(customer.dateOfBirth).toISOString().split('T')[0]
+            : '',
+          address: customer.address,
+          city: customer.city,
+          state: customer.state,
+          pincode: customer.pincode,
+          nomineeName: customer.nomineeName,
+          nomineeRelationship: customer.nomineeRelationship
+        });
+
+        this.existingImageUrl = customer.profileImageUrl ?? null;
+
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+
+      error: (err: HttpErrorResponse) => {
+
+        this.isLoading = false;
+
+        const apiError = err.error as ErrorResponseDto;
+
+        this.toastService.error(
+          apiError?.message ?? 'Unable to load customer profile.'
+        );
+
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   onImageSelected(event: Event): void {
+
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
 
@@ -182,13 +201,9 @@ this.customerProfileService.getCustomerDetailsById(this.customerId)
   }
 
   updateCustomerProfile(): void {
-    if (this.customerForm.invalid) {
-      this.customerForm.markAllAsTouched();
-      this.toastService.error('Please enter all required fields correctly.');
-      return;
-    }
 
-    if (this.isSubmitting) {
+    if (this.customerForm.invalid || this.isSubmitting) {
+      this.customerForm.markAllAsTouched();
       return;
     }
 
@@ -196,14 +211,14 @@ this.customerProfileService.getCustomerDetailsById(this.customerId)
     const formData = new FormData();
 
     formData.append('DateOfBirth', formValue.dateOfBirth ?? '');
-    formData.append('Address', formValue.address ?? '');
-    formData.append('City', formValue.city ?? '');
-    formData.append('State', formValue.state ?? '');
+    formData.append('Address', (formValue.address ?? '').trim());
+    formData.append('City', (formValue.city ?? '').trim());
+    formData.append('State', (formValue.state ?? '').trim());
     formData.append('Pincode', formValue.pincode ?? '');
-    formData.append('NomineeName', formValue.nomineeName ?? '');
+    formData.append('NomineeName', (formValue.nomineeName ?? '').trim());
     formData.append(
       'NomineeRelationship',
-      formValue.nomineeRelationship ?? ''
+      (formValue.nomineeRelationship ?? '').trim()
     );
 
     if (this.selectedImage) {
@@ -216,31 +231,38 @@ this.customerProfileService.getCustomerDetailsById(this.customerId)
 
     this.isSubmitting = true;
 
-    // Confirm the ID expected by your backend before using this call.
     this.customerProfileService
       .updateCustomerProfile(this.customerId, formData)
       .subscribe({
-        next: (response: any) => {
+
+        next: (response) => {
+
           this.isSubmitting = false;
-          this.toastService.info(
-            response.message ?? 'Customer profile updated successfully.'
-          );
+
+          this.toastService.info(response.message);
+
           this.cdr.detectChanges();
-          this.router.navigate(['/customer-profile/view']);
+
+          this.router.navigate(['/myprofile']);
         },
 
         error: (err: HttpErrorResponse) => {
+
           this.isSubmitting = false;
+
+          const apiError = err.error as ErrorResponseDto;
+
           this.toastService.error(
-            err.error?.message ?? 'Unable to update customer profile.'
+            apiError?.message ?? 'Unable to update customer profile.'
           );
+
           this.cdr.detectChanges();
         }
       });
   }
 
   cancel(): void {
-    this.router.navigate(['/customer-profile/view']);
+    this.router.navigate(['/myprofile']);
   }
 
   ngOnDestroy(): void {

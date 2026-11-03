@@ -1,166 +1,81 @@
-import { DatePipe, NgIf } from '@angular/common';
+
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { PaginationResponseDto } from '../../../DTO/PaginationResponseDto';
+
+import { SuccessResponseDto } from '../../../DTO/SuccessResponseDto';
 import { CustomerResponseDto } from '../../../DTO/CustomerResponseDto';
+import { ErrorResponseDto } from '../../../DTO/ErrorResponseDto';
+
 import { CustomerProfileServices } from '../../../services/CustomerProfile/customer-profile-services';
 import { ToastService } from '../../../services/Toast/toast-service';
-import { Pagination } from '../../../shared/ui/pagination/pagination';
-import { FilterCard } from '../../../shared/ui/filter-card/filter-card';
+
 import { PageHeader } from '../../../shared/ui/page-header/page-header';
-import { SearchBox } from '../../../shared/ui/search-box/search-box';
 import { LoadingSpinner } from '../../../shared/ui/loading-spinner/loading-spinner';
-import { StatusBadge } from '../../../shared/ui/status-badge/status-badge';
-import { ActionButtons } from '../../../shared/ui/action-buttons/action-buttons';
-import { EmptyState } from '../../../shared/ui/empty-state/empty-state';
 
 @Component({
-imports: [
-  ReactiveFormsModule,
-  DatePipe,
-  NgIf,
-  Pagination,
-  FilterCard,
-  PageHeader,
-  SearchBox,
-  LoadingSpinner,
-  StatusBadge,
-  ActionButtons,
-  EmptyState
-],  standalone: true,
-  selector: 'app-view-customer',
-  styleUrl: './view-customer-profile.css',
+  selector: 'app-view-my-profile',
+  standalone: true,
+  imports: [
+    DatePipe,
+    PageHeader,
+    LoadingSpinner
+  ],
   templateUrl: './view-customer-profile.html',
+  styleUrl: './view-customer-profile.css'
 })
-export class ViewCustomer implements OnInit {
+export class ViewMyProfileComponent implements OnInit {
 
-customers!: PaginationResponseDto<CustomerResponseDto>;
+  profileDetails: SuccessResponseDto<CustomerResponseDto> | null = null;
 
-isLoading = false;
+  isLoading = true;
 
-filterForm: FormGroup = new FormGroup({
-search: new FormControl(''),
-sortBy: new FormControl('createdDate'),
-sortDirection: new FormControl('desc'),
-pageNumber: new FormControl(1),
-pageSize: new FormControl(10),
-});
+  constructor(
+    private customerProfileService: CustomerProfileServices,
+    private toastService: ToastService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-constructor(
-private customerProfileService: CustomerProfileServices,
-private toastService: ToastService,
-private router: Router,
-private cdr: ChangeDetectorRef
-) {}
-
-loadCustomers(): void {
-this.isLoading = true;
-
-const filters = this.filterForm.value;
-
-this.customerProfileService.listCustomerProfiles(
-  filters.pageNumber ?? 1,
-  filters.pageSize ?? 10,
-  filters.sortBy ?? 'createdDate',
-  filters.sortDirection ?? 'desc',
-  filters.search ?? ''
-).subscribe({
-
-  next: (response) => {
-    this.customers = response.data;
-    this.isLoading = false;
-
-    this.toastService.info(response.message);
-    this.cdr.detectChanges();
-  },
-
-  error: (err: HttpErrorResponse) => {
-    this.isLoading = false;
-
-    const apiError = err.error;
-    this.toastService.error(
-      apiError?.message ?? 'Unable to load customer profiles.'
-    );
-
-    this.cdr.detectChanges();
+  ngOnInit(): void {
+    this.loadMyProfile();
   }
 
-});
+  loadMyProfile(): void {
 
-}
+    this.isLoading = true;
 
-ngOnInit(): void {
-this.loadCustomers();
-}
+    this.customerProfileService.getMyProfile().subscribe({
 
-resetFilters(): void {
-this.filterForm.reset({
-search: '',
-sortBy: 'createdDate',
-sortDirection: 'desc',
-pageNumber: 1,
-pageSize: 10
-});
+      next: (response: SuccessResponseDto<CustomerResponseDto>) => {
 
-this.loadCustomers();
+        this.profileDetails = response;
+        this.isLoading = false;
 
-}
+        this.cdr.detectChanges();
+      },
 
-searchCustomers(): void {
-this.filterForm.patchValue({
-pageNumber: 1
-});
+      error: (err: HttpErrorResponse) => {
 
-this.loadCustomers();
+        this.isLoading = false;
 
-}
+        const apiError = err.error as ErrorResponseDto;
 
-clearSearch(): void {
-this.filterForm.patchValue({
-search: '',
-pageNumber: 1
-});
+        this.toastService.error(
+          apiError?.message ?? 'Unable to load your profile.'
+        );
 
-this.loadCustomers();
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
-}
+  editProfile(): void {
+    this.router.navigate(['/editprofile']);
+  }
 
-previousPage(): void {
-if (this.customers && this.customers.currentPage > 1) {
-this.filterForm.patchValue({
-pageNumber: this.customers.currentPage - 1
-});
-
-  this.loadCustomers();
-}
-
-}
-
-nextPage(): void {
-if (this.customers && !this.customers.isLastPage) {
-this.filterForm.patchValue({
-pageNumber: this.customers.currentPage + 1
-});
-
-  this.loadCustomers();
-}
-
-}
-
-viewCustomerProfile(id: number): void {
-this.router.navigate(['/customer-profile/view', id]);
-}
-
-navigateToAddCustomer(): void {
-this.router.navigate(['/customer-profile/add']);
-}
-editCustomer(customerId: number): void {
-  this.router.navigate(['/customer-profile/edit', customerId]);
-}
-get searchControl(): FormControl {
-return this.filterForm.get('search') as FormControl;
-}
-
+  createProfile(): void {
+    this.router.navigate(['/createprofile']);
+  }
 }

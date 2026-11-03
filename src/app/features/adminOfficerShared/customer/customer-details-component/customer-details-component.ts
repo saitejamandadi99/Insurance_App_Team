@@ -40,7 +40,7 @@ private toastService: ToastService
 ) {}
 
 ngOnInit(): void {
-const idParam = this.activedRoute.snapshot.paramMap.get('id');
+const idParam = this.activedRoute.snapshot.paramMap.get('customerId');
 
 this.id = Number(idParam);
 

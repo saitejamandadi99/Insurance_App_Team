@@ -13,7 +13,7 @@ providedIn: 'root'
 })
 export class PremiumPaymentServices {
 
-private readonly apiUrl = `${environment.apiUrl}/payment`;
+private readonly apiUrl = `${environment.apiUrl}/PremiumPayment`;
   listPayments: any;
 
 constructor(private http: HttpClient) { }

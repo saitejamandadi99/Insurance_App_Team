@@ -1,164 +1,363 @@
 <div class="customer-dashboard-page">
-<!-- Dashboard Header -->
-<div class="dashboard-header">
-    <div>
-        <h2 class="dashboard-title">
-            <i class="bi bi-speedometer2 me-2"></i>
-            Customer Dashboard
-        </h2>
 
-        <p class="dashboard-subtitle">
-            Manage your insurance policies, claims, payments and profile.
-        </p>
+  <!-- DASHBOARD HEADER -->
+  <div class="dashboard-header">
+    <div>
+      <h2 class="dashboard-title">
+        <i class="bi bi-speedometer2 me-2"></i>
+        Customer Dashboard
+      </h2>
+
+      <p class="dashboard-subtitle">
+        Manage your insurance policies, claims, payments and profile.
+      </p>
     </div>
 
     <div class="dashboard-header-icon">
-        <i class="bi bi-shield-check"></i>
+      <i class="bi bi-shield-check"></i>
     </div>
-</div>
+  </div>
 
-<!-- Loading -->
-<div class="dashboard-loading" *ngIf="isLoading">
+  <!-- PROFILE CHECK LOADING -->
+  <div class="dashboard-loading" *ngIf="isLoading">
 
     <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden">Loading...</span>
     </div>
 
-    <p>Loading your dashboard...</p>
+    <p>Checking your customer profile...</p>
 
-</div>
+  </div>
 
-<!-- Profile Check Error -->
-<div class="profile-error" *ngIf="!isLoading && profileCheckFailed">
+  <!-- PROFILE CHECK ERROR -->
+  <div class="profile-error" *ngIf="!isLoading && profileCheckFailed">
 
     <i class="bi bi-exclamation-triangle-fill"></i>
 
     <h5>Unable to Load Profile</h5>
 
     <p>
-        We couldn't check your customer profile.
-        Please try again.
+      We couldn't check your customer profile.
+      Please try again.
     </p>
 
     <button
-        type="button"
-        class="btn btn-primary"
-        (click)="checkCustomerProfile()">
+      type="button"
+      class="btn btn-primary"
+      (click)="checkCustomerProfile()">
 
-        <i class="bi bi-arrow-clockwise me-2"></i>
-        Retry
+      <i class="bi bi-arrow-clockwise me-2"></i>
+      Retry
 
     </button>
 
-</div>
+  </div>
 
-<!-- Dashboard Content -->
-<div *ngIf="!isLoading && !profileCheckFailed">
+  <!-- DASHBOARD CONTENT -->
+  <div *ngIf="!isLoading && !profileCheckFailed">
 
-    <!-- Profile Section -->
+    <!-- CUSTOMER SUMMARY -->
+    <div *ngIf="hasProfile">
+
+      <!-- DASHBOARD STATISTICS -->
+      <div class="dashboard-section">
+
+        <div class="section-header">
+          <div>
+            <h4>
+              <i class="bi bi-bar-chart-fill me-2"></i>
+              My Overview
+            </h4>
+
+            <p>Summary of your insurance claims.</p>
+          </div>
+        </div>
+
+        <!-- DASHBOARD LOADING -->
+        <div class="dashboard-loading" *ngIf="isDashboardLoading">
+
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+
+          <p>Loading your dashboard data...</p>
+
+        </div>
+
+        <!-- DASHBOARD ERROR -->
+        <div class="profile-error" *ngIf="!isDashboardLoading && dashboardErrorMessage">
+
+          <i class="bi bi-exclamation-triangle-fill"></i>
+
+          <h5>Unable to Load Dashboard</h5>
+
+          <p>{{ dashboardErrorMessage }}</p>
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="loadCustomerDashboard()">
+
+            <i class="bi bi-arrow-clockwise me-2"></i>
+            Retry
+
+          </button>
+
+        </div>
+
+        <!-- DASHBOARD DATA -->
+        <div
+          class="dashboard-stats"
+          *ngIf="!isDashboardLoading && !dashboardErrorMessage && dashboard">
+
+          <!-- TOTAL CLAIMS -->
+          <div class="stat-card">
+
+            <div class="stat-icon accent-primary">
+              <i class="bi bi-file-earmark-medical"></i>
+            </div>
+
+            <div class="stat-content">
+              <p>Total Claims</p>
+
+              <h3>{{ dashboard.totalClaimsCount }}</h3>
+
+              <span>Total claims submitted</span>
+            </div>
+
+          </div>
+
+          <!-- PENDING CLAIMS -->
+          <div class="stat-card">
+
+            <div class="stat-icon accent-warning">
+              <i class="bi bi-hourglass-split"></i>
+            </div>
+
+            <div class="stat-content">
+              <p>Pending Claims</p>
+
+              <h3>{{ dashboard.pendingClaimsCount }}</h3>
+
+              <span>Claims awaiting review</span>
+            </div>
+
+          </div>
+
+          <!-- PENDING CLAIM AMOUNT -->
+          <div class="stat-card">
+
+            <div class="stat-icon accent-success">
+              <i class="bi bi-currency-rupee"></i>
+            </div>
+
+            <div class="stat-content">
+              <p>Pending Claims Amount</p>
+
+              <h3>
+                {{ dashboard.pendingClaimsAmount | currency:'INR':'symbol':'1.0-0' }}
+              </h3>
+
+              <span>Total pending claim value</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CLAIM HISTORY -->
+      <div
+        class="dashboard-section history-section"
+        *ngIf="!isDashboardLoading && !dashboardErrorMessage && dashboard">
+
+        <div class="section-header">
+          <div>
+            <h4>
+              <i class="bi bi-clock-history me-2"></i>
+              My Claim History
+            </h4>
+
+            <p>Track your submitted claims and their latest recorded dates.</p>
+          </div>
+
+          <a routerLink="/myclaims" class="view-all-link">
+            View All Claims
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+
+        <div
+          class="table-responsive"
+          *ngIf="dashboard.claimHistory && dashboard.claimHistory.length > 0">
+
+          <table class="table dashboard-table">
+
+            <thead>
+              <tr>
+                <th>CLAIM NUMBER</th>
+                <th>CLAIM AMOUNT</th>
+                <th>CLAIM STATUS</th>
+                <th>CREATED DATE</th>
+                <th>UPDATED DATE</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let claim of dashboard.claimHistory; let i = index">
+
+
+                <td>
+                  <span class="claim-number">
+                    {{ claim.claimNumber }}
+                  </span>
+                </td>
+
+                <td class="claim-amount">
+                  {{ claim.claimAmount | currency:'INR':'symbol':'1.2-2' }}
+                </td>
+
+                <td>
+                  <span class="claim-status">
+                    {{ claim.claimStatus }}
+                  </span>
+                </td>
+
+                <td>
+                  {{ claim.createdDate | date:'dd MMM yyyy' }}
+                </td>
+
+                <td>
+                  {{ claim.updatedDate | date:'dd MMM yyyy' }}
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div
+          class="empty-claims"
+          *ngIf="!dashboard.claimHistory || dashboard.claimHistory.length === 0">
+
+          <i class="bi bi-inbox"></i>
+
+          <p>You haven't submitted any claims yet.</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- PROFILE SECTION -->
     <div class="dashboard-section">
 
-        <div class="section-header">
-            <div>
-                <h4>
-                    <i class="bi bi-person-circle me-2"></i>
-                    My Account
-                </h4>
+      <div class="section-header">
+        <div>
+          <h4>
+            <i class="bi bi-person-circle me-2"></i>
+            My Account
+          </h4>
 
-                <p>Manage your customer profile.</p>
-            </div>
+          <p>Manage your customer profile.</p>
         </div>
+      </div>
 
-        <div class="dashboard-grid profile-grid">
+      <div class="dashboard-grid profile-grid">
 
-            <!-- Create Profile / My Profile -->
-            <a
-                class="dashboard-card"
-                [ngClass]="'accent-' + profileCard.color"
-                [routerLink]="profileCard.route">
+        <!-- CREATE PROFILE / MY PROFILE -->
+        <a
+          class="dashboard-card"
+          [ngClass]="'accent-' + profileCard.color"
+          [routerLink]="profileCard.route">
 
-                <div class="card-icon">
-                    <i [class]="profileCard.icon"></i>
-                </div>
+          <div class="card-icon">
+            <i [class]="profileCard.icon"></i>
+          </div>
 
-                <div class="card-content">
-                    <h5>{{ profileCard.title }}</h5>
-                    <p>{{ profileCard.subtitle }}</p>
-                </div>
+          <div class="card-content">
+            <h5>{{ profileCard.title }}</h5>
+            <p>{{ profileCard.subtitle }}</p>
+          </div>
 
-                <div class="card-arrow">
-                    <i class="bi bi-arrow-right"></i>
-                </div>
+          <div class="card-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </div>
 
-            </a>
+        </a>
 
-            <!-- Edit Profile -->
-            <a
-                *ngIf="hasProfile"
-                class="dashboard-card accent-info"
-                [routerLink]="editProfileCard.route">
+        <!-- EDIT PROFILE -->
+        <a
+          *ngIf="hasProfile"
+          class="dashboard-card accent-info"
+          [routerLink]="editProfileCard.route">
 
-                <div class="card-icon">
-                    <i [class]="editProfileCard.icon"></i>
-                </div>
+          <div class="card-icon">
+            <i [class]="editProfileCard.icon"></i>
+          </div>
 
-                <div class="card-content">
-                    <h5>{{ editProfileCard.title }}</h5>
-                    <p>{{ editProfileCard.subtitle }}</p>
-                </div>
+          <div class="card-content">
+            <h5>{{ editProfileCard.title }}</h5>
+            <p>{{ editProfileCard.subtitle }}</p>
+          </div>
 
-                <div class="card-arrow">
-                    <i class="bi bi-arrow-right"></i>
-                </div>
+          <div class="card-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </div>
 
-            </a>
+        </a>
 
-        </div>
+      </div>
 
     </div>
 
-    <!-- Other Dashboard Sections -->
+    <!-- OTHER DASHBOARD SECTIONS -->
     <div
-        class="dashboard-section"
-        *ngFor="let section of sections">
+      class="dashboard-section"
+      *ngFor="let section of sections">
 
-        <div class="section-header">
-
-            <div>
-                <h4>{{ section.heading }}</h4>
-            </div>
-
+      <div class="section-header">
+        <div>
+          <h4>{{ section.heading }}</h4>
         </div>
+      </div>
 
-        <div class="dashboard-grid">
+      <div class="dashboard-grid">
 
-            <a
-                *ngFor="let card of section.cards"
-                class="dashboard-card"
-                [ngClass]="'accent-' + card.color"
-                [routerLink]="card.route">
+        <a
+          *ngFor="let card of section.cards"
+          class="dashboard-card"
+          [ngClass]="'accent-' + card.color"
+          [routerLink]="card.route">
 
-                <div class="card-icon">
-                    <i [class]="card.icon"></i>
-                </div>
+          <div class="card-icon">
+            <i [class]="card.icon"></i>
+          </div>
 
-                <div class="card-content">
+          <div class="card-content">
 
-                    <h5>{{ card.title }}</h5>
+            <h5>{{ card.title }}</h5>
 
-                    <p>{{ card.subtitle }}</p>
+            <p>{{ card.subtitle }}</p>
 
-                </div>
+          </div>
 
-                <div class="card-arrow">
-                    <i class="bi bi-arrow-right"></i>
-                </div>
+          <div class="card-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </div>
 
-            </a>
+        </a>
 
-        </div>
+      </div>
 
     </div>
-</div>
+
+  </div>
 
 </div>

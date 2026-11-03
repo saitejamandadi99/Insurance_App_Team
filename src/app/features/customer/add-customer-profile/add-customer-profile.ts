@@ -38,7 +38,8 @@ export class AddCustomer implements OnDestroy {
 
   customerForm: FormGroup = new FormGroup({
     dateOfBirth: new FormControl('', [
-      Validators.required
+      Validators.required,
+      (control) => this.validateMinimumAge(control as FormControl)
     ]),
 
     address: new FormControl('', [
@@ -76,6 +77,28 @@ export class AddCustomer implements OnDestroy {
       Validators.maxLength(50)
     ])
   });
+
+  validateMinimumAge(control: FormControl) {
+  if (!control.value) {
+    return null;
+  }
+
+  const today = new Date();
+  const dateOfBirth = new Date(control.value);
+
+  let age = today.getFullYear() - dateOfBirth.getFullYear();
+
+  const monthDifference = today.getMonth() - dateOfBirth.getMonth();
+
+  if (
+    monthDifference < 0 ||
+    (monthDifference === 0 && today.getDate() < dateOfBirth.getDate())
+  ) {
+    age--;
+  }
+
+  return age < 18 ? { minimumAge: true } : null;
+}
 
   constructor(
     private customerProfileService: CustomerProfileServices,
@@ -147,7 +170,7 @@ export class AddCustomer implements OnDestroy {
         this.isLoading = false;
 
         this.toastService.info(response.message);
-        this.router.navigate(['/customer-profile/view']);
+        this.router.navigate(['/myprofile']);
       },
 
       error: (err: HttpErrorResponse) => {
@@ -164,7 +187,7 @@ export class AddCustomer implements OnDestroy {
   }
 
   navigateToCustomers(): void {
-    this.router.navigate(['/customer-profile/view']);
+    this.router.navigate(['/myprofile']);
   }
 
   getdateOfBirth(): FormControl {

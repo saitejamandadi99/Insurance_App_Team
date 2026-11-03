@@ -14,7 +14,6 @@
 
   <!-- LOADING -->
   @if (isLoading) {
-
     <div class="loading-container">
       <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -22,12 +21,10 @@
 
       <p>Loading dashboard data...</p>
     </div>
-
   }
 
   <!-- ERROR -->
   @else if (errorMessage) {
-
     <div class="error-card">
       <i class="bi bi-exclamation-triangle-fill"></i>
 
@@ -35,13 +32,17 @@
 
       <p>{{ errorMessage }}</p>
 
+      <button class="btn btn-primary" (click)="loadDashboard()">
+        <i class="bi bi-arrow-clockwise me-2"></i>
+        Retry
+      </button>
     </div>
-
   }
 
+  <!-- DASHBOARD DATA -->
   @else if (dashboard) {
 
-    <!-- DASHBOARD STATISTICS -->
+    <!-- SUMMARY CARDS -->
     <div class="dashboard-stats">
 
       <!-- ACTIVE USERS -->
@@ -124,12 +125,10 @@
       @if (dashboard.topClaims && dashboard.topClaims.length > 0) {
 
         <div class="table-responsive">
-
           <table class="table dashboard-table">
 
             <thead>
               <tr>
-                <th>CLAIM ID</th>
                 <th>CLAIM NUMBER</th>
                 <th>CLAIM AMOUNT</th>
                 <th>CLAIM STATUS</th>
@@ -138,12 +137,9 @@
             </thead>
 
             <tbody>
-
               @for (claim of dashboard.topClaims; track claim.claimId) {
-
                 <tr>
-
-                  <td>#{{ claim.claimId }}</td>
+                  
 
                   <td>
                     <span class="claim-number">
@@ -166,31 +162,21 @@
                       routerLink="/viewclaims"
                       class="claim-action"
                       title="View Claims">
-
                       <i class="bi bi-eye"></i>
-
                     </a>
                   </td>
-
                 </tr>
-
               }
-
             </tbody>
 
           </table>
-
         </div>
 
-      }
-
-      @else {
-
+      } @else {
         <div class="empty-claims">
           <i class="bi bi-inbox"></i>
           <p>No claims available.</p>
         </div>
-
       }
 
     </div>

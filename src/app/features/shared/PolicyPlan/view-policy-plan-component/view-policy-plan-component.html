@@ -1,26 +1,38 @@
+
 <div class="container-fluid py-4 view-plans-page">
 
   <!-- PAGE HEADER -->
   @if (isAdmin) {
+
     <app-page-header
       title="Policy Plans"
-      subtitle="Manage all insurance policy plans in the system."
+      subtitle="Manage insurance policy plans and their availability."
       buttonText="Add Policy Plan"
       buttonIcon="bi bi-plus-lg"
       (buttonClick)="navigateToAddPlan()">
     </app-page-header>
-  }
-  @else {
+
+  } @else if (isOfficer) {
+
     <app-page-header
       title="Policy Plans"
-      subtitle="Browse available insurance policy plans.">
+      subtitle="View available plans and issue policies to customers.">
     </app-page-header>
+
+  } @else {
+
+    <app-page-header
+      title="Explore Policy Plans"
+      subtitle="Explore insurance plans and choose the coverage that suits your needs.">
+    </app-page-header>
+
   }
 
   <!-- FILTER FORM -->
   <form [formGroup]="filterForm" (ngSubmit)="searchPlans()">
 
     <app-filter-card>
+
       <div class="row g-3">
 
         <!-- SEARCH -->
@@ -38,9 +50,8 @@
 
         <!-- SORT BY -->
         <div class="col-lg-3 col-md-6">
-          <label class="form-label-custom">
-            Sort By
-          </label>
+
+          <label class="form-label-custom">Sort By</label>
 
           <select
             class="form-select input-dark"
@@ -53,13 +64,13 @@
             <option value="createdDate">Created Date</option>
 
           </select>
+
         </div>
 
         <!-- SORT DIRECTION -->
         <div class="col-lg-3 col-md-6">
-          <label class="form-label-custom">
-            Sort Order
-          </label>
+
+          <label class="form-label-custom">Sort Order</label>
 
           <select
             class="form-select input-dark"
@@ -69,17 +80,18 @@
             <option value="desc">Descending</option>
 
           </select>
+
         </div>
 
         <!-- PAGE SIZE -->
         <div class="col-lg-3 col-md-6">
-          <label class="form-label-custom">
-            Records Per Page
-          </label>
+
+          <label class="form-label-custom">Records Per Page</label>
 
           <select
             class="form-select input-dark"
-            formControlName="pageSize">
+            formControlName="pageSize"
+            (change)="searchPlans()">
 
             <option [ngValue]="5">5</option>
             <option [ngValue]="10">10</option>
@@ -87,161 +99,277 @@
             <option [ngValue]="50">50</option>
 
           </select>
+
         </div>
 
-        <!-- RESET FILTERS -->
+        <!-- RESET -->
         <div class="col-lg-3 col-md-6 d-flex align-items-end">
+
           <button
             type="button"
             class="btn btn-secondary-custom w-100"
-            (click)="resetFilters()">
+            (click)="resetFilters()"
+            [disabled]="isLoading">
 
             <i class="bi bi-arrow-counterclockwise me-2"></i>
             Reset Filters
 
           </button>
+
         </div>
 
         <!-- SEARCH BUTTON -->
         <div class="col-12 d-flex justify-content-end">
+
           <button
             type="submit"
-            class="btn btn-primary-custom">
+            class="btn btn-primary-custom"
+            [disabled]="isLoading">
 
             <i class="bi bi-search me-2"></i>
             Search Plans
 
           </button>
+
         </div>
 
       </div>
+
     </app-filter-card>
 
   </form>
 
-<!-- LOADING -->
-@if (isLoading) {
-  <app-loading-spinner></app-loading-spinner>
-}
-@else {
-  @if (lstPlans?.records?.length) {
+  <!-- LOADING -->
+  @if (isLoading) {
 
-    <!-- TABLE SUMMARY -->
-    <div class="table-summary mt-4">
-      <div class="summary-left">
-        <div class="summary-icon">
-          <i class="bi bi-journal-check"></i>
+    <app-loading-spinner
+      message="Loading policy plans..."
+      size="md">
+    </app-loading-spinner>
+
+  } @else {
+
+    @if (lstPlans?.records?.length) {
+
+      <!-- TABLE SUMMARY -->
+      <div class="table-summary mt-4">
+
+        <div class="summary-left">
+
+          <div class="summary-icon">
+            <i class="bi bi-journal-check"></i>
+          </div>
+
+          <div>
+            <h5>Policy Plan Records</h5>
+            <p>
+              {{ isCustomer
+                ? 'Available insurance plans'
+                : 'Insurance policy plans'
+              }}
+            </p>
+          </div>
+
         </div>
-        <div>
-          <h5>Policy Plan Records</h5>
-          <p>Available insurance policy plans</p>
+
+        <div class="records-count">
+          <span>{{ lstPlans.totalRecords }}</span>
+          Total Records
         </div>
+
       </div>
 
-      <div class="records-count">
-        <span>{{ lstPlans.totalRecords }}</span>
-        Total Records
-      </div>
-    </div>
+      <!-- TABLE -->
+      <div class="table-responsive mt-3 app-card plans-table-card">
 
-    <!-- TABLE -->
-    <div class="table-responsive mt-3 app-card plans-table-card">
-      <table class="table table-hover align-middle table-dark-custom">
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Product Type</th>
-            <th>Plan Name</th>
-            <th>Coverage Amount</th>
-            <th>Premium Amount</th>
-            <th>Premium Type</th>
-            <th>Duration</th>
-            <th class="text-center">Status</th>
-            <th>Created On</th>
+        <table class="table table-hover align-middle table-dark-custom">
 
-            @if (isAdmin) {
-              <th class="text-center">Actions</th>
-            }
-          </tr>
-        </thead>
-
-        <tbody>
-          @for (plan of lstPlans.records; track plan.planId) {
+          <thead>
             <tr>
-              <td>
-                <div class="product-cell">
-                  <div class="product-icon">
-                    <i class="bi bi-box-seam"></i>
-                  </div>
-                  <span>{{ plan.productName }}</span>
-                </div>
-              </td>
+              <th>Product Name</th>
+              <th>Product Type</th>
+              <th>Plan Name</th>
+              <th>Coverage Amount</th>
+              <th>Premium Amount</th>
+              <th>Premium Type</th>
+              <th>Duration</th>
+              <th class="text-center">Status</th>
+              <th>Created On</th>
 
-              <td>{{ plan.productType }}</td>
-              <td>{{ plan.planName }}</td>
-
-              <td>
-                {{ plan.coverageAmount | currency:'INR':'symbol':'1.2-2' }}
-              </td>
-
-              <td>
-                {{ plan.premiumAmount | currency:'INR':'symbol':'1.2-2' }}
-              </td>
-
-              <td>{{ plan.premiumType }}</td>
-              <td>{{ plan.duration }} Years</td>
-
-              <td class="text-center">
-                <app-status-badge [status]="plan.activeStatus">
-                </app-status-badge>
-              </td>
-
-              <td>
-                {{ plan.createdDate | date:'dd-MM-yyyy' }}
-              </td>
-
-              @if (isAdmin) {
-                <td class="text-center">
-                  <app-action-buttons
-                    [actions]="plan.activeStatus === 'Active'
-                      ? ['edit', 'deactivate']
-                      : ['edit', 'activate']"
-                    (actionClick)="
-                      $event === 'edit'
-                        ? editPlan(plan.planId)
-                        : $event === 'activate'
-                          ? activatePlan(plan.planId)
-                          : deactivatePlan(plan.planId)">
-                  </app-action-buttons>
-                </td>
+              @if (isAdmin || isOfficer || isCustomer) {
+                <th class="text-center">Actions</th>
               }
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+          </thead>
 
-    <!-- PAGINATION -->
-    <div class="pagination-container">
-      <app-pagination
-        [currentPage]="lstPlans.currentPage"
-        [totalPages]="lstPlans.totalPages"
-        [totalRecords]="lstPlans.totalRecords"
-        [pageSize]="filterForm.value.pageSize ?? 10"
-        (pageChange)="onPageChange($event)">
-      </app-pagination>
-    </div>
+          <tbody>
+
+            @for (plan of lstPlans.records; track plan.planId) {
+
+              <tr>
+
+                <td>
+                  <div class="product-cell">
+                    <div class="product-icon">
+                      <i class="bi bi-box-seam"></i>
+                    </div>
+                    <span>{{ plan.productName }}</span>
+                  </div>
+                </td>
+
+                <td>{{ plan.productType }}</td>
+
+                <td>
+                  <span class="plan-name">
+                    {{ plan.planName }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="amount-text">
+                    {{ plan.coverageAmount | currency:'INR':'symbol':'1.2-2' }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="premium-amount">
+                    {{ plan.premiumAmount | currency:'INR':'symbol':'1.2-2' }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="premium-type">
+                    {{ plan.premiumType }}
+                  </span>
+                </td>
+
+                <td>{{ plan.duration }} Years</td>
+
+                <td class="text-center">
+                  <app-status-badge [status]="plan.activeStatus">
+                  </app-status-badge>
+                </td>
+
+                <td>
+                  {{ plan.createdDate | date:'dd-MM-yyyy' }}
+                </td>
+
+                <!-- ADMIN ACTIONS -->
+                @if (isAdmin) {
+
+                  <td class="text-center">
+
+                    <div class="plan-actions">
+
+                      <app-action-buttons
+                        [actions]="plan.activeStatus === 'Active'
+                          ? ['edit', 'deactivate']
+                          : ['edit', 'activate']"
+                        (actionClick)="
+                          $event === 'edit'
+                            ? editPlan(plan.planId)
+                            : $event === 'activate'
+                              ? activatePlan(plan.planId)
+                              : deactivatePlan(plan.planId)">
+                      </app-action-buttons>
+
+                    </div>
+
+                  </td>
+
+                }
+
+                <!-- OFFICER ACTION -->
+                @else if (isOfficer) {
+
+                  <td class="text-center">
+
+                    <button
+                      type="button"
+                      class="btn btn-issue"
+                      (click)="issuePolicy()">
+
+                      <i class="bi bi-file-earmark-check me-1"></i>
+                      Issue Policy
+
+                    </button>
+
+                  </td>
+
+                }
+
+                <!-- CUSTOMER ACTION -->
+                @else if (isCustomer) {
+
+                  <td class="text-center">
+
+                    <button
+  type="button"
+  class="btn btn-purchase"
+  [disabled]="isPurchasing"
+  (click)="purchasePolicy(plan.planId)">
+
+  @if (isPurchasing && purchasingPlanId === plan.planId) {
+
+    <span
+      class="spinner-border spinner-border-sm"
+      aria-hidden="true">
+    </span>
+
+    Processing...
+
+  } @else {
+
+    <i class="bi bi-cart-check"></i>
+    Purchase
 
   }
-  @else {
-    <div class="empty-container">
-      <app-empty-state
-        icon="bi bi-file-earmark-text"
-        title="No Policy Plans Found"
-        message="No policy plans match your current search criteria."
-        buttonText="Reset Filters"
-        (buttonClick)="resetFilters()">
-      </app-empty-state>
-    </div>
+
+</button>
+
+                  </td>
+
+                }
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="pagination-container">
+
+        <app-pagination
+          [currentPage]="lstPlans.currentPage"
+          [totalPages]="lstPlans.totalPages"
+          [totalRecords]="lstPlans.totalRecords"
+          [pageSize]="filterForm.value.pageSize ?? 10"
+          (pageChange)="onPageChange($event)">
+        </app-pagination>
+
+      </div>
+
+    } @else {
+
+      <div class="empty-container">
+
+        <app-empty-state
+          icon="bi bi-file-earmark-text"
+          title="No Policy Plans Found"
+          message="No policy plans match your current search criteria."
+          buttonText="Reset Filters"
+          (buttonClick)="resetFilters()">
+        </app-empty-state>
+
+      </div>
+
+    }
+
   }
-}
+
+</div>

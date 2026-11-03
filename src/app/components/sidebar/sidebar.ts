@@ -227,7 +227,7 @@ export class SidebarComponent implements OnInit {
         {
           heading: 'Policies',
           links: [
-            { icon: 'bi bi-bag-plus', label: 'Purchase Policy', route: '/purchasepolicy' },
+            // { icon: 'bi bi-bag-plus', label: 'Purchase Policy', route: '/purchasepolicy' },
             { icon: 'bi bi-shield-check', label: 'My Policies', route: '/mypolicies' }
           ]
         },
