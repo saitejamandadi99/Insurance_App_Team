@@ -236,7 +236,7 @@
 
 .claim-action:hover {
   background: var(--info);
-  color: white;
+  /* color: white; */
 }
 
 /* =====================================

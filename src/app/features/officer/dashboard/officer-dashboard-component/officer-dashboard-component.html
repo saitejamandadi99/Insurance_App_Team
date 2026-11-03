@@ -112,7 +112,6 @@
 
             <thead>
               <tr>
-                <th>CLAIM ID</th>
                 <th>CLAIM NUMBER</th>
                 <th>CLAIM AMOUNT</th>
                 <th>CLAIM STATUS</th>
@@ -123,7 +122,6 @@
             <tbody>
               @for (claim of dashboard.topClaims; track claim.claimId) {
                 <tr>
-                  <td>#{{ claim.claimId }}</td>
 
                   <td>
                     <span class="claim-number">
@@ -143,9 +141,9 @@
 
                   <td>
                     <a
-                      routerLink="/viewclaims"
+                      routerLink="/officerreview/{{ claim.claimId }}"
                       class="claim-action"
-                      title="View Claims">
+                      title="View Claim">
                       <i class="bi bi-eye"></i>
                     </a>
                   </td>

@@ -12,5 +12,5 @@ export interface ClaimResponseDto{
     officerRemarks:string,
     adminRemarks:string, 
     createdDate:string, 
-    UpdatedByName:string,
+    updatedByName:string,
 }

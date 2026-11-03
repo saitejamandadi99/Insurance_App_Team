@@ -75,6 +75,7 @@ export class VerifyEmail {
         // Update stored email in case the user edited it
         localStorage.setItem( 'registeredEmail', request.email);
         this.toastService.success(response.message);
+        this.cdr.detectChanges();
       },
       error: (err: HttpErrorResponse) => {
         this.isResending = false;

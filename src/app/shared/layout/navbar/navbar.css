@@ -231,3 +231,89 @@
     font-size: 12px;
   }
 }
+.insupro-navbar {
+  width: 100%;
+  min-height: 70px;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+  padding: 12px 24px;
+
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+
+  position: relative;
+  z-index: 100;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  flex: 1;
+  min-width: 0;
+
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.logo-text {
+  min-width: 0;
+}
+
+.logo-text h3 {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.logo-text small {
+  display: block;
+  white-space: nowrap;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.user-details {
+  min-width: 0;
+}
+
+.user-info h6 {
+  margin: 0 0 5px;
+  max-width: 220px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}

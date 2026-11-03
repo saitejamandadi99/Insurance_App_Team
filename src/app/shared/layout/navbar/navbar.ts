@@ -12,7 +12,7 @@ import { Role } from '../../../Enums/Role';
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  userEmail = localStorage.getItem('email') ?? '';
+  userName = localStorage.getItem('fullName') ?? '';
   role = localStorage.getItem('role') ?? '';
 
   constructor(
