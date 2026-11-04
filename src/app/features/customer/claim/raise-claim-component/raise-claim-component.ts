@@ -1,16 +1,26 @@
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ErrorResponseDto } from '../../../../DTO/ErrorResponseDto';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ReactiveFormsModule,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import { Claim } from '../../../../services/Claim/claim';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Policy } from '../../../../services/Policy/policy';
 import { ToastService } from '../../../../services/Toast/toast-service';
 import { PolicyResponseDto } from '../../../../DTO/PolicyResponseDto';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  imports: [],
-  standalone:true,
+  imports: [DatePipe, ReactiveFormsModule],
+  standalone: true,
   selector: 'app-raise-claim-component',
   styleUrl: './raise-claim-component.css',
   templateUrl: './raise-claim-component.html',
@@ -35,6 +45,7 @@ export class RaiseClaimComponent implements OnInit {
   isLoading = false;
   policyId!: number;
   today!: string;
+  minIncidentDate!: string;
   policy!: PolicyResponseDto;
 
   selectedFiles: File[] = [];
@@ -84,7 +95,11 @@ export class RaiseClaimComponent implements OnInit {
 
     this.policyId = Number(policyIdParam);
 
-    if (!policyIdParam || !Number.isInteger(this.policyId) || this.policyId <= 0) {
+    if (
+      !policyIdParam ||
+      !Number.isInteger(this.policyId) ||
+      this.policyId <= 0
+    ) {
       this.router.navigate(['/mypolicies']);
       return;
     }
@@ -95,6 +110,11 @@ export class RaiseClaimComponent implements OnInit {
     this.policyService.getPolicyById(this.policyId).subscribe({
       next: (response) => {
         this.policy = response.data;
+
+        // Set the minimum selectable date to the policy start date.
+        this.minIncidentDate = this.formatDateForInput(
+          new Date(this.policy.startDate)
+        );
 
         const incidentDateControl =
           this.raiseClaimForm.get('incidentDate');
@@ -153,7 +173,11 @@ export class RaiseClaimComponent implements OnInit {
   raiseClaim(): void {
     this.filesTouched = true;
 
-    if (this.raiseClaimForm.invalid || this.selectedFiles.length === 0 || this.isLoading) {
+    if (
+      this.raiseClaimForm.invalid ||
+      this.selectedFiles.length === 0 ||
+      this.isLoading
+    ) {
       this.raiseClaimForm.markAllAsTouched();
       return;
     }

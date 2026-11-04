@@ -1,0 +1,266 @@
+.documents-page {
+  padding: 24px;
+  background: #f5f8fc;
+  min-height: 100vh;
+}
+
+/* Filters */
+
+.filter-card,
+.documents-table-card {
+  background: #ffffff;
+  border: 1px solid #e5ebf3;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 22px;
+}
+
+.form-label {
+  color: #263b53;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form-control,
+.form-select {
+  min-height: 42px;
+  border: 1px solid #dce4ef;
+  border-radius: 7px;
+  font-size: 13px;
+  color: #263b53;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #2868a8;
+  box-shadow: 0 0 0 3px rgba(40, 104, 168, 0.1);
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-wrapper i {
+  position: absolute;
+  left: 12px;
+  top: 13px;
+  color: #718096;
+}
+
+.search-wrapper input {
+  padding-left: 36px;
+}
+
+.btn-primary {
+  background: #173b63;
+  border-color: #173b63;
+  min-height: 42px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: #2868a8;
+  border-color: #2868a8;
+}
+
+/* Table Header */
+
+.table-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.table-heading h5 {
+  color: #173b63;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.table-heading p {
+  color: #718096;
+  font-size: 13px;
+  margin: 0;
+}
+
+.record-count {
+  color: #2868a8;
+  background: #edf4fb;
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Documents Table */
+
+.documents-table {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.documents-table thead th {
+  background: #f5f8fc;
+  color: #52657d;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 14px 16px;
+  border-bottom: 1px solid #dce4ef;
+}
+
+.documents-table tbody td {
+  color: #52657d;
+  font-size: 13px;
+  padding: 16px;
+  border-bottom: 1px solid #edf1f6;
+}
+
+.documents-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.documents-table tbody tr:hover {
+  background: #f9fbfe;
+}
+
+.document-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #263b53;
+  font-weight: 600;
+}
+
+.document-name i {
+  color: #2868a8;
+  font-size: 19px;
+}
+
+.claim-number {
+  color: #173b63;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.document-type {
+  background: #edf4fb;
+  color: #2868a8;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Actions */
+
+.document-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.document-actions .btn {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 11px;
+  border-radius: 6px;
+}
+
+.btn-view {
+  color: #2868a8;
+  background: #edf4fb;
+  border: 1px solid #d7e6f5;
+}
+
+.btn-view:hover {
+  background: #dcebf9;
+}
+
+.btn-download {
+  color: #ffffff;
+  background: #173b63;
+  border: 1px solid #173b63;
+}
+
+.btn-download:hover {
+  background: #2868a8;
+  border-color: #2868a8;
+}
+
+/* Pagination */
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border-top: 1px solid #edf1f6;
+  margin-top: 15px;
+  padding-top: 18px;
+}
+
+.pagination-info {
+  color: #718096;
+  font-size: 12px;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-pagination {
+  border: 1px solid #dce4ef;
+  color: #173b63;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-pagination:hover:not(:disabled) {
+  background: #edf4fb;
+}
+
+.btn-pagination:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.page-number {
+  color: #52657d;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .documents-page {
+    padding: 14px;
+  }
+
+  .filter-card,
+  .documents-table-card {
+    padding: 16px;
+  }
+
+  .table-heading {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pagination-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

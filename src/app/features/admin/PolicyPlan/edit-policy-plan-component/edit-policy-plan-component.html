@@ -1,0 +1,437 @@
+<div class="container-fluid py-4 edit-plan-page">
+
+  <!-- PAGE HEADER -->
+
+  <div class="page-header-section mb-4">
+<div class="page-heading">
+
+  <div class="heading-icon">
+    <i class="bi bi-pencil-square"></i>
+  </div>
+
+  <div>
+    <h3>Edit Policy Plan</h3>
+    <p>Update the details of your existing insurance policy plan.</p>
+  </div>
+
+</div>
+
+<button
+  type="button"
+  class="btn btn-secondary-custom"
+  (click)="navigateToPlans()">
+
+  <i class="bi bi-arrow-left"></i>
+  Back to Plans
+
+</button>
+
+  </div>
+
+  <!-- LOADING -->
+
+@if (isLoading) {
+<div class="loading-container">
+
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+
+  <p>Loading policy plan details...</p>
+
+</div>
+}
+
+@else {
+<!-- FORM CONTAINER -->
+<div class="row justify-content-center">
+
+  <div class="col-12 col-lg-10 col-xl-9">
+
+    <div class="app-card">
+
+      <!-- CARD HEADER -->
+      <div class="card-header-custom">
+
+        <div class="card-heading-icon">
+          <i class="bi bi-shield-check"></i>
+        </div>
+
+        <div>
+          <h4>Policy Plan Information</h4>
+          <p>Modify the information below to update the policy plan.</p>
+        </div>
+
+      </div>
+
+      <!-- CARD BODY -->
+      <div class="card-body-custom">
+
+        <form
+          [formGroup]="planForm"
+          (ngSubmit)="editPolicyPlan()">
+
+          <div class="row">
+
+            <!-- PRODUCT -->
+            <div class="col-md-6 mb-4">
+
+              <label class="form-label-custom">
+                Insurance Product
+                <span class="required-star">*</span>
+              </label>
+
+              <select
+                class="form-select input-dark"
+                formControlName="productId">
+
+                <option value="">
+                  Select Insurance Product
+                </option>
+
+                @for (product of products; track product.productId) {
+
+                  <option [ngValue]="product.productId">
+                    {{ product.productName }}
+                  </option>
+
+                }
+
+              </select>
+
+              @if (
+                productId.invalid &&
+                (productId.dirty || productId.touched)
+              ) {
+
+                <div class="validation-message">
+
+                  @if (productId.hasError('required')) {
+                    <small>Product is required.</small>
+                  }
+
+                  @if (productId.hasError('min')) {
+                    <small>Please select a valid product.</small>
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+            <!-- PLAN NAME -->
+            <div class="col-md-6 mb-4">
+
+              <label class="form-label-custom">
+                Plan Name
+                <span class="required-star">*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control input-dark"
+                formControlName="planName"
+                placeholder="Enter policy plan name">
+
+              @if (
+                planName.invalid &&
+                (planName.dirty || planName.touched)
+              ) {
+
+                <div class="validation-message">
+
+                  @if (planName.hasError('required')) {
+                    <small>Plan name is required.</small>
+                  }
+
+                  @if (planName.hasError('minlength')) {
+                    <small>Minimum 3 characters required.</small>
+                  }
+
+                  @if (planName.hasError('maxlength')) {
+                    <small>Maximum 100 characters allowed.</small>
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+            <!-- COVERAGE AMOUNT -->
+            <div class="col-md-6 mb-4">
+
+              <label class="form-label-custom">
+                Coverage Amount (₹)
+                <span class="required-star">*</span>
+              </label>
+
+              <div class="input-icon-wrapper">
+
+                <span class="input-prefix">₹</span>
+
+                <input
+                  type="number"
+                  class="form-control input-dark input-with-prefix"
+                  formControlName="coverageAmount"
+                  min="1000"
+                  placeholder="Enter coverage amount">
+
+              </div>
+
+              @if (
+                coverageAmount.invalid &&
+                (coverageAmount.dirty || coverageAmount.touched)
+              ) {
+
+                <div class="validation-message">
+
+                  @if (coverageAmount.hasError('required')) {
+                    <small>Coverage amount is required.</small>
+                  }
+
+                  @if (coverageAmount.hasError('min')) {
+                    <small>Minimum coverage amount is ₹1,000.</small>
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+            <!-- PREMIUM AMOUNT -->
+            <div class="col-md-6 mb-4">
+
+              <label class="form-label-custom">
+                Premium Amount (₹)
+                <span class="required-star">*</span>
+              </label>
+
+              <div class="input-icon-wrapper">
+
+                <span class="input-prefix">₹</span>
+
+                <input
+                  type="number"
+                  class="form-control input-dark input-with-prefix"
+                  formControlName="premiumAmount"
+                  min="1000"
+                  placeholder="Enter premium amount">
+
+              </div>
+
+              @if (
+                premiumAmount.invalid &&
+                (premiumAmount.dirty || premiumAmount.touched)
+              ) {
+
+                <div class="validation-message">
+
+                  @if (premiumAmount.hasError('required')) {
+                    <small>Premium amount is required.</small>
+                  }
+
+                  @if (premiumAmount.hasError('min')) {
+                    <small>Minimum premium amount is ₹1,000.</small>
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+            <!-- COVERAGE VALIDATION -->
+            @if (
+              planForm.hasError('coverageMustExceedPremium') &&
+              (coverageAmount.touched || premiumAmount.touched)
+            ) {
+
+              <div class="col-12 mb-3">
+
+                <div class="comparison-warning">
+
+                  <i class="bi bi-exclamation-triangle-fill"></i>
+
+                  Coverage amount must be greater than premium amount.
+
+                </div>
+
+              </div>
+
+            }
+
+            <!-- PREMIUM TYPE -->
+            <div class="col-md-6 mb-4">
+
+              <label class="form-label-custom">
+                Premium Type
+                <span class="required-star">*</span>
+              </label>
+
+              <select
+                class="form-select input-dark"
+                formControlName="premiumType">
+
+                <option value="">
+                  Select Premium Type
+                </option>
+
+                @for (type of premiumTypes; track type) {
+
+                  <option [value]="type">
+                    {{ type }}
+                  </option>
+
+                }
+
+              </select>
+
+              @if (
+                premiumType.invalid &&
+                (premiumType.dirty || premiumType.touched)
+              ) {
+
+                <div class="validation-message">
+                  <small>Premium type is required.</small>
+                </div>
+
+              }
+
+            </div>
+
+            <!-- DURATION -->
+            <div class="col-md-6 mb-4">
+
+              <label class="form-label-custom">
+                Duration (Years)
+                <span class="required-star">*</span>
+              </label>
+
+              <input
+                type="number"
+                class="form-control input-dark"
+                formControlName="duration"
+                min="1"
+                max="100"
+                placeholder="Enter duration">
+
+              @if (
+                duration.invalid &&
+                (duration.dirty || duration.touched)
+              ) {
+
+                <div class="validation-message">
+
+                  @if (duration.hasError('required')) {
+                    <small>Duration is required.</small>
+                  }
+
+                  @if (duration.hasError('min')) {
+                    <small>Minimum duration is 1 year.</small>
+                  }
+
+                  @if (duration.hasError('max')) {
+                    <small>Maximum duration is 100 years.</small>
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+            <!-- TERMS AND CONDITIONS -->
+            <div class="col-12 mb-4">
+
+              <label class="form-label-custom">
+                Terms & Conditions
+                <span class="required-star">*</span>
+              </label>
+
+              <textarea
+                rows="5"
+                class="form-control input-dark terms-textarea"
+                formControlName="termsAndConditions"
+                maxlength="300"
+                placeholder="Enter policy terms and conditions...">
+              </textarea>
+
+              <div class="textarea-footer">
+
+                <small class="text-muted">
+                  Maximum 300 characters.
+                </small>
+
+                <small class="text-muted">
+                  {{ termsAndConditions.value?.length || 0 }}/300
+                </small>
+
+              </div>
+
+              @if (
+                termsAndConditions.invalid &&
+                (termsAndConditions.dirty || termsAndConditions.touched)
+              ) {
+
+                <div class="validation-message">
+
+                  @if (termsAndConditions.hasError('required')) {
+                    <small>Terms and conditions are required.</small>
+                  }
+
+                  @if (termsAndConditions.hasError('minlength')) {
+                    <small>Minimum 3 characters required.</small>
+                  }
+
+                  @if (termsAndConditions.hasError('maxlength')) {
+                    <small>Maximum 300 characters allowed.</small>
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+          </div>
+
+          <!-- FORM FOOTER -->
+          <div class="form-footer">
+
+            <button
+              type="button"
+              class="btn btn-secondary-custom"
+              (click)="navigateToPlans()">
+
+              <i class="bi bi-x-circle"></i>
+              Cancel
+
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary-custom"
+              [disabled]="planForm.invalid || isLoading">
+
+              <i class="bi bi-save"></i>
+              Update Policy Plan
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+}
+
+</div>

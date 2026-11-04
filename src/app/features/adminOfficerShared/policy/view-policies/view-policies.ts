@@ -8,9 +8,26 @@ import { PolicyStatus } from '../../../../Enums/PolicyStatus';
 import { Policy } from '../../../../services/Policy/policy';
 import { Router } from '@angular/router';
 import { ToastService } from '../../../../services/Toast/toast-service';
-
+import { Pagination } from '../../../../shared/ui/pagination/pagination';
+import { FilterCard } from '../../../../shared/ui/filter-card/filter-card';
+import { PageHeader } from '../../../../shared/ui/page-header/page-header';
+import { SearchBox } from '../../../../shared/ui/search-box/search-box';
+import { LoadingSpinner } from '../../../../shared/ui/loading-spinner/loading-spinner';
+import { StatusBadge } from '../../../../shared/ui/status-badge/status-badge';
+import { EmptyState } from '../../../../shared/ui/empty-state/empty-state';
+import {DatePipe, CurrencyPipe} from '@angular/common';
+import {ReactiveFormsModule} from '@angular/forms';
 @Component({
-  imports: [],
+  imports: [ReactiveFormsModule,
+    CurrencyPipe,
+    DatePipe,
+    Pagination,
+    FilterCard,
+    PageHeader,
+    SearchBox,
+    LoadingSpinner,
+    StatusBadge,
+    EmptyState],
   standalone:true,
   selector: 'app-view-policies',
   styleUrl: './view-policies.css',
@@ -127,6 +144,10 @@ export class ViewPolicies implements OnInit {
 
   navigateToIssuePolicy(): void {
     this.router.navigate(['/issuepolicy']);
+  }
+
+    navigateToRecordPayment(policyId: number): void {
+    this.router.navigate(['/recordpayment', policyId]);
   }
 
   cancelPolicy(policyId: number): void {

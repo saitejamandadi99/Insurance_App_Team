@@ -1,1 +1,320 @@
-<p>view-users works!</p>
+
+<div class="users-page">
+
+  <!-- PAGE HEADER -->
+  <app-page-header
+    title="User Management"
+    subtitle="Manage registered users, monitor account status and control access."
+    buttonText="Add User"
+    buttonIcon="bi bi-plus-lg"
+    (buttonClick)="navigateToAddUser()">
+  </app-page-header>
+
+
+  <!-- FILTER SECTION -->
+  <form [formGroup]="filterForm" (ngSubmit)="searchUsers()">
+
+    <app-filter-card>
+
+      <div class="users-filter-section">
+
+        <!-- SEARCH -->
+        <div class="search-section">
+
+          <label class="filter-label">
+            Search Users
+          </label>
+
+          <app-search-box
+            [searchControl]="searchControl"
+            placeholder="Search by name, email or mobile number..."
+            ariaLabel="Search users"
+            (clear)="clearSearch()">
+          </app-search-box>
+
+        </div>
+
+
+        <!-- FILTER CONTROLS -->
+        <div class="filter-controls">
+
+          <div class="filter-field">
+
+            <label class="filter-label">Sort By</label>
+
+            <select
+              class="form-select input-dark"
+              formControlName="sortBy">
+
+              <option value="fullName">Full Name</option>
+              <option value="email">Email</option>
+              <option value="role">Role</option>
+              <option value="activeStatus">Status</option>
+              <option value="createdDate">Created Date</option>
+
+            </select>
+
+          </div>
+
+
+          <div class="filter-field">
+
+            <label class="filter-label">Sort Direction</label>
+
+            <select
+              class="form-select input-dark"
+              formControlName="sortDirection">
+
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+
+            </select>
+
+          </div>
+
+
+          <div class="filter-field">
+
+            <label class="filter-label">Rows Per Page</label>
+
+            <select
+              class="form-select input-dark"
+              formControlName="pageSize"
+              (change)="searchUsers()">
+
+              <option [ngValue]="5">5</option>
+              <option [ngValue]="10">10</option>
+              <option [ngValue]="20">20</option>
+              <option [ngValue]="50">50</option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- FILTER ACTIONS -->
+        <div class="filter-actions">
+
+          <button
+            type="button"
+            class="btn btn-secondary-custom"
+            (click)="resetFilters()"
+            [disabled]="isLoading">
+
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset Filters
+
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary-custom"
+            [disabled]="isLoading">
+
+            <i class="bi bi-search"></i>
+            Apply Filters
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </app-filter-card>
+
+  </form>
+
+
+  <!-- USERS CONTENT -->
+  <div class="users-content">
+
+    <!-- LOADING STATE -->
+    @if (isLoading) {
+
+      <app-loading-spinner
+        message="Loading user accounts..."
+        size="md">
+      </app-loading-spinner>
+
+    }
+
+    @else {
+
+      <!-- USERS AVAILABLE -->
+      @if (users && users.records.length > 0) {
+
+        <div class="users-table-card">
+
+          <!-- TABLE HEADER -->
+          <div class="table-card-header">
+
+            <div>
+              <h3>Registered Users</h3>
+              <p>View and manage user accounts.</p>
+            </div>
+
+            <div class="total-users">
+              <i class="bi bi-people"></i>
+              <span>{{ users.totalRecords }} Users</span>
+            </div>
+
+          </div>
+
+
+          <!-- STATUS UPDATE INDICATOR -->
+          @if (isUpdatingStatus) {
+
+            <div class="status-update-banner">
+              <span class="spinner-border spinner-border-sm"></span>
+              <span>Updating user status...</span>
+            </div>
+
+          }
+
+
+          <!-- TABLE -->
+          <div class="table-responsive">
+
+            <table class="table users-table align-middle">
+
+              <thead>
+                <tr>
+                  <th>USER</th>
+                  <th>EMAIL ADDRESS</th>
+                  <th>MOBILE NUMBER</th>
+                  <th>ROLE</th>
+                  <th class="text-center">STATUS</th>
+                  <th>CREATED DATE</th>
+                  <th class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+
+
+              <tbody>
+
+                @for (user of users.records; track user.userId) {
+
+                  <tr>
+
+                    <!-- USER NAME -->
+                    <td>
+                      <div class="user-info">
+
+                        <div class="user-avatar">
+                          {{ user.fullName.charAt(0).toUpperCase() }}
+                        </div>
+
+                        <span class="user-name">
+                          {{ user.fullName }}
+                        </span>
+
+                      </div>
+                    </td>
+
+
+                    <!-- EMAIL -->
+                    <td>
+                      <span class="user-email">
+                        {{ user.email }}
+                      </span>
+                    </td>
+
+
+                    <!-- MOBILE -->
+                    <td>
+                      <span class="user-mobile">
+                        {{ user.mobileNumber }}
+                      </span>
+                    </td>
+
+
+                    <!-- ROLE -->
+                    <td>
+                      <span class="role-label">
+                        {{ user.role }}
+                      </span>
+                    </td>
+
+
+                    <!-- STATUS -->
+                    <td class="text-center">
+
+                      <app-status-badge
+                        [status]="user.activeStatus">
+                      </app-status-badge>
+
+                    </td>
+
+
+                    <!-- CREATED DATE -->
+                    <td>
+                      <span class="created-date">
+                        {{ user.createdDate | date:'dd MMM yyyy' }}
+                      </span>
+                    </td>
+
+
+                    <!-- ACTIONS -->
+                    <td class="text-center">
+
+                      <app-action-buttons
+                        [actions]="user.activeStatus === 'Active'
+                          ? ['deactivate']
+                          : ['activate']"
+                        (actionClick)="user.activeStatus === 'Active'
+                          ? deactivateUser(user.userId)
+                          : activateUser(user.userId)">
+                      </app-action-buttons>
+
+                    </td>
+
+                  </tr>
+
+                }
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+
+          <!-- PAGINATION -->
+          <div class="table-pagination">
+
+            <app-pagination
+              [currentPage]="users.currentPage"
+              [totalPages]="users.totalPages"
+              [totalRecords]="users.totalRecords"
+              [pageSize]="users.pageSize"
+              (pageChange)="$event < users.currentPage
+                ? previousPage()
+                : nextPage()">
+            </app-pagination>
+
+          </div>
+
+        </div>
+
+      }
+
+      <!-- EMPTY STATE -->
+      @else {
+
+        <app-empty-state
+          icon="bi bi-people"
+          title="No Users Found"
+          message="We couldn't find any users matching your search. Try adjusting your search criteria."
+          buttonText="Reset Filters"
+          (buttonClick)="resetFilters()">
+        </app-empty-state>
+
+      }
+
+    }
+
+  </div>
+
+</div>

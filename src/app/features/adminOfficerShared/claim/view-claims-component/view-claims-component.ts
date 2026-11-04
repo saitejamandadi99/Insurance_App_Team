@@ -9,9 +9,10 @@ import { Router } from '@angular/router';
 import { Claim } from '../../../../services/Claim/claim';
 import { PaginationResponseDto } from '../../../../DTO/PaginationResponseDto';
 import { ClaimResponseDto } from '../../../../DTO/ClaimResponseDto';
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 @Component({
-  imports: [],
+  imports: [ReactiveFormsModule, CurrencyPipe, DatePipe],
   standalone:true,
   selector: 'app-view-claims-component',
   styleUrl: './view-claims-component.css',

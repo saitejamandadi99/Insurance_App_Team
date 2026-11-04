@@ -1,0 +1,310 @@
+<div class="container-fluid py-4 claim-history-page">
+
+  <!-- PAGE HEADER -->
+
+  <div class="history-header mb-4">
+<app-page-header
+  title="Claim Status History"
+  subtitle="Track and monitor all claim status updates and activities.">
+</app-page-header>
+
+  </div>
+
+  <!-- FILTER FORM -->
+
+  <form
+    [formGroup]="filterForm"
+    (ngSubmit)="searchHistories()">
+<app-filter-card>
+
+  <div class="filter-layout">
+
+    <!-- SEARCH -->
+    <div class="search-section">
+
+      <label class="form-label-custom">
+        Search Claim History
+      </label>
+
+      <app-search-box
+        [searchControl]="searchControl"
+        placeholder="Search by Claim Number, Updated By or Remarks..."
+        (clear)="clearSearch()">
+      </app-search-box>
+
+    </div>
+
+    <!-- FILTER CONTROLS -->
+    <div class="filter-controls">
+
+      <!-- SORT BY -->
+      <div class="filter-field">
+
+        <label class="form-label-custom">
+          Sort By
+        </label>
+
+        <select
+          class="form-select input-dark"
+          formControlName="sortBy">
+
+          <option value="updatedDate">Updated Date</option>
+          <option value="newStatus">New Status</option>
+          <option value="previousStatus">Previous Status</option>
+          <option value="updatedBy">Updated By</option>
+
+        </select>
+
+      </div>
+
+      <!-- SORT DIRECTION -->
+      <div class="filter-field">
+
+        <label class="form-label-custom">
+          Sort Direction
+        </label>
+
+        <select
+          class="form-select input-dark"
+          formControlName="sortDirection">
+
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+
+        </select>
+
+      </div>
+
+      <!-- PAGE SIZE -->
+      <div class="filter-field">
+
+        <label class="form-label-custom">
+          Page Size
+        </label>
+
+        <select
+          class="form-select input-dark"
+          formControlName="pageSize">
+
+          <option [ngValue]="5">5</option>
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+          <option [ngValue]="50">50</option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <!-- FILTER BUTTONS -->
+    <div class="filter-actions">
+
+      <button
+        type="button"
+        class="btn btn-secondary-custom"
+        (click)="resetFilters()"
+        [disabled]="isLoading">
+
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reset
+
+      </button>
+
+      <button
+        type="submit"
+        class="btn btn-primary-custom"
+        [disabled]="isLoading">
+
+        <i class="bi bi-search"></i>
+        Apply Filters
+
+      </button>
+
+    </div>
+
+  </div>
+
+</app-filter-card>
+  </form>
+
+  <!-- HISTORY CONTENT -->
+
+  <div class="history-content">
+<!-- LOADING -->
+@if (isLoading) {
+
+  <app-loading-spinner></app-loading-spinner>
+
+}
+
+@else {
+
+  <!-- HISTORY RECORDS -->
+  @if (histories && histories.records.length > 0) {
+
+    <div class="history-table-card">
+
+      <!-- TABLE HEADER -->
+      <div class="table-card-header">
+
+        <div>
+
+          <h4>
+            <i class="bi bi-clock-history me-2"></i>
+            Claim Activity Records
+          </h4>
+
+          <p>
+            Complete history of claim status changes.
+          </p>
+
+        </div>
+
+        <div class="history-count">
+
+          <i class="bi bi-journal-text"></i>
+
+          {{ histories.totalRecords }} Records
+
+        </div>
+
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-responsive">
+
+        <table class="table history-table align-middle">
+
+          <thead>
+
+            <tr>
+              <th>CLAIM NUMBER</th>
+              <th>PREVIOUS STATUS</th>
+              <th>NEW STATUS</th>
+              <th>UPDATED BY</th>
+              <th>UPDATED DATE</th>
+              <th>REMARKS</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            @for (
+              history of histories.records;
+              track history.historyId
+            ) {
+
+              <tr>
+
+                <!-- CLAIM NUMBER -->
+                <td>
+
+                  <span class="claim-number">
+                    {{ history.claimNumber }}
+                  </span>
+
+                </td>
+
+                <!-- PREVIOUS STATUS -->
+                <td>
+
+                  <app-status-badge
+                    [status]="history.previousStatus">
+                  </app-status-badge>
+
+                </td>
+
+                <!-- NEW STATUS -->
+                <td>
+
+                  <app-status-badge
+                    [status]="history.newStatus">
+                  </app-status-badge>
+
+                </td>
+
+                <!-- UPDATED BY -->
+                <td>
+
+                  <div class="updated-by">
+
+                    <div class="user-icon">
+                      <i class="bi bi-person-fill"></i>
+                    </div>
+
+                    <span>
+                      {{ history.updatedBy }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+                <!-- UPDATED DATE -->
+                <td>
+
+                  <div class="date-info">
+
+                    <i class="bi bi-calendar3"></i>
+
+                    {{ history.updatedDate | date:'dd MMM yyyy, hh:mm a' }}
+
+                  </div>
+
+                </td>
+
+                <!-- REMARKS -->
+                <td>
+
+                  <span class="remarks-text">
+                    {{ history.remarks || 'No remarks' }}
+                  </span>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="table-pagination">
+
+        <app-pagination
+          [currentPage]="histories.currentPage"
+          [totalPages]="histories.totalPages"
+          [totalRecords]="histories.totalRecords"
+          [pageSize]="histories.pageSize"
+          (pageChange)="onPageChange($event)">
+        </app-pagination>
+
+      </div>
+
+    </div>
+
+  }
+
+  <!-- EMPTY STATE -->
+  @else {
+
+    <app-empty-state
+      icon="bi bi-clock-history"
+      title="No Claim Status History Found"
+      message="No claim status history records match your search criteria."
+      buttonText="Reset Filters"
+      (buttonClick)="resetFilters()">
+    </app-empty-state>
+
+  }
+
+}
+  </div>
+
+</div>

@@ -1,5 +1,8 @@
 export enum PremiumType
 {
     OneTime="OneTime",
-    AnnualPremium="AnnualPremium"
+    AnnualPremium="AnnualPremium",
+    Monthly="Monthly",
+    Quarterly="Quarterly",
+    HalfYearly="HalfYearly"
 }

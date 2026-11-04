@@ -1,0 +1,381 @@
+/* =====================================
+MAIN PAGE
+===================================== */
+
+.claim-history-page {
+min-height: 100vh;
+color: var(--text-primary);
+}
+
+/* =====================================
+HEADER
+===================================== */
+
+.history-header {
+margin-bottom: 24px;
+}
+
+/* =====================================
+FILTER SECTION
+===================================== */
+
+.filter-layout {
+display: grid;
+grid-template-columns: minmax(250px, 1.5fr) 2fr auto;
+align-items: end;
+gap: 20px;
+padding: 5px;
+}
+
+.search-section,
+.filter-field {
+display: flex;
+flex-direction: column;
+gap: 8px;
+min-width: 0;
+}
+
+.form-label-custom {
+color: var(--text-primary);
+font-size: 13px;
+font-weight: 600;
+margin-bottom: 0;
+}
+
+.filter-controls {
+display: grid;
+grid-template-columns: repeat(3, minmax(120px, 1fr));
+gap: 14px;
+}
+
+/* =====================================
+INPUTS
+===================================== */
+
+.input-dark {
+min-height: 42px;
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+background: var(--surface);
+color: var(--text-primary);
+font-size: 13px;
+box-shadow: none;
+transition: all 0.2s ease;
+}
+
+.input-dark:focus {
+border-color: var(--primary);
+box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+/* =====================================
+FILTER ACTIONS
+===================================== */
+
+.filter-actions {
+display: flex;
+align-items: center;
+gap: 9px;
+white-space: nowrap;
+}
+
+/* =====================================
+BUTTONS
+===================================== */
+
+.btn-primary-custom,
+.btn-secondary-custom {
+min-height: 40px;
+padding: 9px 15px;
+border-radius: var(--radius-md);
+font-size: 13px;
+font-weight: 600;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 7px;
+transition: all 0.2s ease;
+}
+
+.btn-primary-custom {
+background: var(--primary);
+border: 1px solid var(--primary);
+color: #ffffff;
+}
+
+.btn-primary-custom:hover:not(:disabled) {
+opacity: 0.9;
+color: #ffffff;
+transform: translateY(-1px);
+}
+
+.btn-secondary-custom {
+background: var(--surface);
+border: 1px solid var(--border);
+color: var(--text-primary);
+}
+
+.btn-secondary-custom:hover:not(:disabled) {
+background: var(--surface-hover);
+border-color: var(--primary);
+}
+
+.btn-primary-custom:disabled,
+.btn-secondary-custom:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+}
+
+/* =====================================
+CONTENT
+===================================== */
+
+.history-content {
+margin-top: 25px;
+}
+
+/* =====================================
+TABLE CARD
+===================================== */
+
+.history-table-card {
+overflow: hidden;
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius-lg);
+box-shadow: var(--shadow-soft);
+}
+
+.table-card-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 15px;
+padding: 20px 22px;
+border-bottom: 1px solid var(--border);
+}
+
+.table-card-header h4 {
+color: var(--text-primary);
+font-size: 17px;
+font-weight: 700;
+margin-bottom: 5px;
+}
+
+.table-card-header p {
+color: var(--text-muted);
+font-size: 13px;
+margin: 0;
+}
+
+.history-count {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 8px 13px;
+border-radius: var(--radius-md);
+background: rgba(59, 130, 246, 0.12);
+color: var(--info);
+font-size: 13px;
+font-weight: 600;
+white-space: nowrap;
+}
+
+/* =====================================
+HISTORY TABLE
+===================================== */
+
+.history-table {
+width: 100%;
+min-width: 950px;
+margin-bottom: 0;
+}
+
+.history-table thead th {
+padding: 15px 18px;
+background: var(--surface-hover);
+border-bottom: 1px solid var(--border);
+color: var(--text-muted);
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 0.5px;
+white-space: nowrap;
+}
+
+.history-table tbody td {
+padding: 16px 18px;
+border-bottom: 1px solid var(--border);
+color: var(--text-primary);
+font-size: 13px;
+vertical-align: middle;
+}
+
+.history-table tbody tr {
+transition: background 0.2s ease;
+}
+
+.history-table tbody tr:hover {
+background: var(--surface-hover);
+}
+
+.history-table tbody tr:last-child td {
+border-bottom: none;
+}
+
+/* =====================================
+CLAIM NUMBER
+===================================== */
+
+.claim-number {
+color: var(--primary-light);
+font-weight: 700;
+white-space: nowrap;
+}
+
+/* =====================================
+UPDATED BY
+===================================== */
+
+.updated-by {
+display: flex;
+align-items: center;
+gap: 9px;
+white-space: nowrap;
+}
+
+.user-icon {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 32px;
+height: 32px;
+flex-shrink: 0;
+border-radius: 50%;
+background: rgba(124, 58, 237, 0.13);
+color: var(--primary-light);
+font-size: 15px;
+}
+
+/* =====================================
+UPDATED DATE
+===================================== */
+
+.date-info {
+display: flex;
+align-items: center;
+gap: 7px;
+color: var(--text-muted);
+white-space: nowrap;
+font-size: 12px;
+}
+
+.date-info i {
+color: var(--info);
+font-size: 14px;
+}
+
+/* =====================================
+REMARKS
+===================================== */
+
+.remarks-text {
+display: inline-block;
+max-width: 250px;
+color: var(--text-muted);
+line-height: 1.5;
+overflow-wrap: anywhere;
+}
+
+/* =====================================
+PAGINATION
+===================================== */
+
+.table-pagination {
+padding: 16px 22px;
+border-top: 1px solid var(--border);
+}
+
+/* =====================================
+RESPONSIVE
+===================================== */
+
+@media (max-width: 1200px) {
+
+.filter-layout {
+grid-template-columns: 1fr 1fr;
+}
+
+.search-section {
+grid-column: 1 / -1;
+}
+
+.filter-actions {
+grid-column: 1 / -1;
+justify-content: flex-end;
+}
+
+}
+
+@media (max-width: 768px) {
+
+.claim-history-page {
+padding-left: 10px;
+padding-right: 10px;
+}
+
+.filter-layout {
+grid-template-columns: 1fr;
+gap: 16px;
+}
+
+.search-section,
+.filter-actions {
+grid-column: auto;
+}
+
+.filter-controls {
+grid-template-columns: 1fr 1fr;
+}
+
+.filter-actions {
+justify-content: stretch;
+}
+
+.filter-actions button {
+flex: 1;
+}
+
+.table-card-header {
+padding: 16px;
+}
+
+.table-pagination {
+padding: 14px;
+}
+
+}
+
+@media (max-width: 480px) {
+
+.filter-controls {
+grid-template-columns: 1fr;
+}
+
+.filter-actions {
+flex-direction: column-reverse;
+}
+
+.filter-actions button {
+width: 100%;
+}
+
+.table-card-header {
+align-items: flex-start;
+flex-direction: column;
+}
+
+.history-count {
+font-size: 12px;
+}
+
+}

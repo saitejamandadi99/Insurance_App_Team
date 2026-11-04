@@ -1,1 +1,237 @@
-<p>view-my-documents works!</p>
+
+<div class="documents-page">
+
+  <!-- Page Header -->
+  <div class="page-heading">
+    <div>
+      <h2>My Documents</h2>
+      <p>Manage documents submitted for your insurance claims.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-primary-custom"
+      (click)="navigateToAddDocument()"
+    >
+      <i class="bi bi-plus-lg"></i>
+      Add Document
+    </button>
+  </div>
+
+  <!-- Search Section -->
+  <div class="documents-filter-section">
+
+    <div class="search-section">
+
+      <div class="search-input-wrapper">
+        <i class="bi bi-search search-icon"></i>
+
+        <input
+          type="text"
+          class="input-dark search-input"
+          [formControl]="searchControl"
+          placeholder="Search by document name, type or claim number..."
+          aria-label="Search documents"
+        />
+
+        @if (searchControl.value) {
+          <button
+            type="button"
+            class="clear-search"
+            (click)="clearSearch()"
+            aria-label="Clear search"
+          >
+            <i class="bi bi-x-lg"></i>
+          </button>
+        }
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Documents Content -->
+  <div class="documents-content">
+
+    <!-- Loading State -->
+    @if (isLoading) {
+
+      <div class="loading-card">
+        <div class="spinner-border loading-spinner" role="status"></div>
+        <h5>Loading Documents</h5>
+        <p>Please wait while we retrieve your documents.</p>
+      </div>
+
+    }
+
+    <!-- Documents Table -->
+    @else if (filteredDocuments.length > 0) {
+
+      <div class="documents-table-card">
+
+        <div class="table-card-header">
+          <div>
+            <h4>Uploaded Documents</h4>
+            <p>View and manage your submitted claim documents.</p>
+          </div>
+
+          <span class="total-documents">
+            {{ filteredDocuments.length }}
+            {{ filteredDocuments.length === 1 ? 'Document' : 'Documents' }}
+          </span>
+        </div>
+
+        <div class="table-responsive">
+
+          <table class="documents-table">
+
+            <thead>
+              <tr>
+                <th>Document</th>
+                <th>Document Type</th>
+                <th>Claim Number</th>
+                <th>Uploaded Date</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              @for (doc of filteredDocuments; track doc.documentId) {
+
+                <tr>
+
+                  <!-- Document Name -->
+                  <td>
+                    <div class="document-info">
+                      <div class="document-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+                      </div>
+
+                      <span class="document-name" [title]="doc.documentName">
+                        {{ doc.documentName }}
+                      </span>
+                    </div>
+                  </td>
+
+                  <!-- Document Type -->
+                  <td>
+                    <span class="document-type">
+                      {{ doc.documentType }}
+                    </span>
+                  </td>
+
+                  <!-- Claim Number -->
+                  <td>
+                    <span class="claim-number">
+                      {{ doc.claimNumber }}
+                    </span>
+                  </td>
+
+                  <!-- Uploaded Date -->
+                  <td>
+                    <span class="uploaded-date">
+                      {{ doc.uploadedDate | date:'dd MMM yyyy' }}
+                    </span>
+                  </td>
+
+                  <!-- Actions -->
+                  <td>
+                    <div class="action-buttons">
+
+                      <button
+                        type="button"
+                        class="action-btn view-btn"
+                        title="View Document"
+                        aria-label="View Document"
+                        (click)="onDocAction('view', doc.documentId)"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+
+                      <button
+                        type="button"
+                        class="action-btn delete-btn"
+                        title="Delete Document"
+                        aria-label="Delete Document"
+                        (click)="onDocAction('delete', doc.documentId)"
+                      >
+                        <i class="bi bi-trash3"></i>
+                      </button>
+
+                    </div>
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <!-- Table Footer -->
+        <div class="table-footer">
+          <span>
+            Showing
+            <strong>{{ filteredDocuments.length }}</strong>
+            of
+            <strong>{{ documents.length }}</strong>
+            documents
+          </span>
+        </div>
+
+      </div>
+
+    }
+
+    <!-- Empty State -->
+    @else {
+
+      <div class="empty-state-card">
+
+        <div class="empty-icon">
+          <i class="bi bi-folder2-open"></i>
+        </div>
+
+        @if (documents.length === 0) {
+          <h4>No Documents Found</h4>
+          <p>
+            You haven't uploaded any claim documents yet.
+            Add your first document to get started.
+          </p>
+
+          <button
+            type="button"
+            class="btn-primary-custom"
+            (click)="navigateToAddDocument()"
+          >
+            <i class="bi bi-plus-lg"></i>
+            Add Document
+          </button>
+        } @else {
+          <h4>No Matching Documents</h4>
+          <p>
+            No documents match your search.
+            Try another document name, type or claim number.
+          </p>
+
+          <button
+            type="button"
+            class="btn-secondary-custom"
+            (click)="clearSearch()"
+          >
+            <i class="bi bi-x-circle"></i>
+            Clear Search
+          </button>
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

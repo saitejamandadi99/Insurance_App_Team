@@ -1,0 +1,468 @@
+
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: #172b4d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #f5f8fc;
+}
+
+/* =========================
+   LEFT BRANDING SECTION
+========================= */
+
+.auth-brand-section {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 55px 65px;
+  background:
+    radial-gradient(circle at 80% 15%, #dcecff 0, transparent 38%),
+    linear-gradient(145deg, #f4f9ff 0%, #e3f0ff 55%, #d4e8ff 100%);
+}
+
+.brand-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+/* Brand Logo */
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  text-decoration: none;
+  color: #173b63;
+}
+
+.brand-icon {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  background: #173b63;
+  color: white;
+  font-size: 30px;
+}
+
+.brand-name h1 {
+  font-size: 29px;
+  font-weight: 750;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.brand-name span {
+  display: block;
+  font-size: 11px;
+  color: #607795;
+  margin-top: 3px;
+}
+
+/* Brand Message */
+
+.brand-message {
+  margin-top: 90px;
+  max-width: 440px;
+}
+
+.brand-tagline,
+.welcome-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  color: #3978b8;
+}
+
+.brand-message h2 {
+  font-size: clamp(38px, 4vw, 54px);
+  font-weight: 750;
+  line-height: 1.16;
+  letter-spacing: -1.8px;
+  color: #173b63;
+  margin: 18px 0;
+}
+
+.brand-message > p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #607795;
+  max-width: 380px;
+}
+
+/* Features */
+
+.brand-features {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.feature-icon {
+  width: 47px;
+  height: 47px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #3978b8;
+  font-size: 21px;
+}
+
+.feature-item h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 5px;
+  color: #173b63;
+}
+
+.feature-item span {
+  font-size: 12px;
+  color: #71849e;
+}
+
+/* Decorative Shield */
+
+.brand-decoration {
+  position: absolute;
+  right: -30px;
+  bottom: 35px;
+  font-size: 240px;
+  color: rgba(55, 126, 199, 0.09);
+  pointer-events: none;
+}
+
+.brand-footer {
+  margin-top: 75px;
+  font-size: 11px;
+  color: #8295ad;
+}
+
+
+/* =========================
+   RIGHT LOGIN SECTION
+========================= */
+
+.auth-form-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  background: #f7f9fc;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 48px 42px;
+  border: 1px solid #edf0f5;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 15px 50px rgba(31, 62, 100, 0.07);
+}
+
+/* Form Heading */
+
+.form-heading {
+  margin-bottom: 38px;
+}
+
+.form-heading h2 {
+  font-size: 28px;
+  font-weight: 750;
+  letter-spacing: -0.8px;
+  color: #172b4d;
+  margin: 12px 0 9px;
+}
+
+.form-heading p {
+  font-size: 14px;
+  color: #8290a5;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.mobile-brand {
+  display: none;
+}
+
+/* Form Fields */
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 650;
+  color: #344966;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 17px;
+  color: #7186a3;
+  pointer-events: none;
+}
+
+.input-wrapper input {
+  width: 100%;
+  height: 53px;
+  padding: 0 45px;
+  border: 1px solid #dce3ed;
+  border-radius: 10px;
+  background: #ffffff;
+  outline: none;
+  font-size: 13px;
+  color: #263c5a;
+  transition: all 0.2s ease;
+}
+
+.input-wrapper input::placeholder {
+  color: #a0adbf;
+}
+
+.input-wrapper input:focus {
+  border-color: #3978b8;
+  box-shadow: 0 0 0 3px rgba(57, 120, 184, 0.10);
+}
+
+.input-wrapper input.input-error {
+  border-color: #dc6262;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #7186a3;
+  cursor: pointer;
+  font-size: 17px;
+  padding: 5px;
+}
+
+.password-toggle:hover {
+  color: #173b63;
+}
+
+/* Validation */
+
+.error-message {
+  display: block;
+  margin-top: 7px;
+  font-size: 11px;
+  color: #d94c4c;
+}
+
+/* Submit Button */
+
+.submit-button {
+  width: 100%;
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 35px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(120deg, #20558c, #2868a8);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: #173b63;
+  box-shadow: 0 7px 18px rgba(32, 85, 140, 0.2);
+  transform: translateY(-1px);
+}
+
+.submit-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Loading Spinner */
+
+.spinner {
+  width: 17px;
+  height: 17px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Footer */
+
+.form-footer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid #edf0f5;
+  font-size: 12px;
+  color: #8290a5;
+}
+
+.form-footer a {
+  color: #2868a8;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+.auth-bottom-text {
+  margin-top: 25px;
+  font-size: 11px;
+  color: #9aa7b8;
+}
+
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 1000px) {
+
+  .auth-page {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+
+  .auth-brand-section {
+    padding: 40px;
+  }
+
+  .auth-form-section {
+    padding: 30px;
+  }
+
+  .login-card {
+    padding: 38px 30px;
+  }
+
+  .brand-message h2 {
+    font-size: 40px;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .auth-page {
+    display: block;
+    min-height: 100vh;
+  }
+
+  .auth-brand-section {
+    display: none;
+  }
+
+  .auth-form-section {
+    min-height: 100vh;
+    padding: 30px 20px;
+    justify-content: center;
+    background:
+      radial-gradient(circle at top, #e5f1ff, transparent 45%),
+      #f7f9fc;
+  }
+
+  .login-card {
+    max-width: 460px;
+    padding: 35px 28px;
+    border-radius: 18px;
+  }
+
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 35px;
+    color: #173b63;
+    font-size: 22px;
+    font-weight: 750;
+  }
+
+  .mobile-brand i {
+    font-size: 30px;
+  }
+
+  .form-heading h2 {
+    font-size: 25px;
+  }
+
+  .auth-bottom-text {
+    margin-top: 20px;
+  }
+
+}
+
+@media (max-width: 400px) {
+
+  .auth-form-section {
+    padding: 20px 14px;
+  }
+
+  .login-card {
+    padding: 28px 20px;
+  }
+
+  .form-heading h2 {
+    font-size: 23px;
+  }
+
+}

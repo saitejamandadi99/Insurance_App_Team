@@ -1,1 +1,296 @@
-<p>view-claims-component works!</p>
+
+<div class="claims-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>View Claims</h2>
+      <p>Manage and review submitted insurance claims</p>
+    </div>
+  </div>
+
+  <!-- Claims Container -->
+  <div class="claims-container">
+
+    <div class="section-header">
+      <div>
+        <h3>Claims Overview</h3>
+        <p>Search, filter and review insurance claims</p>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <form [formGroup]="filterForm"
+          (ngSubmit)="searchClaims()">
+
+      <div class="filter-section">
+
+        <!-- Search -->
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+
+          <input
+            type="text"
+            formControlName="search"
+            placeholder="Search by claim number, policy number or customer name"
+          />
+
+          @if (searchControl.value) {
+            <button
+              type="button"
+              class="clear-search"
+              (click)="clearSearch()"
+              title="Clear search">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          }
+        </div>
+
+        <!-- Sort By -->
+        <div class="filter-control">
+          <label for="sortBy">Sort By</label>
+
+          <select
+            id="sortBy"
+            formControlName="sortBy"
+            (change)="searchClaims()">
+
+            <option value="incidentDate">Incident Date</option>
+            <option value="createdDate">Created Date</option>
+            <option value="claimAmount">Claim Amount</option>
+
+          </select>
+        </div>
+
+        <!-- Sort Direction -->
+        <div class="filter-control">
+          <label for="sortDirection">Order</label>
+
+          <select
+            id="sortDirection"
+            formControlName="sortDirection"
+            (change)="searchClaims()">
+
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+
+          </select>
+        </div>
+
+        <!-- Page Size -->
+        <div class="filter-control page-size-control">
+          <label for="pageSize">Records</label>
+
+          <select
+            id="pageSize"
+            formControlName="pageSize"
+            (change)="searchClaims()">
+
+            <option [ngValue]="5">5</option>
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="20">20</option>
+            <option [ngValue]="50">50</option>
+
+          </select>
+        </div>
+
+        <!-- Search Button -->
+        <button type="submit" class="btn-search">
+          <i class="bi bi-search"></i>
+          Search
+        </button>
+
+        <!-- Reset -->
+        <button
+          type="button"
+          class="btn-reset"
+          (click)="resetFilters()">
+          <i class="bi bi-arrow-counterclockwise"></i>
+          Reset
+        </button>
+
+      </div>
+
+    </form>
+
+    <!-- Loading State -->
+    @if (isLoading) {
+
+      <div class="loading-state">
+        <div class="spinner-border" role="status"></div>
+        <p>Loading claims...</p>
+      </div>
+
+    }
+
+    <!-- Claims Table -->
+    @else if (claims && claims.records.length > 0) {
+
+      <div class="table-responsive">
+
+        <table class="claims-table">
+
+          <thead>
+            <tr>
+              <th>Claim Number</th>
+              <th>Customer Name</th>
+              <th>Policy Number</th>
+              <th>Claim Amount</th>
+              <th>Incident Date</th>
+              <th>Claim Status</th>
+              <th class="action-column">Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (claim of claims.records; track claim.claimId) {
+
+              <tr>
+
+                <td>
+                  <span class="claim-number">
+                    {{ claim.claimNumber }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="customer-name">
+                    {{ claim.customerName }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="policy-number">
+                    {{ claim.policyNumber }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="claim-amount">
+                    {{ claim.claimAmount | currency:'INR':'symbol':'1.0-2' }}
+                  </span>
+                </td>
+
+                <td>
+                  {{ claim.incidentDate | date:'dd MMM yyyy' }}
+                </td>
+
+                <td>
+                  <span
+                    class="status-badge"
+                    [class.status-pending]="claim.claimStatus === 'Pending'"
+                    [class.status-recommended-approval]="claim.claimStatus === 'RecommendedForApproval'"
+                    [class.status-recommended-rejection]="claim.claimStatus === 'RecommendedForRejection'"
+                    [class.status-approved]="claim.claimStatus === 'Approved'"
+                    [class.status-rejected]="claim.claimStatus === 'Rejected'">
+
+                    {{ claim.claimStatus }}
+
+                  </span>
+                </td>
+
+                <td class="action-column">
+                   @if (claim.claimStatus !== 'Approved' && claim.claimStatus !== 'Rejected') {
+    <button
+      type="button"
+      class="btn-review"
+      (click)="navigateToReview(claim.claimId)">
+
+      <i class="bi bi-eye"></i>
+      Review
+
+    </button>
+  }
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-section">
+
+        <div class="pagination-info">
+          Showing
+          <strong>
+            {{ (claims.currentPage - 1) * claims.pageSize + 1 }}
+            -
+            {{ (claims.currentPage - 1) * claims.pageSize + claims.records.length }}
+          </strong>
+          of
+          <strong>{{ claims.totalRecords }}</strong>
+          claims
+        </div>
+
+        <div class="pagination-controls">
+
+          <button
+            type="button"
+            class="pagination-btn"
+            [disabled]="claims.currentPage <= 1"
+            (click)="previousPage()">
+
+            <i class="bi bi-chevron-left"></i>
+
+          </button>
+
+          <span class="page-indicator">
+            Page {{ claims.currentPage }} of {{ claims.totalPages }}
+          </span>
+
+          <button
+            type="button"
+            class="pagination-btn"
+            [disabled]="claims.isLastPage"
+            (click)="nextPage()">
+
+            <i class="bi bi-chevron-right"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+    <!-- Empty State -->
+    @else {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          <i class="bi bi-file-earmark-x"></i>
+        </div>
+
+        <h4>No Claims Found</h4>
+
+        <p>
+          No claims match your search criteria.
+          Try adjusting your search or filters.
+        </p>
+
+        <button
+          type="button"
+          class="btn-reset-empty"
+          (click)="resetFilters()">
+
+          <i class="bi bi-arrow-counterclockwise"></i>
+          Reset Filters
+
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

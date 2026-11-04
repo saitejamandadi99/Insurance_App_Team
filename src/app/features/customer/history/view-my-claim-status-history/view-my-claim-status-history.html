@@ -1,0 +1,279 @@
+<div class="container-fluid py-4 my-history-page">
+
+  <!-- PAGE HEADER -->
+
+  <div class="history-header mb-4">
+<app-page-header
+  title="My Claim Status History"
+  subtitle="View and track all status updates for your insurance claims.">
+</app-page-header>
+
+  </div>
+
+  <!-- LOADING -->
+
+@if (isLoading) {
+
+<app-loading-spinner></app-loading-spinner>
+
+}
+
+@else {
+<!-- HISTORY RECORDS -->
+@if (histories.length > 0) {
+
+  <!-- SUMMARY CARDS -->
+  <div class="row g-3 mb-4">
+
+    <div class="col-12 col-md-6 col-xl-4">
+
+      <div class="summary-card">
+
+        <div class="summary-icon icon-primary">
+          <i class="bi bi-clock-history"></i>
+        </div>
+
+        <div class="summary-details">
+          <span class="summary-label">Total History Records</span>
+          <h3>{{ totalRecords }}</h3>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-4">
+
+      <div class="summary-card">
+
+        <div class="summary-icon icon-info">
+          <i class="bi bi-file-earmark-text"></i>
+        </div>
+
+        <div class="summary-details">
+          <span class="summary-label">Current Page</span>
+          <h3>{{ currentPage }} / {{ totalPages }}</h3>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-4">
+
+      <div class="summary-card">
+
+        <div class="summary-icon icon-success">
+          <i class="bi bi-list-check"></i>
+        </div>
+
+        <div class="summary-details">
+          <span class="summary-label">Records Per Page</span>
+          <h3>{{ histories.length }}</h3>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- HISTORY TABLE CARD -->
+  <div class="history-table-card">
+
+    <!-- CARD HEADER -->
+    <div class="table-card-header">
+
+      <div class="header-title">
+
+        <div class="header-icon">
+          <i class="bi bi-activity"></i>
+        </div>
+
+        <div>
+          <h4>Claim Activity History</h4>
+          <p>Track the progress and status changes of your claims.</p>
+        </div>
+
+      </div>
+
+      <div class="history-count">
+        <i class="bi bi-journal-text"></i>
+        {{ totalRecords }} Records
+      </div>
+
+    </div>
+
+    <!-- RESPONSIVE TABLE -->
+    <div class="table-responsive">
+
+      <table class="table history-table align-middle">
+
+        <thead>
+
+          <tr>
+            <th>CLAIM NUMBER</th>
+            <th>PREVIOUS STATUS</th>
+            <th>NEW STATUS</th>
+            <th>UPDATED BY</th>
+            <th>UPDATED DATE</th>
+            <th>REMARKS</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          @for (
+            history of histories;
+            track trackByHistoryId($index, history)
+          ) {
+
+            <tr>
+
+              <!-- CLAIM NUMBER -->
+              <td>
+
+                <span class="claim-number">
+                  {{ history.claimNumber }}
+                </span>
+
+              </td>
+
+              <!-- PREVIOUS STATUS -->
+              <td>
+
+                <app-status-badge
+                  [status]="history.previousStatus">
+                </app-status-badge>
+
+              </td>
+
+              <!-- NEW STATUS -->
+              <td>
+
+                <app-status-badge
+                  [status]="history.newStatus">
+                </app-status-badge>
+
+              </td>
+
+              <!-- UPDATED BY -->
+              <td>
+
+                <div class="updated-by">
+
+                  <div class="user-icon">
+                    <i class="bi bi-person-fill"></i>
+                  </div>
+
+                  <span>
+                    {{ history.updatedBy || 'System' }}
+                  </span>
+
+                </div>
+
+              </td>
+
+              <!-- UPDATED DATE -->
+              <td>
+
+                <div class="date-info">
+
+                  <i class="bi bi-calendar3"></i>
+
+                  {{ history.updatedDate | date:'dd MMM yyyy, hh:mm a' }}
+
+                </div>
+
+              </td>
+
+              <!-- REMARKS -->
+              <td>
+
+                <span class="remarks-text">
+                  {{ history.remarks || 'No remarks available' }}
+                </span>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- PAGINATION FOOTER -->
+    <div class="pagination-footer">
+
+      <div class="pagination-info">
+
+        Showing
+        <strong>{{ (currentPage - 1) * pageSize + 1 }}</strong>
+        to
+        <strong>
+          {{ (currentPage - 1) * pageSize + histories.length }}
+        </strong>
+        of
+        <strong>{{ totalRecords }}</strong>
+        records
+
+      </div>
+
+      <div class="pagination-controls">
+
+        <button
+          type="button"
+          class="pagination-btn"
+          [disabled]="currentPage <= 1 || isLoading"
+          (click)="goToPreviousPage()">
+
+          <i class="bi bi-chevron-left"></i>
+          Previous
+
+        </button>
+
+        <span class="page-indicator">
+          Page {{ currentPage }} of {{ totalPages }}
+        </span>
+
+        <button
+          type="button"
+          class="pagination-btn"
+          [disabled]="isLastPage || currentPage >= totalPages || isLoading"
+          (click)="goToNextPage()">
+
+          Next
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+<!-- EMPTY STATE -->
+@else {
+
+  <div class="empty-history-wrapper">
+
+    <app-empty-state
+      icon="bi bi-clock-history"
+      title="No Claim Status History Found"
+      message="You don't have any claim status history yet. Status updates will appear here when your claims progress.">
+    </app-empty-state>
+
+  </div>
+
+}
+}
+
+</div>

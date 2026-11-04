@@ -1,0 +1,391 @@
+<div class="container-fluid py-4">
+
+  <!-- Page Header -->
+  <app-page-header
+    title="Edit Customer Profile"
+    subtitle="Update your customer profile information."
+    buttonText="Back to Profile"
+    buttonIcon="bi bi-arrow-left"
+    (buttonClick)="cancel()">
+  </app-page-header>
+
+  <div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+      <div class="app-card">
+
+        <!-- Card Header -->
+        <div class="card-header-custom">
+          <h4 class="mb-0">
+            <i class="bi bi-pencil-square me-2"></i>
+            Edit Customer Profile
+          </h4>
+        </div>
+
+        <div class="card-body">
+
+          <!-- Loading -->
+          <div *ngIf="isLoading" class="text-center py-5">
+
+            <div class="spinner-border text-primary"></div>
+
+            <p class="mt-2">
+              Loading customer profile...
+            </p>
+
+          </div>
+
+          <!-- Edit Form -->
+          <form
+            *ngIf="!isLoading"
+            [formGroup]="customerForm"
+            (ngSubmit)="updateCustomerProfile()">
+
+            <div class="row">
+
+              <!-- Profile Image -->
+              <div class="col-12 mb-4 text-center">
+
+                <img
+                  *ngIf="imagePreview || existingImageUrl"
+                  [src]="imagePreview || existingImageUrl"
+                  class="rounded-circle border mb-3 profile-image"
+                  alt="Customer Profile">
+
+                <div
+                  *ngIf="!imagePreview && !existingImageUrl"
+                  class="rounded-circle border d-inline-flex justify-content-center align-items-center mb-3 profile-placeholder">
+
+                  <i class="bi bi-person fs-1"></i>
+
+                </div>
+
+                <input
+                  type="file"
+                  class="form-control input-dark"
+                  accept=".jpg,.jpeg,.png,.webp"
+                  (change)="onImageSelected($event)">
+
+                <small class="text-muted">
+                  Allowed formats: JPG, JPEG, PNG, WEBP.
+                  Maximum size: 5 MB.
+                </small>
+
+              </div>
+
+              <!-- Date of Birth -->
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label-custom">
+                  Date of Birth
+                </label>
+
+                <input
+                  type="date"
+                  class="form-control input-dark"
+                  formControlName="dateOfBirth">
+
+                <div
+                  class="mt-1"
+                  *ngIf="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)">
+
+                  <small
+                    class="text-danger"
+                    *ngIf="dateOfBirth.hasError('required')">
+                    Date of Birth is required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="dateOfBirth.hasError('invalidDate')">
+                    Enter a valid past date.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="dateOfBirth.hasError('minimumAge')">
+                    Customer must be at least 18 years old.
+                  </small>
+
+                </div>
+
+              </div>
+
+              <!-- Pincode -->
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label-custom">
+                  Pincode
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control input-dark"
+                  formControlName="pincode"
+                  maxlength="6"
+                  placeholder="Enter pincode">
+
+                <div
+                  class="mt-1"
+                  *ngIf="pincode.invalid && (pincode.dirty || pincode.touched)">
+
+                  <small
+                    class="text-danger"
+                    *ngIf="pincode.hasError('required')">
+                    Pincode is required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="pincode.hasError('pattern')">
+                    Pincode must contain exactly 6 digits.
+                  </small>
+
+                </div>
+
+              </div>
+
+              <!-- State -->
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label-custom">
+                  State
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control input-dark"
+                  formControlName="state"
+                  placeholder="Enter state">
+
+                <div
+                  class="mt-1"
+                  *ngIf="state.invalid && (state.dirty || state.touched)">
+
+                  <small
+                    class="text-danger"
+                    *ngIf="state.hasError('required')">
+                    State is required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="state.hasError('minlength')">
+                    Minimum 3 characters required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="state.hasError('maxlength')">
+                    Maximum 30 characters allowed.
+                  </small>
+
+                </div>
+
+              </div>
+
+              <!-- City -->
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label-custom">
+                  City
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control input-dark"
+                  formControlName="city"
+                  placeholder="Enter city">
+
+                <div
+                  class="mt-1"
+                  *ngIf="city.invalid && (city.dirty || city.touched)">
+
+                  <small
+                    class="text-danger"
+                    *ngIf="city.hasError('required')">
+                    City is required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="city.hasError('minlength')">
+                    Minimum 3 characters required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="city.hasError('maxlength')">
+                    Maximum 30 characters allowed.
+                  </small>
+
+                </div>
+
+              </div>
+
+              <!-- Address -->
+              <div class="col-12 mb-4">
+
+                <label class="form-label-custom">
+                  Address
+                </label>
+
+                <textarea
+                  rows="4"
+                  class="form-control input-dark"
+                  formControlName="address"
+                  placeholder="Enter complete address">
+                </textarea>
+
+                <div
+                  class="mt-1"
+                  *ngIf="address.invalid && (address.dirty || address.touched)">
+
+                  <small
+                    class="text-danger"
+                    *ngIf="address.hasError('required')">
+                    Address is required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="address.hasError('minlength')">
+                    Address should be at least 10 characters.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="address.hasError('maxlength')">
+                    Address cannot exceed 150 characters.
+                  </small>
+
+                </div>
+
+              </div>
+
+              <!-- Nominee Name -->
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label-custom">
+                  Nominee Name
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control input-dark"
+                  formControlName="nomineeName"
+                  placeholder="Enter nominee name">
+
+                <div
+                  class="mt-1"
+                  *ngIf="nomineeName.invalid && (nomineeName.dirty || nomineeName.touched)">
+
+                  <small
+                    class="text-danger"
+                    *ngIf="nomineeName.hasError('required')">
+                    Nominee Name is required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="nomineeName.hasError('minlength')">
+                    Minimum 3 characters required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="nomineeName.hasError('maxlength')">
+                    Maximum 50 characters allowed.
+                  </small>
+
+                </div>
+
+              </div>
+
+              <!-- Nominee Relationship -->
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label-custom">
+                  Nominee Relationship
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control input-dark"
+                  formControlName="nomineeRelationship"
+                  placeholder="Father / Mother / Brother / Sister / Spouse">
+
+                <div
+                  class="mt-1"
+                  *ngIf="nomineeRelationship.invalid && (nomineeRelationship.dirty || nomineeRelationship.touched)">
+
+                  <small
+                    class="text-danger"
+                    *ngIf="nomineeRelationship.hasError('required')">
+                    Nominee Relationship is required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="nomineeRelationship.hasError('minlength')">
+                    Minimum 3 characters required.
+                  </small>
+
+                  <small
+                    class="text-danger"
+                    *ngIf="nomineeRelationship.hasError('maxlength')">
+                    Maximum 50 characters allowed.
+                  </small>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-end gap-3 mt-4">
+
+              <button
+                type="button"
+                class="btn btn-secondary-custom"
+                [disabled]="isSubmitting"
+                (click)="cancel()">
+
+                Cancel
+
+              </button>
+
+              <button
+                type="submit"
+                class="btn btn-primary-custom"
+                [disabled]="customerForm.invalid || isSubmitting">
+
+                <span
+                  *ngIf="isSubmitting"
+                  class="spinner-border spinner-border-sm me-2">
+                </span>
+
+                <i
+                  *ngIf="!isSubmitting"
+                  class="bi bi-check-circle me-2">
+                </i>
+
+                {{ isSubmitting ? 'Updating...' : 'Update Profile' }}
+
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

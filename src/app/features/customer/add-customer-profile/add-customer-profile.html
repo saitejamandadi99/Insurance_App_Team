@@ -1,0 +1,295 @@
+<div class="customer-page">
+
+  <!-- Page Header -->
+
+  <div class="page-header">
+    <div>
+      <h2>Create Customer Profile</h2>
+      <p class="page-description">
+        Complete your personal information to create your customer profile.
+      </p>
+    </div>
+<button
+  type="button"
+  class="btn btn-outline"
+  (click)="navigateToCustomers()">
+  <i class="bi bi-arrow-left"></i>
+  Back
+</button>
+  </div>
+
+  <!-- Customer Profile Form -->
+
+  <div class="form-card">
+<form [formGroup]="customerForm" (ngSubmit)="addCustomerProfile()">
+
+  <!-- Profile Image Section -->
+  <div class="section-heading">
+    <h3>Profile Information</h3>
+    <p>Upload your profile picture and enter your personal details.</p>
+  </div>
+
+  <div class="profile-image-section">
+
+    <div class="image-preview">
+      @if (imagePreview) {
+        <img [src]="imagePreview" alt="Profile Preview">
+      } @else {
+        <div class="default-avatar">
+          <i class="bi bi-person-fill"></i>
+        </div>
+      }
+    </div>
+
+    <div class="image-upload-content">
+      <label for="profileImage" class="form-label">
+        Profile Picture
+      </label>
+
+      <input
+        type="file"
+        id="profileImage"
+        class="form-control image-input"
+        accept=".jpg,.jpeg,.png,.webp"
+        (change)="onImageSelected($event)">
+
+      <small class="form-hint">
+        Supported formats: JPG, JPEG, PNG, WEBP. Maximum size: 5 MB.
+      </small>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Personal Details -->
+  <div class="section-heading">
+    <h3>Personal Details</h3>
+    <p>Provide your address and personal information.</p>
+  </div>
+
+  <div class="form-grid">
+
+    <!-- Date of Birth -->
+    <div class="form-group">
+      <label for="dateOfBirth" class="form-label">
+        Date of Birth <span class="required">*</span>
+      </label>
+
+      <input
+        type="date"
+        id="dateOfBirth"
+        class="form-control"
+        formControlName="dateOfBirth">
+
+      <small class="error-message"
+        *ngIf="getdateOfBirth().touched && getdateOfBirth().hasError('required')">
+        Date of birth is required.
+      </small>
+
+        <div
+          *ngIf="getdateOfBirth().touched && getdateOfBirth().hasError('minimumAge')"
+          class="text-danger"
+        >
+          You must be at least 18 years old to create a customer profile.
+  </div>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group full-width">
+      <label for="address" class="form-label">
+        Address <span class="required">*</span>
+      </label>
+
+      <textarea
+        id="address"
+        class="form-control"
+        rows="3"
+        placeholder="Enter your complete address"
+        formControlName="address"></textarea>
+
+      <small class="error-message"
+        *ngIf="getaddress().touched && getaddress().hasError('required')">
+        Address is required.
+      </small>
+
+      <small class="error-message"
+        *ngIf="getaddress().touched && getaddress().hasError('minlength')">
+        Address must contain at least 10 characters.
+      </small>
+
+      <small class="error-message"
+        *ngIf="getaddress().touched && getaddress().hasError('maxlength')">
+        Address cannot exceed 150 characters.
+      </small>
+    </div>
+
+    <!-- City -->
+    <div class="form-group">
+      <label for="city" class="form-label">
+        City <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="city"
+        class="form-control"
+        placeholder="Enter city"
+        formControlName="city">
+
+      <small class="error-message"
+        *ngIf="getcity().touched && getcity().hasError('required')">
+        City is required.
+      </small>
+
+      <small class="error-message"
+        *ngIf="getcity().touched && (getcity().hasError('minlength') || getcity().hasError('maxlength'))">
+        City must contain 3 to 30 characters.
+      </small>
+    </div>
+
+    <!-- State -->
+    <div class="form-group">
+      <label for="state" class="form-label">
+        State <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="state"
+        class="form-control"
+        placeholder="Enter state"
+        formControlName="state">
+
+      <small class="error-message"
+        *ngIf="getstate().touched && getstate().hasError('required')">
+        State is required.
+      </small>
+
+      <small class="error-message"
+        *ngIf="getstate().touched && (getstate().hasError('minlength') || getstate().hasError('maxlength'))">
+        State must contain 3 to 30 characters.
+      </small>
+    </div>
+
+    <!-- Pincode -->
+    <div class="form-group">
+      <label for="pincode" class="form-label">
+        Pincode <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="pincode"
+        class="form-control"
+        placeholder="Enter 6-digit pincode"
+        maxlength="6"
+        formControlName="pincode">
+
+      <small class="error-message"
+        *ngIf="getpincode().touched && getpincode().hasError('required')">
+        Pincode is required.
+      </small>
+
+      <small class="error-message"
+        *ngIf="getpincode().touched && getpincode().hasError('pattern')">
+        Pincode must contain exactly 6 digits.
+      </small>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Nominee Details -->
+  <div class="section-heading">
+    <h3>Nominee Details</h3>
+    <p>Provide the details of your nominated person.</p>
+  </div>
+
+  <div class="form-grid">
+
+    <!-- Nominee Name -->
+    <div class="form-group">
+      <label for="nomineeName" class="form-label">
+        Nominee Name <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="nomineeName"
+        class="form-control"
+        placeholder="Enter nominee name"
+        formControlName="nomineeName">
+
+      <small class="error-message"
+        *ngIf="getnomineeName().touched && getnomineeName().hasError('required')">
+        Nominee name is required.
+      </small>
+
+      <small class="error-message"
+        *ngIf="getnomineeName().touched && (getnomineeName().hasError('minlength') || getnomineeName().hasError('maxlength'))">
+        Nominee name must contain 3 to 50 characters.
+      </small>
+    </div>
+
+    <!-- Nominee Relationship -->
+    <div class="form-group">
+      <label for="nomineeRelationship" class="form-label">
+        Relationship <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="nomineeRelationship"
+        class="form-control"
+        placeholder="e.g. Father, Mother, Spouse"
+        formControlName="nomineeRelationship">
+
+      <small class="error-message"
+        *ngIf="getnomineeRelationship().touched && getnomineeRelationship().hasError('required')">
+        Nominee relationship is required.
+      </small>
+
+      <small class="error-message"
+        *ngIf="getnomineeRelationship().touched && (getnomineeRelationship().hasError('minlength') || getnomineeRelationship().hasError('maxlength'))">
+        Relationship must contain 3 to 50 characters.
+      </small>
+    </div>
+
+  </div>
+
+  <!-- Form Actions -->
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="btn btn-cancel"
+      (click)="navigateToCustomers()"
+      [disabled]="isLoading">
+      Cancel
+    </button>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="isLoading">
+
+      <span *ngIf="!isLoading">
+        <i class="bi bi-person-plus"></i>
+        Create Profile
+      </span>
+
+      <span *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm me-2"></span>
+        Creating...
+      </span>
+
+    </button>
+
+  </div>
+
+</form>
+  </div>
+
+</div>

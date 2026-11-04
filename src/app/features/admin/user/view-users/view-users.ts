@@ -8,9 +8,16 @@ import { ToastService } from '../../../../services/Toast/toast-service';
 import { Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-
+import { Pagination } from '../../../../shared/ui/pagination/pagination';
+import { FilterCard } from '../../../../shared/ui/filter-card/filter-card';
+import { PageHeader } from '../../../../shared/ui/page-header/page-header';
+import { SearchBox } from '../../../../shared/ui/search-box/search-box';
+import { LoadingSpinner } from '../../../../shared/ui/loading-spinner/loading-spinner';
+import { StatusBadge } from '../../../../shared/ui/status-badge/status-badge';
+import { ActionButtons } from '../../../../shared/ui/action-buttons/action-buttons';
+import { EmptyState } from '../../../../shared/ui/empty-state/empty-state';
 @Component({
-  imports: [ReactiveFormsModule, DatePipe],
+  imports: [ReactiveFormsModule, DatePipe,Pagination, FilterCard,PageHeader,SearchBox,LoadingSpinner,StatusBadge,ActionButtons,EmptyState],
   standalone:true,
   selector: 'app-view-users',
   styleUrl: './view-users.css',

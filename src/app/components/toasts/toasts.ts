@@ -3,10 +3,10 @@ import { ToastService } from '../../services/Toast/toast-service';
 import { Subscription } from 'rxjs';
 import { Toast } from '../../Enums/Toast';
 import { ToastType } from '../../Enums/ToastType';
-import { NgClass } from '@angular/common';
+import { NgFor,NgClass } from '@angular/common';
 
 @Component({
-  imports: [NgClass],
+  imports: [NgFor, NgClass],
   standalone:true,
   selector: 'app-toasts',
   styleUrl: './toasts.css',
@@ -26,6 +26,7 @@ export class Toasts implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.toastSubscription = this.toastService.toasts$.subscribe(data => {
+       console.log('Toasts component received:', data);
       this.toasts = [...data];
       this.cdr.detectChanges();
     });

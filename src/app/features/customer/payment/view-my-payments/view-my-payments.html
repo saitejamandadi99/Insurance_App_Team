@@ -1,0 +1,219 @@
+<div class="payments-page">
+
+  <!-- Page Header -->
+  <app-page-header
+    title="My Payments"
+    subtitle="View your premium payment history and transaction details">
+  </app-page-header>
+
+  <!-- Loading -->
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <!-- Payment Content -->
+  <div class="payments-container" *ngIf="!isLoading">
+
+    <!-- Summary Card -->
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        <i class="bi bi-wallet2"></i>
+      </div>
+
+      <div class="summary-content">
+        <span>Total Transactions</span>
+        <h3>{{ totalRecords }}</h3>
+        <small>Your payment history</small>
+      </div>
+
+    </div>
+
+    <!-- Payment History Card -->
+    <div class="payment-card">
+
+      <!-- Card Header -->
+      <div class="card-header">
+
+        <div>
+          <h5>
+            <i class="bi bi-receipt"></i>
+            Payment History
+          </h5>
+
+          <p>All your premium payment transactions</p>
+        </div>
+
+        <span class="record-count">
+          {{ totalRecords }} Records
+        </span>
+
+      </div>
+
+      <!-- Payment Table -->
+      <div class="table-responsive" *ngIf="payments.length > 0">
+
+        <table class="table payment-table">
+
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Transaction ID</th>
+              <th>Policy Number</th>
+              <th>Payment Date</th>
+              <th>Payment Mode</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr
+              *ngFor="let payment of payments; let i = index; trackBy: trackByPaymentId">
+
+              <!-- Row Number -->
+              <td class="row-number">
+                {{ (currentPage - 1) * pageSize + i + 1 }}
+              </td>
+
+              <!-- Transaction ID -->
+              <td>
+                <span class="transaction-id">
+                  {{ payment.transactionReference || 'N/A' }}
+                </span>
+              </td>
+
+              <!-- Policy Number -->
+              <td>
+                <span class="policy-id">
+                  {{ payment.policyNumber || 'N/A' }}
+                </span>
+              </td>
+
+              <!-- Payment Date -->
+              <td>
+                <span class="payment-date">
+                  {{ payment.paymentDate | date:'dd MMM yyyy' }}
+                </span>
+              </td>
+
+              <!-- Payment Mode -->
+              <td>
+                <span class="mode-badge">
+                  <i class="bi bi-credit-card"></i>
+                  {{ formatPaymentMode(payment.paymentMode) }}
+                </span>
+              </td>
+
+              <!-- Amount -->
+              <td class="amount">
+                {{ payment.amount | currency:'INR':'symbol':'1.2-2' }}
+              </td>
+
+              <!-- Payment Status -->
+              <td>
+                <app-status-badge
+                  [status]="formatPaymentStatus(payment.paymentStatus)">
+                </app-status-badge>
+              </td>
+
+              <!-- Action -->
+              <td>
+                <button
+                  type="button"
+                  class="btn-download"
+                  (click)="downloadPaymentReceipt(payment)"
+                  [disabled]="payment.paymentStatus !== PaymentStatus.Success"
+                  title="Download Payment Receipt">
+
+                  <i class="bi bi-download"></i>
+                  Download
+
+                </button>
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <!-- Empty State -->
+      <div
+        class="empty-container"
+        *ngIf="payments.length === 0">
+
+        <app-empty-state
+          icon="bi bi-credit-card"
+          title="No Payment History"
+          message="You haven't made any payments yet.">
+        </app-empty-state>
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-container" *ngIf="payments.length > 0">
+
+        <div class="pagination-info">
+
+          Showing
+
+          <strong>
+            {{ (currentPage - 1) * pageSize + 1 }}
+          </strong>
+
+          to
+
+          <strong>
+            {{ (currentPage - 1) * pageSize + payments.length }}
+          </strong>
+
+          of
+
+          <strong>{{ totalRecords }}</strong>
+
+          payments
+
+        </div>
+
+        <div class="pagination-actions">
+
+          <!-- Previous Button -->
+          <button
+            type="button"
+            class="pagination-btn"
+            (click)="goToPreviousPage()"
+            [disabled]="currentPage <= 1 || isLoading">
+
+            <i class="bi bi-chevron-left"></i>
+            Previous
+
+          </button>
+
+          <span class="page-number">
+            Page {{ currentPage }} of {{ totalPages }}
+          </span>
+
+          <!-- Next Button -->
+          <button
+            type="button"
+            class="pagination-btn"
+            (click)="goToNextPage()"
+            [disabled]="isLastPage || isLoading">
+
+            Next
+            <i class="bi bi-chevron-right"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

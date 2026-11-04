@@ -1,1 +1,282 @@
-<p>view-my-claims-component works!</p>
+
+<div class="claims-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>My Claims</h2>
+      <p>Track and manage your insurance claims</p>
+    </div>
+
+    <button
+      class="btn-raise-claim"
+      (click)="navigateToRaiseClaims()">
+      <i class="bi bi-plus-lg"></i>
+      Raise Claim
+    </button>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+
+    <div class="summary-card">
+      <div class="summary-icon total-icon">
+        <i class="bi bi-file-earmark-text"></i>
+      </div>
+      <div>
+        <p>Total Claims</p>
+        <h3>{{ totalClaims }}</h3>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon pending-icon">
+        <i class="bi bi-clock-history"></i>
+      </div>
+      <div>
+        <p>Pending Claims</p>
+        <h3>{{ pendingClaims }}</h3>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon approved-icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+      <div>
+        <p>Approved Claims</p>
+        <h3>{{ approvedClaims }}</h3>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Claims Container -->
+  <div class="claims-container">
+
+    <div class="section-header">
+      <div>
+        <h3>Claims Overview</h3>
+        <p>View the details and current status of your claims</p>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="filter-section">
+
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+
+        <input
+          type="text"
+          placeholder="Search by claim number or policy number"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+        />
+      </div>
+
+      <div class="status-filters">
+
+        <button
+          [class.active]="selectedStatus === 'All'"
+          (click)="onStatusChange('All')">
+          All Claims
+        </button>
+
+        <button
+          [class.active]="selectedStatus === 'Pending'"
+          (click)="onStatusChange('Pending')">
+          Pending
+        </button>
+
+        <button
+          [class.active]="selectedStatus === 'RecommendedForApproval'"
+          (click)="onStatusChange('RecommendedForApproval')">
+          Recommended For Approval
+        </button>
+
+        <button
+          [class.active]="selectedStatus === 'RecommendedForRejection'"
+          (click)="onStatusChange('RecommendedForRejection')">
+          Recommended For Rejection
+        </button>
+
+        <button
+          [class.active]="selectedStatus === 'Approved'"
+          (click)="onStatusChange('Approved')">
+          Approved
+        </button>
+
+        <button
+          [class.active]="selectedStatus === 'Rejected'"
+          (click)="onStatusChange('Rejected')">
+          Rejected
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Loading State -->
+    @if (isLoading) {
+
+      <div class="loading-state">
+        <div class="spinner-border" role="status"></div>
+        <p>Loading your claims...</p>
+      </div>
+
+    }
+
+    <!-- Claims List -->
+    @else if (paginatedClaims.length > 0) {
+
+      <div class="claims-list">
+
+        @for (claim of paginatedClaims; track claim.claimId) {
+
+          <div class="claim-card">
+
+            <div class="claim-card-header">
+
+              <div>
+                <span class="claim-number-label">Claim Number</span>
+                <h4>{{ claim.claimNumber }}</h4>
+              </div>
+
+              <span
+                class="status-badge"
+                [ngClass]="getStatusClass(claim.claimStatus)">
+                {{ claim.claimStatus }}
+              </span>
+
+            </div>
+
+            <div class="claim-details">
+
+              <div class="detail-item">
+                <span>Policy Number</span>
+                <strong>{{ claim.policyNumber }}</strong>
+              </div>
+
+              <div class="detail-item">
+                <span>Claim Amount</span>
+                <strong>
+                  {{ claim.claimAmount | currency:'INR':'symbol':'1.0-2' }}
+                </strong>
+              </div>
+
+              <div class="detail-item">
+                <span>Incident Date</span>
+                <strong>
+                  {{ claim.incidentDate | date:'dd MMM yyyy' }}
+                </strong>
+              </div>
+
+            </div>
+
+            <div class="claim-card-footer">
+
+              <span class="claim-footer-text">
+                <i class="bi bi-shield-check"></i>
+                Insurance Claim
+              </span>
+
+              <button
+                class="btn-view-details"
+                (click)="navigateToViewClaimDetails(claim.claimId)">
+                View Details
+                <i class="bi bi-arrow-right"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-section">
+
+        <p>
+          Showing
+          <strong>{{ startRecord }}–{{ endRecord }}</strong>
+          of
+          <strong>{{ filteredClaims.length }}</strong>
+          claims
+        </p>
+
+        <div class="pagination-controls">
+
+          <button
+            class="pagination-btn"
+            [disabled]="currentPage === 1"
+            (click)="changePage(currentPage - 1)">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+
+          <span class="page-indicator">
+            {{ currentPage }} / {{ totalPages }}
+          </span>
+
+          <button
+            class="pagination-btn"
+            [disabled]="currentPage === totalPages"
+            (click)="changePage(currentPage + 1)">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+    <!-- Empty State -->
+    @else {
+
+      <div class="empty-state">
+
+        @if (lstMyClaims.length === 0) {
+
+          <div class="empty-icon">
+            <i class="bi bi-file-earmark-x"></i>
+          </div>
+
+          <h4>No Claims Found</h4>
+          <p>You haven't raised any insurance claims yet.</p>
+
+          <button
+            class="btn-raise-claim"
+            (click)="navigateToRaiseClaims()">
+            <i class="bi bi-plus-lg"></i>
+            Raise Your First Claim
+          </button>
+
+        }
+
+        @else {
+
+          <div class="empty-icon">
+            <i class="bi bi-search"></i>
+          </div>
+
+          <h4>No Matching Claims</h4>
+          <p>Try changing your search term or selected status filter.</p>
+
+          <button
+            class="btn-reset"
+            (click)="searchTerm = ''; onStatusChange('All')">
+            Clear Filters
+          </button>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

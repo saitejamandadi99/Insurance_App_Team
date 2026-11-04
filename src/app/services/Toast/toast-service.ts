@@ -11,6 +11,7 @@ export class ToastService {
     readonly toasts$ = this.toastSubject.asObservable();
     private currentToasts: Toast[] = [];
     show(type:ToastType, title:string,message:string,duration:number = 60000):void{
+        console.log('ToastService.show called:', { type, title, message });
         const toast:Toast={
             id:Date.now()+Math.random(),
             type,

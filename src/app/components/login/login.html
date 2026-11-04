@@ -1,1 +1,245 @@
-<p>login works!</p>
+
+<div class="auth-page">
+
+  <!-- Left Branding Section -->
+  <section class="auth-brand-section">
+
+    <div class="brand-content">
+
+      <!-- Logo -->
+      <a routerLink="/login" class="brand-logo">
+        <div class="brand-icon">
+          <i class="bi bi-shield-check"></i>
+        </div>
+
+        <div class="brand-name">
+          <h1>Insupro</h1>
+          <span>Secure Today, Brighter Tomorrow</span>
+        </div>
+      </a>
+
+      <!-- Main Content -->
+      <div class="brand-message">
+
+        <span class="brand-tagline">PROTECTION YOU CAN TRUST</span>
+
+        <h2>
+          Your Protection.
+          <br />
+          Our Priority.
+        </h2>
+
+        <p>
+          Reliable insurance services designed to protect
+          what matters most and give you confidence for tomorrow.
+        </p>
+
+        <!-- Benefits -->
+        <div class="brand-features">
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="bi bi-shield-check"></i>
+            </div>
+
+            <div>
+              <h4>Secure Policies</h4>
+              <span>Trusted and transparent protection</span>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="bi bi-file-earmark-check"></i>
+            </div>
+
+            <div>
+              <h4>Easy Claim Process</h4>
+              <span>Simple and hassle-free claims</span>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="bi bi-headset"></i>
+            </div>
+
+            <div>
+              <h4>Always With You</h4>
+              <span>Support when you need it most</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Decorative Shield -->
+      <div class="brand-decoration">
+        <i class="bi bi-shield-fill-check"></i>
+      </div>
+
+      <div class="brand-footer">
+        © 2026 Insupro. All rights reserved.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Right Login Section -->
+  <section class="auth-form-section">
+
+    <div class="login-card">
+
+      <div class="form-heading">
+
+        <div class="mobile-brand">
+          <i class="bi bi-shield-check"></i>
+          <span>Insupro</span>
+        </div>
+
+        <span class="welcome-label">WELCOME BACK</span>
+
+        <h2>Sign in to your account</h2>
+
+        <p>
+          Enter your credentials to access your account.
+        </p>
+
+      </div>
+
+
+      <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+
+        <!-- Email -->
+        <div class="form-group">
+
+          <label for="email">Email Address</label>
+
+          <div class="input-wrapper">
+
+            <i class="bi bi-envelope input-icon"></i>
+
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="Enter your email address"
+              autocomplete="email"
+              [class.input-error]="
+                loginForm.get('email')?.touched &&
+                loginForm.get('email')?.invalid
+              "
+            />
+
+          </div>
+
+          @if (
+            loginForm.get('email')?.touched &&
+            loginForm.get('email')?.hasError('required')
+          ) {
+            <small class="error-message">
+              Email address is required.
+            </small>
+          }
+
+          @if (
+            loginForm.get('email')?.touched &&
+            loginForm.get('email')?.hasError('email')
+          ) {
+            <small class="error-message">
+              Please enter a valid email address.
+            </small>
+          }
+
+        </div>
+
+
+        <!-- Password -->
+        <div class="form-group">
+
+          <label for="password">Password</label>
+
+          <div class="input-wrapper">
+
+            <i class="bi bi-lock input-icon"></i>
+
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              [class.input-error]="
+                loginForm.get('password')?.touched &&
+                loginForm.get('password')?.invalid
+              "
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            >
+              <i
+                [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
+              ></i>
+            </button>
+
+          </div>
+
+          @if (
+            loginForm.get('password')?.touched &&
+            loginForm.get('password')?.hasError('required')
+          ) {
+            <small class="error-message">
+              Password is required.
+            </small>
+          }
+
+        </div>
+
+
+        <!-- Login Button -->
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="isLoading"
+        >
+
+          @if (isLoading) {
+            <span class="spinner"></span>
+            Signing in...
+          } @else {
+            Sign In
+            <i class="bi bi-arrow-right"></i>
+          }
+
+        </button>
+
+      </form>
+
+
+      <!-- Register Link -->
+      <div class="form-footer">
+
+        <span>Don't have an account?</span>
+
+        <a routerLink="/register">
+          Create an account
+        </a>
+
+      </div>
+
+    </div>
+
+    <div class="auth-bottom-text">
+      Your security matters to us.
+    </div>
+
+  </section>
+
+</div>

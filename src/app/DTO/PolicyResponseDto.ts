@@ -13,4 +13,5 @@ export interface PolicyResponseDto{
     policyStatus:PolicyStatus,
     totalPremiumPaid:number,
     premiumAmount:number
+    coverageAmount:number,
 }

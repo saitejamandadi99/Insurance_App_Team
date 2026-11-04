@@ -6,9 +6,10 @@ import { Router } from '@angular/router';
 import { ToastService } from '../../../../services/Toast/toast-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorResponseDto } from '../../../../DTO/ErrorResponseDto';
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 @Component({
-  imports: [],
+  imports: [ReactiveFormsModule, DatePipe],
   standalone:true,
   selector: 'app-view-my-documents',
   styleUrl: './view-my-documents.css',
