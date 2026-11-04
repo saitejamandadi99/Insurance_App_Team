@@ -181,6 +181,16 @@
 
               <div class="policy-actions">
 
+                <button
+  type="button"
+  class="btn-download-policy"
+  (click)="downloadPolicy(policy)">
+
+  <i class="bi bi-download"></i>
+  Download Policy
+
+</button>
+
                 @if (canMakePayment(policy)) {
                   <button
                     type="button"

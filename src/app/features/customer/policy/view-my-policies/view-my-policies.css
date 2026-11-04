@@ -308,6 +308,30 @@
   background: #d8e7f7;
 }
 
+/* Download Policy Button */
+
+.btn-download-policy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid #198754;
+  border-radius: 6px;
+  background: #198754;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-download-policy:hover {
+  background: #146c43;
+  border-color: #146c43;
+  color: #ffffff;
+}
+
 /* Pagination */
 .pagination-section {
   display: flex;

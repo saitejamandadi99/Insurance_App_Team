@@ -62,6 +62,7 @@
               <th>Payment Mode</th>
               <th>Amount</th>
               <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -70,28 +71,33 @@
             <tr
               *ngFor="let payment of payments; let i = index; trackBy: trackByPaymentId">
 
+              <!-- Row Number -->
               <td class="row-number">
                 {{ (currentPage - 1) * pageSize + i + 1 }}
               </td>
 
+              <!-- Transaction ID -->
               <td>
                 <span class="transaction-id">
                   {{ payment.transactionReference || 'N/A' }}
                 </span>
               </td>
 
+              <!-- Policy Number -->
               <td>
                 <span class="policy-id">
                   {{ payment.policyNumber || 'N/A' }}
                 </span>
               </td>
 
+              <!-- Payment Date -->
               <td>
                 <span class="payment-date">
                   {{ payment.paymentDate | date:'dd MMM yyyy' }}
                 </span>
               </td>
 
+              <!-- Payment Mode -->
               <td>
                 <span class="mode-badge">
                   <i class="bi bi-credit-card"></i>
@@ -99,14 +105,31 @@
                 </span>
               </td>
 
+              <!-- Amount -->
               <td class="amount">
                 {{ payment.amount | currency:'INR':'symbol':'1.2-2' }}
               </td>
 
+              <!-- Payment Status -->
               <td>
                 <app-status-badge
                   [status]="formatPaymentStatus(payment.paymentStatus)">
                 </app-status-badge>
+              </td>
+
+              <!-- Action -->
+              <td>
+                <button
+                  type="button"
+                  class="btn-download"
+                  (click)="downloadPaymentReceipt(payment)"
+                  [disabled]="payment.paymentStatus !== PaymentStatus.Success"
+                  title="Download Payment Receipt">
+
+                  <i class="bi bi-download"></i>
+                  Download
+
+                </button>
               </td>
 
             </tr>
@@ -117,21 +140,18 @@
 
       </div>
 
-    <div class="empty-container"
+      <!-- Empty State -->
+      <div
+        class="empty-container"
+        *ngIf="payments.length === 0">
 
-     *ngIf="!isLoading && payments.length === 0">
- 
-  <app-empty-state
+        <app-empty-state
+          icon="bi bi-credit-card"
+          title="No Payment History"
+          message="You haven't made any payments yet.">
+        </app-empty-state>
 
-    icon="bi bi-credit-card"
-
-    title="No Payment History"
-
-    message="You haven't made any payments yet."
-></app-empty-state>
- 
-</div>
- 
+      </div>
 
       <!-- Pagination -->
       <div class="pagination-container" *ngIf="payments.length > 0">
