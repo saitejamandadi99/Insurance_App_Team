@@ -8,7 +8,7 @@ import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 import { Error } from './components/error/error';
 import { VerifyEmail } from './components/verify-email/verify-email';
-
+import { ResetPassword } from './components/reset-password/reset-password';
 // Admin - Users
 import { ViewUsers } from './features/admin/user/view-users/view-users';
 import { AddUser } from './features/admin/user/add-user/add-user';
@@ -76,6 +76,10 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'verify-email', component: VerifyEmail },
+  {
+  path: 'reset-password',
+  component: ResetPassword
+},
 
   // Unauthorized
   { path: 'unauthorized', component: Error },

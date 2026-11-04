@@ -372,6 +372,32 @@
   color: #9aa7b8;
 }
 
+.forgot-password-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  margin-bottom: 20px;
+}
+
+.forgot-password-link {
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.forgot-password-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.forgot-password-link:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
 
 /* =========================
    RESPONSIVE DESIGN

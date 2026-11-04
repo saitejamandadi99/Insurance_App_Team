@@ -8,6 +8,7 @@ import { Role } from '../../Enums/Role';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorResponseDto } from '../../DTO/ErrorResponseDto';
 import { ChangeDetectorRef } from '@angular/core';
+import { ForgotPasswordRequestDTO } from '../../DTO/ForgotPasswordRequestDTO';
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   standalone:true,
@@ -18,6 +19,7 @@ import { ChangeDetectorRef } from '@angular/core';
 export class Login {
   isLoading:boolean = false;
   showPassword: boolean = false;
+  isForgotPasswordLoading: boolean = false;
   loginForm : FormGroup = new FormGroup({
     email:new FormControl('', [Validators.required, Validators.email]),
 
@@ -65,4 +67,48 @@ export class Login {
       },
     })
   }
+
+  forgotPassword(): void {
+
+  const emailControl = this.loginForm.get('email');
+
+  if (!emailControl || emailControl.invalid) {
+    emailControl?.markAsTouched();
+    this.toastService.error('Please enter a valid email address');
+    return;
+  }
+
+  if (this.isForgotPasswordLoading) return;
+
+  this.isForgotPasswordLoading = true;
+
+  const request: ForgotPasswordRequestDTO = {
+    email: emailControl.value
+  };
+
+  this.authService.forgotPassword(request).subscribe({
+
+    next: (response) => {
+      this.isForgotPasswordLoading = false;
+
+      this.toastService.success(response.message);
+
+      this.router.navigate(['/reset-password'], {
+        state: { email: request.email } //state is used to pass data to the next route without exposing it in the URL
+      });
+    },
+
+    error: (err: HttpErrorResponse) => {
+      this.isForgotPasswordLoading = false;
+
+      const apiError = err.error as ErrorResponseDto;
+
+      this.toastService.error(apiError.message);
+      this.cdr.detectChanges();
+    }
+
+  });
 }
+}
+
+

@@ -33,7 +33,8 @@ export class App implements OnDestroy {
     const hiddenRoutes = [
       '/login',
       '/register',
-      '/verify-email'
+      '/verify-email',
+      '/reset-password'
     ];
 
     this.showNavbar = !hiddenRoutes.includes(currentRoute);

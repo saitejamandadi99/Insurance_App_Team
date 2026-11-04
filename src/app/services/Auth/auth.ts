@@ -10,6 +10,8 @@ import { Role } from '../../Enums/Role';
 import { SuccessResponseDto } from '../../DTO/SuccessResponseDto';
 import { VerifyEmailRequestDTO } from '../../DTO/VerifyEmailRequestDTO';
 import { ResendVerificationRequestDTO } from '../../DTO/ResendVerificationRequestDTO';
+import { ResetPasswordRequestDTO } from '../../DTO/ResetPasswordRequestDTO';
+import { ForgotPasswordRequestDTO } from '../../DTO/ForgotPasswordRequestDTO';
 
 @Injectable({
     providedIn:'root'
@@ -33,6 +35,14 @@ export class Auth {
 
     resendOtp(resendOtp:ResendVerificationRequestDTO):Observable<SuccessResponseDto<string>>{
         return this.httpClient.post<SuccessResponseDto<string>>(`${environment.apiUrl}/Auth/resend-verification`, resendOtp);
+    }
+
+    forgotPassword(forgotPassword:ForgotPasswordRequestDTO):Observable<SuccessResponseDto<string>>{
+        return this.httpClient.post<SuccessResponseDto<string>>(`${environment.apiUrl}/Auth/forgot-password`, forgotPassword);
+    }
+
+    resetPassword(resetPassword:ResetPasswordRequestDTO):Observable<SuccessResponseDto<string>>{
+        return this.httpClient.post<SuccessResponseDto<string>>(`${environment.apiUrl}/Auth/reset-password`, resetPassword);
     }
 
 
