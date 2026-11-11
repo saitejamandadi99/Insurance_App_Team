@@ -1,56 +1,80 @@
 
+/* =====================================
+   SIDEBAR COMPONENT HOST
+===================================== */
+
 :host {
   display: block;
+  flex: 0 0 230px;
+  width: 230px;
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
+  background: #17262D;
+  box-sizing: border-box;
 }
 
-/* =========================
-   Sidebar Toggle Button
-========================= */
+:host:has(.app-sidebar.closed) {
+  flex-basis: 0;
+  width: 0;
+}
+
+
+/* =====================================
+   SIDEBAR TOGGLE BUTTON
+===================================== */
 
 .sidebar-toggle-btn {
   position: fixed;
-  top: 18px;
-  left: 18px;
+  top: 88px;
+  left: 16px;
   z-index: 1060;
 
-  width: 42px;
-  height: 42px;
-
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  border: 1px solid var(--border-light);
-  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 18px;
+  background: #263C44;
+  border: 1px solid #30464E;
+  border-radius: 9px;
+
+  color: #55D6C5;
+  font-size: 17px;
+
   cursor: pointer;
 
-  box-shadow: var(--shadow-soft);
-  transition: var(--transition);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .sidebar-toggle-btn:hover {
-  background: var(--surface-hover);
-  border-color: var(--primary);
+  background: #304A52;
+  border-color: #20B8A9;
+  color: #EDF5F5;
 }
 
-/* =========================
-   Sidebar Container
-========================= */
+
+/* =====================================
+   SIDEBAR CONTAINER
+===================================== */
 
 .app-sidebar {
-  width: 210px;
+  display: flex;
+  flex-direction: column;
 
-  height: calc(100vh - 70px);
-  height: calc(100dvh - 70px);
+  width: 230px;
+  height: 100%;
+  min-height: 0;
 
   overflow: hidden;
 
-  background: var(--surface);
-  border-right: 1px solid var(--border);
+  background: #17262D;
+  border-right: 1px solid #30464E;
 
   position: sticky;
   top: 0;
@@ -59,9 +83,9 @@
   z-index: 1040;
 
   transition:
-    width var(--transition),
-    transform var(--transition),
-    border-color var(--transition);
+    width 0.25s ease,
+    transform 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .app-sidebar.closed {
@@ -69,33 +93,39 @@
   border-right-color: transparent;
 }
 
-/* =========================
-   Sidebar Inner Layout
-========================= */
+
+/* =====================================
+   SIDEBAR INNER LAYOUT
+===================================== */
 
 .sidebar-inner {
-  width: 210px;
-  height: 100%;
-
   display: flex;
   flex-direction: column;
+
+  width: 230px;
+  height: 100%;
+  min-height: 0;
+
+  overflow: hidden;
 }
 
-/* =========================
-   Navigation Container
-========================= */
+
+/* =====================================
+   NAVIGATION CONTAINER
+   ONLY THIS SECTION SCROLLS
+===================================== */
 
 .sidebar-nav {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
 
   overflow-y: auto;
   overflow-x: hidden;
 
-  padding: 20px 10px;
+  padding: 22px 12px;
 
   scrollbar-width: thin;
-  scrollbar-color: var(--border-light) transparent;
+  scrollbar-color: #40565E transparent;
 }
 
 .sidebar-nav::-webkit-scrollbar {
@@ -107,42 +137,46 @@
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background-color: var(--border-light);
+  background: #40565E;
   border-radius: 10px;
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb:hover {
-  background-color: var(--primary);
+  background: #20B8A9;
 }
 
-/* =========================
-   Navigation Sections
-========================= */
+
+/* =====================================
+   NAVIGATION SECTIONS
+===================================== */
 
 .nav-section {
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
 
 .nav-section-heading {
-  color: var(--text-muted);
+  padding: 0 11px;
+  margin-bottom: 9px;
 
-  font-size: 11px;
+  color: #82999F;
+
+  font-size: 10px;
   font-weight: 700;
 
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-
-  padding: 0 10px;
-  margin-bottom: 8px;
+  letter-spacing: 0.9px;
 
   white-space: nowrap;
 }
 
-/* =========================
-   Navigation Links
-========================= */
+
+/* =====================================
+   NAVIGATION LINKS
+===================================== */
 
 .sidebar-nav-link {
+  position: relative;
+
   display: flex;
   align-items: center;
   gap: 12px;
@@ -150,140 +184,188 @@
   width: 100%;
   box-sizing: border-box;
 
-  padding: 11px 10px;
-  margin-bottom: 3px;
+  padding: 11px 12px;
+  margin-bottom: 4px;
 
-  border: none;
-  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  border-radius: 8px;
 
   background: transparent;
-  color: var(--text-secondary);
+  color: #A1B5BA;
 
   text-decoration: none;
 
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
 
   white-space: nowrap;
   cursor: pointer;
 
-  transition: var(--transition);
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
 }
 
 .sidebar-nav-link i {
+  width: 19px;
+  flex-shrink: 0;
+
+  color: #82999F;
   font-size: 16px;
-  width: 20px;
 
   text-align: center;
-  flex-shrink: 0;
+
+  transition: color 0.18s ease;
 }
+
 
 /* Hover */
 
 .sidebar-nav-link:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
+  background: #263C44;
+  color: #EDF5F5;
 }
 
-/* Active Link */
+.sidebar-nav-link:hover i {
+  color: #55D6C5;
+}
+
+
+/* =====================================
+   ACTIVE LINK
+===================================== */
 
 .sidebar-nav-link.sidebar-active-link {
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-hover) 100%
-  );
+  background: rgba(32, 184, 169, 0.13);
+  border-color: rgba(32, 184, 169, 0.24);
 
-  color: #ffffff;
-
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.2);
+  color: #55D6C5;
+  font-weight: 600;
 }
+
+.sidebar-nav-link.sidebar-active-link i {
+  color: #55D6C5;
+}
+
+.sidebar-nav-link.sidebar-active-link::before {
+  content: '';
+
+  position: absolute;
+  left: -1px;
+  top: 7px;
+  bottom: 7px;
+
+  width: 3px;
+
+  background: #20B8A9;
+  border-radius: 0 4px 4px 0;
+}
+
 
 /* Dashboard */
 
 .dashboard-link {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   font-weight: 600;
 }
 
-/* =========================
-   Sidebar Footer
-========================= */
+
+/* =====================================
+   SIDEBAR FOOTER
+   ALWAYS VISIBLE
+===================================== */
 
 .sidebar-footer {
-  flex-shrink: 0;
+  flex: 0 0 auto;
 
-  border-top: 1px solid var(--border);
-  padding: 16px;
+  padding: 16px 13px;
 
-  background: var(--surface);
+  background: #17262D;
+  border-top: 1px solid #30464E;
 }
+
+
+/* =====================================
+   FOOTER PROFILE
+===================================== */
 
 .footer-profile {
   display: flex;
   align-items: center;
   gap: 10px;
 
-  margin-bottom: 12px;
+  min-width: 0;
+  margin-bottom: 14px;
 }
+
 
 /* Avatar */
 
 .avatar-circle {
   width: 38px;
   height: 38px;
-
-  border-radius: 50%;
-
-  background: rgba(124, 58, 237, 0.18);
-  color: var(--primary-light);
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  border-radius: 10px;
+
+  background: rgba(32, 184, 169, 0.13);
+  border: 1px solid rgba(32, 184, 169, 0.2);
+
+  color: #55D6C5;
   font-size: 18px;
-  flex-shrink: 0;
 }
+
 
 /* Profile Details */
 
 .profile-text {
-  overflow: hidden;
   min-width: 0;
+  overflow: hidden;
 }
 
 .profile-email {
-  color: var(--text-primary);
+  max-width: 145px;
 
-  font-size: 13px;
+  color: #EDF5F5;
+
+  font-size: 12px;
   font-weight: 600;
 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  max-width: 130px;
 }
 
+
+/* Role Badge */
+
 .role-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 
-  margin-top: 2px;
-  padding: 2px 8px;
+  margin-top: 5px;
+  padding: 3px 8px;
 
-  border-radius: 20px;
+  border-radius: 5px;
 
-  background: rgba(124, 58, 237, 0.18);
-  color: var(--primary-light);
+  background: rgba(32, 184, 169, 0.12);
+  border: 1px solid rgba(32, 184, 169, 0.2);
 
-  font-size: 11px;
+  color: #55D6C5;
+
+  font-size: 10px;
   font-weight: 600;
 }
 
-/* =========================
-   Logout Button
-========================= */
+
+/* =====================================
+   LOGOUT BUTTON
+===================================== */
 
 .logout-btn {
   width: 100%;
@@ -291,108 +373,131 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 9px;
 
-  background: transparent;
-  border: 1px solid var(--border-light);
+  padding: 10px;
 
-  color: var(--text-secondary);
+  background: rgba(239, 114, 120, 0.07);
+  border: 1px solid rgba(239, 114, 120, 0.25);
+  border-radius: 8px;
 
-  border-radius: var(--radius-md);
+  color: #EF858A;
 
-  padding: 9px;
-
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
 
   cursor: pointer;
   white-space: nowrap;
 
-  transition: var(--transition);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.logout-btn i {
+  font-size: 15px;
 }
 
 .logout-btn:hover {
-  background: rgba(239, 68, 68, 0.12);
-  border-color: var(--danger);
-  color: var(--danger);
+  background: rgba(239, 114, 120, 0.14);
+  border-color: #EF7278;
+  color: #FF9A9E;
 }
 
-/* =========================
-   Keyboard Accessibility
-========================= */
+
+/* =====================================
+   KEYBOARD ACCESSIBILITY
+===================================== */
 
 .sidebar-toggle-btn:focus-visible,
 .sidebar-nav-link:focus-visible,
 .logout-btn:focus-visible {
-  outline: 2px solid var(--primary-light);
+  outline: 2px solid #55D6C5;
   outline-offset: 3px;
 }
 
-/* =========================
-   Mobile Backdrop
-========================= */
+
+/* =====================================
+   MOBILE BACKDROP
+===================================== */
 
 .sidebar-backdrop {
   display: none;
 }
 
-/* =========================
-   Responsive Sidebar
-========================= */
+
+/* =====================================
+   RESPONSIVE SIDEBAR
+===================================== */
 
 @media (max-width: 768px) {
+
+  :host {
+    flex: 0 0 0;
+    width: 0;
+    height: 0;
+    min-height: 0;
+  }
 
   .app-sidebar {
     position: fixed;
 
-    top: 70px;
+    top: 68px;
     left: 0;
 
-    height: calc(100vh - 70px);
-    height: calc(100dvh - 70px);
-
     width: 250px;
+    height: calc(100vh - 68px);
+    height: calc(100dvh - 68px);
+
+    min-height: 0;
     max-width: calc(100vw - 60px);
 
-    border-right: 1px solid var(--border);
-
     transform: translateX(0);
+
+    border-right: 1px solid #30464E;
     z-index: 1050;
   }
 
   .sidebar-inner {
     width: 250px;
+    height: 100%;
+    min-height: 0;
+
     max-width: calc(100vw - 60px);
   }
 
   .app-sidebar.closed {
     width: 250px;
-    max-width: calc(100vw - 60px);
-
     transform: translateX(-100%);
-
-    border-right-color: var(--border);
+    border-right-color: #30464E;
   }
 
-  /* Mobile Backdrop */
+  .sidebar-nav {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  /* Mobile backdrop */
 
   .sidebar-backdrop {
     display: block;
 
     position: fixed;
 
-    top: 70px;
+    top: 68px;
     left: 0;
     right: 0;
     bottom: 0;
 
     z-index: 1040;
 
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(8, 17, 21, 0.65);
     backdrop-filter: blur(2px);
   }
 
-  /* Toggle Button */
+  /* Toggle button */
 
   .sidebar-toggle-btn {
     top: 14px;
@@ -400,15 +505,38 @@
   }
 }
 
-/* =========================
-   Reduced Motion
-========================= */
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media (max-width: 480px) {
+
+  .sidebar-nav {
+    padding: 18px 11px;
+  }
+
+  .sidebar-nav-link {
+    padding: 10px 11px;
+    font-size: 12px;
+  }
+
+  .nav-section-heading {
+    font-size: 9px;
+  }
+}
+
+
+/* =====================================
+   REDUCED MOTION
+===================================== */
 
 @media (prefers-reduced-motion: reduce) {
 
   .app-sidebar,
   .sidebar-toggle-btn,
   .sidebar-nav-link,
+  .sidebar-nav-link i,
   .logout-btn {
     transition: none;
   }

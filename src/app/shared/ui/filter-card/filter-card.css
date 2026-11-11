@@ -1,40 +1,133 @@
 
+/* =====================================
+   FILTER CARD
+===================================== */
+
 .filter-card {
   margin-bottom: 24px;
+  padding: 22px;
+
+  background: #1D3038;
+
+  border: 1px solid #30464E;
+  border-radius: 13px;
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.12);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
+
+
+/* =====================================
+   FILTER HEADER
+===================================== */
 
 .filter-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-color, var(--border));
+  padding-bottom: 15px;
+
+  border-bottom: 1px solid #30464E;
 }
+
+
+/* =====================================
+   FILTER TITLE
+===================================== */
 
 .filter-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
+
+  color: #EDF5F5;
+
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: 0.1px;
 }
 
-.filter-title i {
-  color: var(--primary);
+
+/* =====================================
+   FILTER ICON CONTAINER
+===================================== */
+
+.filter-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 9px;
+
+  background: rgba(32, 184, 169, 0.12);
+
+  color: #55D6C5;
+
+  font-size: 15px;
 }
+
+
+/* =====================================
+   FILTER BODY
+===================================== */
 
 .filter-body {
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  min-width: 0;
 }
 
-@media (max-width: 576px) {
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 768px) {
+
   .filter-card {
-    margin-bottom: 18px;
+    padding: 18px;
   }
 
   .filter-header {
-    margin-bottom: 16px;
+    margin-bottom: 17px;
+    padding-bottom: 13px;
   }
+
+}
+
+
+@media (max-width: 576px) {
+
+  .filter-card {
+    margin-bottom: 18px;
+    padding: 15px;
+    border-radius: 11px;
+  }
+
+  .filter-title {
+    font-size: 15px;
+  }
+
+  .filter-icon {
+    width: 31px;
+    height: 31px;
+  }
+
+  .filter-body {
+    gap: 14px;
+  }
+
 }

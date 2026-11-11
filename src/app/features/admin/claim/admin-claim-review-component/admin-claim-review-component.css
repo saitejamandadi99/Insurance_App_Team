@@ -1,27 +1,38 @@
-.claim-review-page {
-  padding: 24px;
-  background: #F5F8FC;
-  min-height: 100%;
+
+:host {
+  display: block;
+  width: 100%;
 }
 
-/* Page Header */
+.claim-review-page {
+  min-height: 100vh;
+  padding: 28px;
+  background: #101C22;
+  color: #EDF5F5;
+  box-sizing: border-box;
+}
+
+/* =====================================
+   PAGE HEADER
+===================================== */
+
 .page-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 18px;
+  margin-bottom: 26px;
 }
 
 .page-heading h2 {
-  color: #173B63;
-  font-size: 25px;
+  color: #EDF5F5;
+  font-size: 26px;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin: 0 0 7px;
 }
 
 .page-heading p {
-  color: #718096;
+  color: #A1B5BA;
   font-size: 14px;
   margin: 0;
 }
@@ -29,32 +40,38 @@
 .btn-back {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 9px;
+  min-height: 42px;
   padding: 10px 16px;
-  border: 1px solid #DCE4EF;
+  border: 1px solid #40565E;
   border-radius: 8px;
-  background: #FFFFFF;
-  color: #173B63;
-  font-size: 14px;
+  background: #1D3038;
+  color: #C0D0D2;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-back:hover:not(:disabled) {
-  background: #EDF4FB;
-  border-color: #2868A8;
+  background: #263C44;
+  border-color: #20B8A9;
+  color: #55D6C5;
 }
 
 button:disabled {
-  opacity: 0.65;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Layout */
+/* =====================================
+   MAIN LAYOUT
+===================================== */
+
 .review-layout {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
   gap: 22px;
   align-items: start;
 }
@@ -63,110 +80,128 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: 22px;
+  min-width: 0;
 }
 
-/* Common Card */
+/* =====================================
+   COMMON CARDS
+===================================== */
+
 .form-card {
-  background: #FFFFFF;
-  border: 1px solid #E5EBF3;
-  border-radius: 12px;
+  min-width: 0;
+  background: #1D3038;
+  border: 1px solid #30464E;
+  border-radius: 13px;
   overflow: hidden;
-  box-shadow: 0 3px 12px rgba(23, 59, 99, 0.04);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
 }
 
 .form-card-header {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 15px;
   padding: 22px 24px;
-  border-bottom: 1px solid #E5EBF3;
+  border-bottom: 1px solid #30464E;
 }
 
 .header-icon {
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #EAF2FB;
-  color: #2868A8;
-  border-radius: 10px;
+  border: 1px solid rgba(32, 184, 169, 0.2);
+  background: rgba(32, 184, 169, 0.12);
+  color: #55D6C5;
+  border-radius: 11px;
   font-size: 21px;
 }
 
 .review-icon {
-  background: #EAF2FB;
-  color: #173B63;
+  background: rgba(32, 184, 169, 0.14);
+  color: #55D6C5;
 }
 
 .documents-icon {
-  background: #EDF4FB;
-  color: #2868A8;
+  background: rgba(101, 169, 232, 0.12);
+  border-color: rgba(101, 169, 232, 0.2);
+  color: #65A9E8;
 }
 
 .form-card-header h4 {
-  color: #173B63;
+  color: #EDF5F5;
   font-size: 17px;
   font-weight: 700;
   margin: 0 0 5px;
 }
 
 .form-card-header p {
-  color: #718096;
-  font-size: 13px;
+  color: #A1B5BA;
+  font-size: 12px;
+  line-height: 1.6;
   margin: 0;
 }
 
-/* Claim Details */
+/* =====================================
+   CLAIM DETAILS
+===================================== */
+
 .details-body {
-  padding: 24px;
+  padding: 25px;
 }
 
 .details-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px 20px;
+  gap: 26px 22px;
+}
+
+.detail-item {
+  min-width: 0;
 }
 
 .detail-item label {
   display: block;
-  color: #718096;
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 7px;
+  color: #91A9AF;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.55px;
 }
 
 .detail-item p {
-  color: #263B53;
-  font-size: 14px;
+  color: #EDF5F5;
+  font-size: 13px;
   font-weight: 600;
   margin: 0;
   overflow-wrap: anywhere;
+  line-height: 1.6;
 }
 
 .claim-amount {
-  color: #173B63 !important;
-  font-size: 17px !important;
+  color: #55D6C5 !important;
+  font-size: 18px !important;
   font-weight: 700 !important;
 }
 
 .status-label {
-  display: inline-block;
-  padding: 5px 11px;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 11px;
+  border: 1px solid rgba(233, 184, 92, 0.25);
   border-radius: 20px;
-  background: #EDF4FB;
-  color: #2868A8;
-  font-size: 12px;
+  background: rgba(233, 184, 92, 0.12);
+  color: #E9B85C;
+  font-size: 11px;
   font-weight: 600;
   text-transform: capitalize;
 }
 
 .detail-divider {
   height: 1px;
-  background: #E5EBF3;
+  background: #30464E;
   margin: 24px 0;
 }
 
@@ -175,40 +210,54 @@ button:disabled {
 }
 
 .description-text {
-  color: #44566C !important;
+  color: #C0D0D2 !important;
   font-weight: 400 !important;
-  line-height: 1.7;
+  line-height: 1.8 !important;
   white-space: pre-wrap;
 }
 
-/* Claim Documents */
+/* =====================================
+   CLAIM DOCUMENTS
+===================================== */
+
 .documents-body {
-  padding: 20px 24px;
+  padding: 21px 24px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #30464E;
+  border-radius: 9px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .documents-table {
   width: 100%;
-  border-collapse: collapse;
+  min-width: 590px;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .documents-table thead th {
-  padding: 12px 10px;
-  background: #F5F8FC;
-  color: #718096;
-  font-size: 11px;
+  padding: 13px 12px;
+  background: #17262D;
+  color: #A1B5BA;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.5px;
   text-align: left;
   white-space: nowrap;
-  border-bottom: 1px solid #E5EBF3;
+  border-bottom: 1px solid #30464E;
 }
 
 .documents-table tbody td {
-  padding: 14px 10px;
-  color: #44566C;
-  font-size: 13px;
-  border-bottom: 1px solid #EDF1F6;
+  padding: 14px 12px;
+  background: #1D3038;
+  color: #C0D0D2;
+  font-size: 12px;
+  border-bottom: 1px solid #30464E;
   vertical-align: middle;
 }
 
@@ -216,18 +265,23 @@ button:disabled {
   border-bottom: none;
 }
 
+.documents-table tbody tr:hover td {
+  background: #263C44;
+}
+
 .document-name {
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #263B53;
-  font-weight: 600;
   min-width: 140px;
+  color: #EDF5F5;
+  font-weight: 600;
 }
 
 .document-name i {
-  color: #2868A8;
+  color: #55D6C5;
   font-size: 17px;
+  flex-shrink: 0;
 }
 
 .document-name span {
@@ -235,12 +289,13 @@ button:disabled {
 }
 
 .document-type {
-  display: inline-block;
+  display: inline-flex;
   padding: 5px 9px;
+  border: 1px solid #40565E;
   border-radius: 6px;
-  background: #EDF4FB;
-  color: #2868A8;
-  font-size: 11px;
+  background: #263C44;
+  color: #C0D0D2;
+  font-size: 10px;
   font-weight: 600;
 }
 
@@ -248,7 +303,7 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
 }
 
 .btn-document-view,
@@ -256,10 +311,11 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
+  min-height: 32px;
   padding: 7px 10px;
-  border-radius: 6px;
-  font-size: 12px;
+  border-radius: 7px;
+  font-size: 10px;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
@@ -267,102 +323,117 @@ button:disabled {
 }
 
 .btn-document-view {
-  color: #2868A8;
-  background: #EDF4FB;
-  border: 1px solid #D5E5F5;
+  color: #65A9E8;
+  background: rgba(101, 169, 232, 0.1);
+  border: 1px solid rgba(101, 169, 232, 0.25);
 }
 
 .btn-document-view:hover {
-  background: #DCEBFA;
+  color: #FFFFFF;
+  background: #3989CB;
+  border-color: #3989CB;
 }
 
 .btn-document-download {
-  color: #173B63;
-  background: #FFFFFF;
-  border: 1px solid #DCE4EF;
+  color: #55D6C5;
+  background: rgba(32, 184, 169, 0.1);
+  border: 1px solid rgba(32, 184, 169, 0.25);
 }
 
 .btn-document-download:hover {
-  background: #F5F8FC;
-  border-color: #AFC4DA;
+  color: #FFFFFF;
+  background: #199F93;
+  border-color: #199F93;
 }
 
-/* Documents Loading */
+/* =====================================
+   DOCUMENT LOADING AND EMPTY STATES
+===================================== */
+
 .documents-loading {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 110px;
-  color: #718096;
-  font-size: 13px;
+  gap: 11px;
+  min-height: 120px;
+  color: #A1B5BA;
+  font-size: 12px;
 }
 
 .documents-loading .spinner-border {
-  color: #2868A8;
+  color: #20B8A9;
 }
 
-/* Documents Empty State */
 .documents-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 150px;
+  min-height: 165px;
+  padding: 22px;
   text-align: center;
-  padding: 20px;
 }
 
 .documents-empty > i {
-  color: #A0AEC0;
-  font-size: 30px;
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  background: rgba(32, 184, 169, 0.1);
+  color: #55D6C5;
+  font-size: 22px;
 }
 
 .documents-empty h6 {
-  color: #263B53;
-  font-size: 14px;
+  color: #EDF5F5;
+  font-size: 13px;
   font-weight: 700;
   margin-bottom: 6px;
 }
 
 .documents-empty p {
-  color: #718096;
-  font-size: 12px;
+  color: #A1B5BA;
+  font-size: 11px;
   margin: 0;
 }
 
-/* Review Form */
+/* =====================================
+   ADMIN REVIEW FORM
+===================================== */
+
 .form-body {
   padding: 24px;
 }
 
 .form-group {
-  margin-bottom: 22px;
+  margin-bottom: 23px;
 }
 
 .form-group label {
   display: block;
-  color: #263B53;
-  font-size: 13px;
+  color: #D5E1E2;
+  font-size: 12px;
   font-weight: 600;
   margin-bottom: 9px;
 }
 
 .required {
-  color: #DC3545;
+  color: #EF7278;
 }
 
 .custom-select,
 .custom-textarea {
   width: 100%;
-  border: 1px solid #DCE4EF;
+  padding: 12px 13px;
+  border: 1px solid #40565E;
   border-radius: 8px;
-  padding: 11px 13px;
-  color: #263B53;
-  background-color: #FFFFFF;
-  font-size: 14px;
   outline: none;
+  background-color: #17262D;
+  color: #EDF5F5;
+  font-size: 12px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -371,34 +442,39 @@ button:disabled {
   cursor: pointer;
 }
 
+.custom-select option {
+  background: #17262D;
+  color: #EDF5F5;
+}
+
 .custom-textarea {
+  min-height: 145px;
   resize: vertical;
-  min-height: 130px;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 .custom-select:focus,
 .custom-textarea:focus {
-  border-color: #2868A8;
-  box-shadow: 0 0 0 3px rgba(40, 104, 168, 0.10);
+  border-color: #20B8A9;
+  box-shadow: 0 0 0 3px rgba(32, 184, 169, 0.12);
 }
 
 .custom-textarea::placeholder {
-  color: #A0AEC0;
+  color: #82999F;
 }
 
 .invalid-input {
-  border-color: #DC3545 !important;
+  border-color: #EF7278 !important;
 }
 
 .invalid-input:focus {
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.10);
+  box-shadow: 0 0 0 3px rgba(239, 114, 120, 0.12);
 }
 
 .validation-message {
   display: block;
-  color: #DC3545;
-  font-size: 12px;
+  color: #EF858A;
+  font-size: 11px;
   margin-top: 7px;
 }
 
@@ -407,37 +483,48 @@ button:disabled {
   justify-content: space-between;
   align-items: flex-start;
   gap: 10px;
-  margin-top: 6px;
+  margin-top: 7px;
 }
 
 .character-count {
-  color: #718096;
-  font-size: 12px;
+  color: #91A9AF;
+  font-size: 11px;
   white-space: nowrap;
 }
 
-/* Updating Banner */
+/* =====================================
+   SUBMISSION BANNER
+===================================== */
+
 .updating-banner {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 11px 14px;
+  padding: 12px 14px;
   margin-bottom: 20px;
-  background: #EDF4FB;
-  border: 1px solid #D5E5F5;
+  border: 1px solid rgba(32, 184, 169, 0.25);
   border-radius: 8px;
-  color: #2868A8;
-  font-size: 13px;
+  background: rgba(32, 184, 169, 0.1);
+  color: #55D6C5;
+  font-size: 12px;
   font-weight: 600;
 }
 
-/* Form Actions */
+.updating-banner .spinner-border {
+  width: 16px;
+  height: 16px;
+}
+
+/* =====================================
+   FORM ACTIONS
+===================================== */
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  padding-top: 20px;
-  border-top: 1px solid #E5EBF3;
+  gap: 11px;
+  padding-top: 21px;
+  border-top: 1px solid #30464E;
 }
 
 .btn-cancel,
@@ -447,89 +534,117 @@ button:disabled {
   align-items: center;
   gap: 8px;
   min-height: 42px;
-  padding: 10px 18px;
+  padding: 10px 17px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-cancel {
-  background: #FFFFFF;
-  color: #44566C;
-  border: 1px solid #DCE4EF;
+  background: #263C44;
+  color: #C0D0D2;
+  border: 1px solid #40565E;
 }
 
 .btn-cancel:hover:not(:disabled) {
-  background: #F5F8FC;
+  background: #304A52;
+  border-color: #60777E;
+  color: #EDF5F5;
 }
 
 .btn-submit {
-  background: #173B63;
+  background: #20B8A9;
   color: #FFFFFF;
-  border: 1px solid #173B63;
+  border: 1px solid #20B8A9;
 }
 
 .btn-submit:hover:not(:disabled) {
-  background: #2868A8;
-  border-color: #2868A8;
+  background: #199F93;
+  border-color: #199F93;
 }
 
-/* Loading State */
+/* =====================================
+   PAGE LOADING
+===================================== */
+
 .loading-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 300px;
-  background: #FFFFFF;
-  border: 1px solid #E5EBF3;
-  border-radius: 12px;
-  text-align: center;
   padding: 30px;
+  background: #1D3038;
+  border: 1px solid #30464E;
+  border-radius: 13px;
+  text-align: center;
 }
 
 .loading-spinner {
   width: 38px;
   height: 38px;
-  color: #2868A8;
+  color: #20B8A9;
   margin-bottom: 18px;
 }
 
 .loading-card h5 {
-  color: #173B63;
-  font-size: 17px;
+  color: #EDF5F5;
+  font-size: 16px;
   font-weight: 700;
   margin-bottom: 7px;
 }
 
 .loading-card p {
-  color: #718096;
-  font-size: 13px;
+  color: #A1B5BA;
+  font-size: 12px;
   margin: 0;
 }
 
-/* Responsive */
-@media (max-width: 992px) {
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 1100px) {
+  .review-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+    gap: 16px;
+  }
+
+  .form-card-header {
+    padding: 19px;
+  }
+
+  .details-body,
+  .form-body {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 900px) {
   .review-layout {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
+  .claim-review-page {
+    padding: 18px;
+  }
+
   .documents-body {
     padding: 16px;
   }
 
   .documents-table {
-    min-width: 650px;
+    min-width: 590px;
   }
 }
 
 @media (max-width: 576px) {
   .claim-review-page {
-    padding: 16px;
+    padding: 13px;
   }
 
   .page-heading {
@@ -541,15 +656,30 @@ button:disabled {
     font-size: 22px;
   }
 
-  .form-card-header,
+  .btn-back {
+    width: 100%;
+  }
+
+  .form-card-header {
+    padding: 17px;
+  }
+
+  .form-card-header h4 {
+    font-size: 15px;
+  }
+
+  .form-card-header p {
+    font-size: 11px;
+  }
+
   .details-body,
   .form-body {
-    padding: 18px;
+    padding: 17px;
   }
 
   .details-grid {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 19px;
   }
 
   .form-actions {
@@ -559,5 +689,24 @@ button:disabled {
   .btn-cancel,
   .btn-submit {
     width: 100%;
+  }
+}
+
+/* =====================================
+   ACCESSIBILITY
+===================================== */
+
+.claim-review-page button:focus-visible,
+.claim-review-page select:focus-visible,
+.claim-review-page textarea:focus-visible {
+  outline: 2px solid #55D6C5;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .claim-review-page *,
+  .claim-review-page *::before,
+  .claim-review-page *::after {
+    transition: none !important;
   }
 }

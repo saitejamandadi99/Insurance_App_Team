@@ -1,54 +1,230 @@
 
+/* =====================================
+   SEARCH CONTAINER
+===================================== */
+
 .search-container {
   width: 100%;
+  min-width: 0;
 }
+
+
+/* =====================================
+   SEARCH INPUT WRAPPER
+===================================== */
 
 .search-input-wrapper {
   position: relative;
   width: 100%;
 }
 
+
+/* =====================================
+   SEARCH INPUT
+===================================== */
+
 .search-input {
-  padding-left: 45px;
-  padding-right: 45px;
+  width: 100%;
+  min-height: 44px;
+
+  padding: 10px 44px 10px 45px;
+
+  background: #17262D;
+  border: 1px solid #30464E;
+  border-radius: 9px;
+
+  color: #EDF5F5;
+
+  font-size: 13px;
+  font-weight: 400;
+
+  box-shadow: none;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
+
+
+/* =====================================
+   PLACEHOLDER
+===================================== */
+
+.search-input::placeholder {
+  color: #82999F;
+  opacity: 1;
+}
+
+
+/* =====================================
+   SEARCH ICON
+===================================== */
 
 .search-icon {
   position: absolute;
+
   top: 50%;
   left: 16px;
+
   transform: translateY(-50%);
-  color: var(--text-secondary);
+
+  color: #82999F;
   font-size: 16px;
+
   pointer-events: none;
+
+  transition: color 0.2s ease;
+
+  z-index: 2;
 }
+
+
+/* =====================================
+   FOCUS STATE
+===================================== */
+
+.search-input:focus {
+  background: #1D3038;
+
+  border-color: #20B8A9;
+
+  color: #EDF5F5;
+
+  box-shadow: 0 0 0 3px rgba(32, 184, 169, 0.12);
+
+  outline: none;
+}
+
+
+/* Change search icon color when input
+   wrapper contains a focused input */
+
+.search-input-wrapper:focus-within .search-icon {
+  color: #55D6C5;
+}
+
+
+/* =====================================
+   CLEAR BUTTON
+===================================== */
 
 .clear-btn {
   position: absolute;
+
   top: 50%;
-  right: 12px;
+  right: 11px;
+
   transform: translateY(-50%);
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px;
-  border-radius: 4px;
-  transition: var(--transition);
+
+  width: 28px;
+  height: 28px;
+
+  padding: 0;
+
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+
+  color: #82999F;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+
+  z-index: 2;
 }
+
+
+/* =====================================
+   CLEAR BUTTON ICON
+===================================== */
+
+.clear-btn i {
+  font-size: 12px;
+}
+
+
+/* =====================================
+   CLEAR BUTTON HOVER
+===================================== */
 
 .clear-btn:hover {
-  color: var(--text-primary);
+  background: rgba(161, 181, 186, 0.12);
+  color: #EDF5F5;
 }
 
+
+/* =====================================
+   CLEAR BUTTON ACTIVE
+===================================== */
+
+.clear-btn:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+
+/* =====================================
+   CLEAR BUTTON FOCUS
+===================================== */
+
 .clear-btn:focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 2px solid #55D6C5;
   outline-offset: 2px;
 }
 
-.clear-btn:active {
-  transform: translateY(-50%) scale(0.95);
+
+/* =====================================
+   DISABLED STATE
+===================================== */
+
+.search-input:disabled {
+  background: #263C44;
+  border-color: #30464E;
+  color: #82999F;
+
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 576px) {
+
+  .search-input {
+    min-height: 42px;
+    font-size: 12px;
+    padding-left: 40px;
+  }
+
+  .search-icon {
+    left: 13px;
+    font-size: 15px;
+  }
+
+}
+
+
+/* =====================================
+   ACCESSIBILITY
+===================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .search-input,
+  .search-icon,
+  .clear-btn {
+    transition: none;
+  }
+
 }

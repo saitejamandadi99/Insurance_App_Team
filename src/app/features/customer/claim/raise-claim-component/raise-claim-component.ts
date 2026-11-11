@@ -213,6 +213,8 @@ export class RaiseClaimComponent implements OnInit {
         );
 
         this.cdr.detectChanges();
+        this.router.navigate(['/myclaims']);
+
       }
     });
   }

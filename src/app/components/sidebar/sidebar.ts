@@ -234,7 +234,7 @@ export class SidebarComponent implements OnInit {
         {
           heading: 'Claims',
           links: [
-            { icon: 'bi bi-file-earmark-plus', label: 'Raise Claim', route: '/mypolicies' },
+            // { icon: 'bi bi-file-earmark-plus', label: 'Raise Claim', route: '/mypolicies' },
             { icon: 'bi bi-file-earmark-medical', label: 'My Claims', route: '/myclaims' }
           ]
         },

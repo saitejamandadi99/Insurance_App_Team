@@ -1,54 +1,188 @@
 
+/* =====================================
+   ACTION BUTTONS CONTAINER
+===================================== */
+
 .action-buttons {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 8px;
 }
+
+
+/* =====================================
+   BASE BUTTON
+===================================== */
 
 .action-buttons .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  min-width: 90px;
-  padding: 6px 12px;
-  border-radius: var(--radius-md, 6px);
-  font-size: 13px;
-  font-weight: 500;
+  gap: 7px;
+
+  min-width: 95px;
+  padding: 7px 12px;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+
   white-space: nowrap;
+
   transition:
-    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
     box-shadow 0.2s ease,
-    background-color 0.2s ease;
+    transform 0.2s ease;
 }
+
+
+/* =====================================
+   BUTTON ICONS
+===================================== */
 
 .action-buttons .btn i {
-  font-size: 14px;
+  font-size: 13px;
 }
 
+
+/* =====================================
+   HOVER AND ACTIVE EFFECTS
+===================================== */
+
 .action-buttons .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.action-buttons .btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
 }
 
 .action-buttons .btn:focus-visible {
   outline: 2px solid currentColor;
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
-.action-buttons .btn:active {
-  transform: translateY(0);
+
+/* =====================================
+   USER MANAGEMENT BUTTON STYLES
+===================================== */
+
+/* ACTIVATE */
+
+:host(.user-management-actions) .btn-outline-success {
+  background: rgba(53, 197, 139, 0.08);
+  border-color: rgba(53, 197, 139, 0.35);
+  color: #48D6A0;
 }
+
+:host(.user-management-actions) .btn-outline-success:hover {
+  background: rgba(53, 197, 139, 0.16);
+  border-color: #35C58B;
+  color: #65E2B2;
+}
+
+
+/* DEACTIVATE */
+
+:host(.user-management-actions) .btn-outline-warning {
+  background: rgba(233, 184, 92, 0.08);
+  border-color: rgba(233, 184, 92, 0.35);
+  color: #E9B85C;
+}
+
+:host(.user-management-actions) .btn-outline-warning:hover {
+  background: rgba(233, 184, 92, 0.16);
+  border-color: #E9B85C;
+  color: #F3CB7D;
+}
+
+
+/* VIEW */
+
+:host(.user-management-actions) .btn-outline-info {
+  background: rgba(85, 214, 197, 0.08);
+  border-color: rgba(85, 214, 197, 0.35);
+  color: #55D6C5;
+}
+
+:host(.user-management-actions) .btn-outline-info:hover {
+  background: rgba(85, 214, 197, 0.16);
+  border-color: #55D6C5;
+  color: #7CE7D9;
+}
+
+
+/* EDIT */
+
+:host(.user-management-actions) .btn-outline-primary {
+  background: rgba(101, 169, 232, 0.08);
+  border-color: rgba(101, 169, 232, 0.35);
+  color: #80B9EB;
+}
+
+:host(.user-management-actions) .btn-outline-primary:hover {
+  background: rgba(101, 169, 232, 0.16);
+  border-color: #65A9E8;
+  color: #A4CEEF;
+}
+
+
+/* DELETE / CANCEL / REJECT */
+
+:host(.user-management-actions) .btn-outline-danger {
+  background: rgba(239, 114, 120, 0.08);
+  border-color: rgba(239, 114, 120, 0.35);
+  color: #F08085;
+}
+
+:host(.user-management-actions) .btn-outline-danger:hover {
+  background: rgba(239, 114, 120, 0.16);
+  border-color: #EF7278;
+  color: #FF9A9E;
+}
+
+
+/* DEFAULT */
+
+:host(.user-management-actions) .btn-outline-secondary {
+  background: rgba(161, 181, 186, 0.08);
+  border-color: rgba(161, 181, 186, 0.25);
+  color: #A1B5BA;
+}
+
+:host(.user-management-actions) .btn-outline-secondary:hover {
+  background: rgba(161, 181, 186, 0.15);
+  border-color: #A1B5BA;
+  color: #D0DDDF;
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
 
 @media (max-width: 576px) {
+
   .action-buttons {
     gap: 6px;
   }
 
   .action-buttons .btn {
     min-width: auto;
-    padding: 5px 8px;
+    padding: 6px 9px;
+    font-size: 11px;
+  }
+
+  .action-buttons .btn i {
     font-size: 12px;
   }
+
 }

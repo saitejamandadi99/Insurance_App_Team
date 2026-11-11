@@ -1,82 +1,224 @@
 
+/* =====================================
+   PAGE HEADER
+===================================== */
+
 .page-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
   gap: 24px;
-  margin-bottom: 32px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+  padding-bottom: 22px;
+
+  border-bottom: 1px solid #30464E;
+
   flex-wrap: wrap;
+
+  animation: headerFadeIn 0.35s ease both;
 }
+
+
+/* =====================================
+   HEADER CONTENT
+===================================== */
 
 .page-header-content {
   flex: 1;
   min-width: 0;
 }
-.btn-primary-custom {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 18px;
-  background: #173b63;
-  color: #ffffff;
-  border: 1px solid #173b63;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
 
-.btn-primary-custom:hover {
-  background: #2868a8;
-  border-color: #2868a8;
-}
 
-.btn-primary-custom i {
-  font-size: 16px;
-}
+/* =====================================
+   PAGE TITLE
+===================================== */
+
 .page-heading {
   margin: 0;
-  font-size: 2rem;
+
+  color: #EDF5F5;
+
+  font-size: 28px;
   font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.2;
-  letter-spacing: -0.5px;
+  line-height: 1.3;
+  letter-spacing: -0.6px;
+
   overflow-wrap: anywhere;
 }
 
+
+/* =====================================
+   PAGE DESCRIPTION
+===================================== */
+
 .page-description {
-  margin: 8px 0 0;
-  font-size: 1rem;
-  color: var(--text-muted);
-  line-height: 1.6;
+  margin: 7px 0 0;
+
   max-width: 700px;
+
+  color: #A1B5BA;
+
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
-.page-header .btn {
+
+/* =====================================
+   PRIMARY BUTTON
+===================================== */
+
+.page-header .btn-primary-custom {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 9px;
+
+  min-height: 42px;
+  padding: 10px 17px;
+
+  background: #20B8A9;
+  border: 1px solid #20B8A9;
+  border-radius: 9px;
+
+  color: #FFFFFF;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+  cursor: pointer;
+
+  box-shadow: 0 3px 10px rgba(32, 184, 169, 0.12);
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
+
+/* =====================================
+   BUTTON ICON
+===================================== */
+
+.page-header .btn-primary-custom i {
+  font-size: 15px;
+}
+
+
+/* =====================================
+   BUTTON HOVER
+===================================== */
+
+.page-header .btn-primary-custom:hover {
+  background: #199F93;
+  border-color: #199F93;
+
+  box-shadow: 0 5px 14px rgba(32, 184, 169, 0.22);
+
+  transform: translateY(-2px);
+}
+
+
+/* =====================================
+   BUTTON ACTIVE
+===================================== */
+
+.page-header .btn-primary-custom:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
+}
+
+
+/* =====================================
+   BUTTON FOCUS
+===================================== */
+
+.page-header .btn-primary-custom:focus-visible {
+  outline: 2px solid #55D6C5;
+  outline-offset: 3px;
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
 @media (max-width: 768px) {
+
   .page-header {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
-    margin-bottom: 24px;
+
+    gap: 17px;
+    margin-bottom: 23px;
+    padding-bottom: 18px;
   }
 
   .page-heading {
-    font-size: 1.65rem;
+    font-size: 24px;
   }
 
-  .page-header .btn {
+  .page-description {
+    font-size: 13px;
+  }
+
+  .page-header .btn-primary-custom {
     width: 100%;
   }
+
+}
+
+
+/* =====================================
+   SMALL SCREENS
+===================================== */
+
+@media (max-width: 480px) {
+
+  .page-heading {
+    font-size: 22px;
+  }
+
+  .page-description {
+    font-size: 12px;
+  }
+
+}
+
+
+/* =====================================
+   ACCESSIBILITY
+===================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .page-header,
+  .page-header .btn-primary-custom {
+    animation: none;
+    transition: none;
+  }
+
+}
+
+
+/* =====================================
+   ENTRANCE ANIMATION
+===================================== */
+
+@keyframes headerFadeIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
 }
