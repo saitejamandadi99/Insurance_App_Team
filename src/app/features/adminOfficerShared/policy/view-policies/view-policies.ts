@@ -147,7 +147,7 @@ export class ViewPolicies implements OnInit {
   }
 
     navigateToRecordPayment(policyId: number): void {
-    this.router.navigate(['/recordpayment', policyId]);
+    this.router.navigate(['/makepayment', policyId]);
   }
 
   cancelPolicy(policyId: number): void {

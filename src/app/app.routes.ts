@@ -258,7 +258,7 @@ export const routes: Routes = [
   {
     path: 'makepayment/:policyId',
     component: MakePaymentComponent,
-    canActivate: [authGuard([Role.Customer])]
+    canActivate: [authGuard([Role.Customer,Role.Admin, Role.Officer])]
   },
   {
     path: 'mypayments',

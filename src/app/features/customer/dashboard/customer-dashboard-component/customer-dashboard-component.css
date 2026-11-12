@@ -1,57 +1,64 @@
+
 /* =====================================
-MAIN DASHBOARD
+   MAIN DASHBOARD
 ===================================== */
 
 .customer-dashboard-page {
   min-height: 100vh;
-  padding: 28px;
-  background: #f5f8fc;
-  color: #263b53;
+  padding: 24px;
+  color: #EDF5F5;
 }
 
 /* =====================================
-DASHBOARD HEADER
+   DASHBOARD HEADER
 ===================================== */
 
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #ffffff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  border: 1px solid #e5eaf1;
+  gap: 20px;
+  padding: 25px 28px;
+  background: #1D3038;
+  border: 1px solid #30464E;
+  border-radius: 14px;
   margin-bottom: 30px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
 }
 
 .dashboard-title {
   font-size: 25px;
-  font-weight: 700;
-  color: #263b53;
+  font-weight: 750;
+  color: #EDF5F5;
   margin-bottom: 8px;
 }
 
+.dashboard-title i {
+  color: #55D6C5;
+}
+
 .dashboard-subtitle {
-  font-size: 14px;
-  color: #718096;
-  margin-bottom: 0;
+  font-size: 13px;
+  color: #A1B5BA;
+  margin: 0;
+  line-height: 1.6;
 }
 
 .dashboard-header-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  background: #eaf2ff;
-  color: #2563eb;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  background: rgba(32, 184, 169, 0.14);
+  border: 1px solid rgba(85, 214, 197, 0.2);
+  color: #55D6C5;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 27px;
 }
 
 /* =====================================
-DASHBOARD SECTIONS
+   DASHBOARD SECTIONS
 ===================================== */
 
 .dashboard-section {
@@ -63,39 +70,54 @@ DASHBOARD SECTIONS
   justify-content: space-between;
   align-items: center;
   gap: 15px;
-  margin-bottom: 18px;
+  margin-bottom: 19px;
 }
 
 .section-header h4 {
-  font-size: 19px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
   font-weight: 700;
-  color: #263b53;
-  margin-bottom: 5px;
+  color: #EDF5F5;
+  margin-bottom: 6px;
+}
+
+.section-header h4 i {
+  color: #55D6C5;
 }
 
 .section-header p {
-  font-size: 13px;
-  color: #718096;
-  margin-bottom: 0;
+  font-size: 12px;
+  color: #82999F;
+  margin: 0;
 }
 
 .view-all-link {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: #2563eb;
+  color: #55D6C5;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 650;
   text-decoration: none;
   white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
 .view-all-link:hover {
-  color: #1d4ed8;
+  color: #20B8A9;
+}
+
+.view-all-link i {
+  transition: transform 0.2s ease;
+}
+
+.view-all-link:hover i {
+  transform: translateX(4px);
 }
 
 /* =====================================
-DASHBOARD SUMMARY CARDS
+   DASHBOARD SUMMARY CARDS
 ===================================== */
 
 .dashboard-stats {
@@ -108,24 +130,24 @@ DASHBOARD SUMMARY CARDS
   display: flex;
   align-items: center;
   gap: 17px;
-  min-height: 125px;
-  padding: 22px;
-  background: #ffffff;
-  border: 1px solid #e5eaf1;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
-  transition: all 0.25s ease;
+  min-height: 130px;
+  padding: 23px;
+  background: #1D3038;
+  border: 1px solid #30464E;
+  border-radius: 13px;
+  transition: border-color 0.2s ease,
+              transform 0.2s ease;
 }
 
 .stat-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+  border-color: rgba(85, 214, 197, 0.45);
 }
 
 .stat-icon {
-  width: 52px;
-  height: 52px;
-  min-width: 52px;
+  width: 54px;
+  height: 54px;
+  min-width: 54px;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -138,146 +160,180 @@ DASHBOARD SUMMARY CARDS
 }
 
 .stat-content p {
-  color: #718096;
-  font-size: 13px;
-  margin: 0 0 5px;
+  color: #A1B5BA;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0 0 7px;
 }
 
 .stat-content h3 {
-  color: #263b53;
+  color: #EDF5F5;
   font-size: 25px;
-  font-weight: 700;
-  margin: 0 0 5px;
+  font-weight: 750;
+  margin: 0 0 6px;
   overflow-wrap: anywhere;
 }
 
 .stat-content span {
-  color: #94a3b8;
+  color: #82999F;
   font-size: 11px;
 }
 
 /* =====================================
-CARD COLORS
+   CARD COLORS
 ===================================== */
 
 .accent-primary {
-  border-left-color: #2563eb;
+  border-left-color: #20B8A9;
 }
 
 .accent-primary .card-icon,
 .stat-icon.accent-primary {
-  background: #eaf2ff;
-  color: #2563eb;
+  background: rgba(32, 184, 169, 0.14);
+  color: #55D6C5;
 }
 
 .accent-success {
-  border-left-color: #16a34a;
+  border-left-color: #35C58B;
 }
 
 .accent-success .card-icon,
 .stat-icon.accent-success {
-  background: #e8f8ee;
-  color: #16a34a;
+  background: rgba(53, 197, 139, 0.14);
+  color: #35C58B;
 }
 
 .accent-warning {
-  border-left-color: #e5a000;
+  border-left-color: #E9B85C;
 }
 
 .accent-warning .card-icon,
 .stat-icon.accent-warning {
-  background: #fff5dc;
-  color: #d99a00;
+  background: rgba(233, 184, 92, 0.14);
+  color: #E9B85C;
 }
 
 .accent-info {
-  border-left-color: #0891b2;
+  border-left-color: #65A9E8;
 }
 
 .accent-info .card-icon,
 .stat-icon.accent-info {
-  background: #e3f7fb;
-  color: #0891b2;
+  background: rgba(101, 169, 232, 0.14);
+  color: #65A9E8;
 }
 
 .accent-danger {
-  border-left-color: #dc2626;
+  border-left-color: #EF7278;
 }
 
 .accent-danger .card-icon,
 .stat-icon.accent-danger {
-  background: #feecec;
-  color: #dc2626;
+  background: rgba(239, 114, 120, 0.14);
+  color: #EF7278;
 }
 
 /* =====================================
-CLAIM HISTORY TABLE
+   CLAIM HISTORY TABLE
 ===================================== */
 
 .history-section {
-  background: #ffffff;
-  border: 1px solid #e5eaf1;
-  border-radius: 12px;
-  padding: 22px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+  background: #1D3038;
+  border: 1px solid #30464E;
+  border-radius: 14px;
+  padding: 23px;
 }
 
 .dashboard-table {
+  width: 100%;
   margin: 0;
   vertical-align: middle;
+  white-space: nowrap;
+  border-collapse: separate;
+  border-spacing: 0 6px;
 }
 
 .dashboard-table thead th {
-  padding: 13px 12px;
-  background: #f5f8fc;
-  color: #718096;
-  border-bottom: 1px solid #e5eaf1;
+  padding: 14px 15px;
+  background: #263C44;
+  color: #A1B5BA;
+  border: none;
   font-size: 10px;
-  font-weight: 700;
-  white-space: nowrap;
+  font-weight: 750;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-table thead th:first-child {
+  border-radius: 7px 0 0 7px;
+}
+
+.dashboard-table thead th:last-child {
+  border-radius: 0 7px 7px 0;
 }
 
 .dashboard-table tbody td {
-  padding: 14px 12px;
-  color: #263b53;
-  border-bottom: 1px solid #edf0f5;
+  padding: 15px;
+  background: #17262D;
+  color: #EDF5F5;
+  border-top: 1px solid #30464E;
+  border-bottom: 1px solid #30464E;
   font-size: 12px;
-  white-space: nowrap;
 }
 
-.dashboard-table tbody tr:last-child td {
-  border-bottom: none;
+.dashboard-table tbody td:first-child {
+  border-left: 1px solid #30464E;
+  border-radius: 8px 0 0 8px;
+}
+
+.dashboard-table tbody td:last-child {
+  border-right: 1px solid #30464E;
+  border-radius: 0 8px 8px 0;
+}
+
+.dashboard-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.dashboard-table tbody tr:hover td {
+  background: #263C44;
 }
 
 .claim-number {
-  color: #2563eb;
-  font-weight: 600;
+  color: #55D6C5;
+  font-weight: 700;
 }
 
 .claim-amount {
-  font-weight: 600;
+  color: #EDF5F5;
+  font-weight: 650;
 }
 
 .claim-status {
   display: inline-block;
   padding: 5px 10px;
   border-radius: 20px;
-  background: #eef2ff;
-  color: #475569;
+  background: rgba(101, 169, 232, 0.12);
+  border: 1px solid rgba(101, 169, 232, 0.2);
+  color: #8FC4F1;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 650;
 }
 
+/* =====================================
+   EMPTY CLAIMS
+===================================== */
+
 .empty-claims {
-  padding: 30px 15px;
+  padding: 38px 15px;
   text-align: center;
-  color: #94a3b8;
+  color: #82999F;
 }
 
 .empty-claims i {
   display: block;
-  font-size: 30px;
-  margin-bottom: 8px;
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #55D6C5;
 }
 
 .empty-claims p {
@@ -286,13 +342,13 @@ CLAIM HISTORY TABLE
 }
 
 /* =====================================
-DASHBOARD GRID
+   DASHBOARD GRID
 ===================================== */
 
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+  gap: 18px;
 }
 
 .profile-grid {
@@ -300,7 +356,7 @@ DASHBOARD GRID
 }
 
 /* =====================================
-DASHBOARD CARDS
+   DASHBOARD CARDS
 ===================================== */
 
 .dashboard-card {
@@ -308,32 +364,37 @@ DASHBOARD CARDS
   display: flex;
   align-items: center;
   gap: 16px;
-  min-height: 120px;
-  padding: 22px;
-  background: #ffffff;
-  border: 1px solid #e5eaf1;
+  min-width: 0;
+  min-height: 125px;
+  padding: 21px;
+  background: #1D3038;
+  border: 1px solid #30464E;
   border-left: 4px solid transparent;
   border-radius: 12px;
   text-decoration: none;
   color: inherit;
-  transition: all 0.25s ease;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease,
+              border-color 0.2s ease,
+              background 0.2s ease;
 }
 
 .dashboard-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  background: #263C44;
+  border-top-color: rgba(85, 214, 197, 0.4);
+  border-right-color: rgba(85, 214, 197, 0.4);
+  border-bottom-color: rgba(85, 214, 197, 0.4);
 }
 
 .card-icon {
-  width: 55px;
-  height: 55px;
-  min-width: 55px;
+  width: 53px;
+  height: 53px;
+  min-width: 53px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  font-size: 23px;
 }
 
 .card-content {
@@ -342,31 +403,34 @@ DASHBOARD CARDS
 }
 
 .card-content h5 {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  color: #263b53;
+  color: #EDF5F5;
   margin-bottom: 7px;
 }
 
 .card-content p {
-  font-size: 13px;
-  color: #718096;
+  font-size: 12px;
+  color: #A1B5BA;
   margin-bottom: 0;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .card-arrow {
-  font-size: 20px;
-  color: #94a3b8;
-  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  font-size: 19px;
+  color: #82999F;
+  transition: transform 0.2s ease,
+              color 0.2s ease;
 }
 
 .dashboard-card:hover .card-arrow {
+  color: #55D6C5;
   transform: translateX(5px);
 }
 
 /* =====================================
-LOADING
+   LOADING
 ===================================== */
 
 .dashboard-loading {
@@ -376,48 +440,85 @@ LOADING
   align-items: center;
   justify-content: center;
   gap: 15px;
-  color: #64748b;
+  color: #A1B5BA;
+}
+
+.dashboard-loading .spinner-border {
+  width: 38px;
+  height: 38px;
+  color: #20B8A9 !important;
+  border-width: 3px;
 }
 
 .dashboard-loading p {
-  font-size: 14px;
+  font-size: 13px;
   margin: 0;
 }
 
 /* =====================================
-PROFILE ERROR / DASHBOARD ERROR
+   PROFILE ERROR / DASHBOARD ERROR
 ===================================== */
 
 .profile-error {
-  background: #ffffff;
-  border: 1px solid #fee2e2;
-  border-radius: 12px;
-  padding: 35px;
+  background: #1D3038;
+  border: 1px solid rgba(239, 114, 120, 0.3);
+  border-radius: 13px;
+  padding: 32px;
   text-align: center;
   margin-bottom: 25px;
 }
 
 .profile-error > i {
-  font-size: 40px;
-  color: #dc2626;
+  font-size: 36px;
+  color: #EF7278;
 }
 
 .profile-error h5 {
   margin-top: 15px;
-  color: #263b53;
+  color: #EDF5F5;
+  font-size: 17px;
   font-weight: 700;
 }
 
 .profile-error p {
-  color: #718096;
-  font-size: 14px;
+  color: #A1B5BA;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.profile-error .btn {
+  margin-top: 8px;
+  padding: 9px 18px;
+  background: #20B8A9;
+  border: 1px solid #20B8A9;
+  border-radius: 8px;
+  color: #102329;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.profile-error .btn:hover {
+  background: #55D6C5;
+  border-color: #55D6C5;
 }
 
 /* =====================================
-RESPONSIVE
+   ACCESSIBILITY
+===================================== */
+
+.dashboard-card:focus-visible,
+.view-all-link:focus-visible,
+.profile-error .btn:focus-visible {
+  outline: 2px solid #55D6C5;
+  outline-offset: 3px;
+}
+
+/* =====================================
+   RESPONSIVE
 ===================================== */
 
 @media (max-width: 1100px) {
+
   .dashboard-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -425,38 +526,37 @@ RESPONSIVE
   .dashboard-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
 }
 
 @media (max-width: 768px) {
+
   .customer-dashboard-page {
     padding: 18px;
   }
 
   .dashboard-header {
-    padding: 20px;
+    padding: 21px;
   }
 
   .dashboard-title {
-    font-size: 21px;
+    font-size: 22px;
   }
 
   .dashboard-header-icon {
-    width: 48px;
-    height: 48px;
-    font-size: 24px;
+    width: 49px;
+    height: 49px;
+    font-size: 23px;
   }
 
   .dashboard-grid,
-  .profile-grid {
-    grid-template-columns: 1fr;
-  }
-
+  .profile-grid,
   .dashboard-stats {
     grid-template-columns: 1fr;
   }
 
   .dashboard-card {
-    min-height: 105px;
+    min-height: 110px;
   }
 
   .section-header {
@@ -464,17 +564,23 @@ RESPONSIVE
   }
 
   .history-section {
-    padding: 16px;
+    padding: 17px;
   }
+
+  .dashboard-table {
+    min-width: 750px;
+  }
+
 }
 
 @media (max-width: 480px) {
+
   .customer-dashboard-page {
     padding: 12px;
   }
 
   .dashboard-header {
-    padding: 16px;
+    padding: 17px;
   }
 
   .dashboard-title {
@@ -486,7 +592,9 @@ RESPONSIVE
   }
 
   .dashboard-header-icon {
-    display: none;
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
   }
 
   .dashboard-card {
@@ -498,7 +606,7 @@ RESPONSIVE
     width: 45px;
     height: 45px;
     min-width: 45px;
-    font-size: 21px;
+    font-size: 20px;
   }
 
   .card-content h5 {
@@ -506,18 +614,38 @@ RESPONSIVE
   }
 
   .card-content p {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .stat-card {
-    padding: 17px;
+    padding: 18px;
   }
 
   .stat-content h3 {
-    font-size: 22px;
+    font-size: 23px;
   }
 
   .section-header {
     flex-direction: column;
   }
+
+  .history-section {
+    padding: 14px;
+  }
+
+}
+
+/* =====================================
+   REDUCED MOTION
+===================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
 }

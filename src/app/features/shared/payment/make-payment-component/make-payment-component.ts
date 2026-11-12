@@ -108,15 +108,15 @@ export class MakePaymentComponent implements OnInit {
 
     const role = localStorage.getItem('role');
 
-    if (role !== Role.Customer.toString()) {
+    // if (role !== Role.Customer.toString()) {
 
-      this.toastService.error(
-        'Only customers are allowed to make payments.'
-      );
+    //   this.toastService.error(
+    //     'Only customers are allowed to make payments.'
+    //   );
 
-      this.router.navigate(['/unauthorized']);
-      return;
-    }
+    //   this.router.navigate(['/unauthorized']);
+    //   return;
+    // }
 
     const idParam = this.route.snapshot.paramMap.get('policyId');
     const id = Number(idParam);

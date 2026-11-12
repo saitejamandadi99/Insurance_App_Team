@@ -1,17 +1,18 @@
+
 <div class="payments-page">
 
-  <!-- Page Header -->
+  <!-- PAGE HEADER -->
   <app-page-header
     title="All Payments"
     subtitle="Manage and monitor customer premium payment transactions">
   </app-page-header>
 
-  <!-- Loading Spinner -->
+  <!-- LOADING -->
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <div class="payments-container" *ngIf="!isLoading">
 
-    <!-- Summary Section -->
+    <!-- SUMMARY -->
     <div class="summary-section">
 
       <div class="summary-card">
@@ -30,15 +31,16 @@
 
     </div>
 
-    <!-- Filter Card -->
+    <!-- FILTERS -->
     <app-filter-card>
 
-      <form [formGroup]="filterForm"
-            (ngSubmit)="searchPayments()">
+      <form
+        [formGroup]="filterForm"
+        (ngSubmit)="searchPayments()">
 
         <div class="filter-grid">
 
-          <!-- Search -->
+          <!-- SEARCH -->
           <div class="filter-field search-field">
 
             <label for="paymentSearch">Search Payments</label>
@@ -51,7 +53,7 @@
 
           </div>
 
-          <!-- Sort By -->
+          <!-- SORT BY -->
           <div class="filter-field">
 
             <label for="sortBy">Sort By</label>
@@ -69,7 +71,7 @@
 
           </div>
 
-          <!-- Sort Direction -->
+          <!-- SORT DIRECTION -->
           <div class="filter-field">
 
             <label for="sortDirection">Sort Direction</label>
@@ -86,7 +88,7 @@
 
           </div>
 
-          <!-- Page Size -->
+          <!-- PAGE SIZE -->
           <div class="filter-field">
 
             <label for="pageSize">Records Per Page</label>
@@ -107,7 +109,7 @@
 
         </div>
 
-        <!-- Filter Actions -->
+        <!-- FILTER ACTIONS -->
         <div class="filter-actions">
 
           <button
@@ -135,52 +137,49 @@
 
     </app-filter-card>
 
-    <!-- Payments Table Card -->
+    <!-- PAYMENTS TABLE -->
     <div class="payment-table-card">
 
-      <!-- Table Header -->
+      <!-- TABLE HEADER -->
       <div class="table-header">
 
-        <div>
-          <h5>
-            <i class="bi bi-receipt"></i>
-            Payment Transactions
-          </h5>
+        <div class="table-heading">
 
-          <p>View all registered customer payments</p>
+          <div class="table-heading-icon">
+            <i class="bi bi-receipt"></i>
+          </div>
+
+          <div>
+            <h5>Payment Transactions</h5>
+            <p>View all registered customer payments</p>
+          </div>
+
         </div>
 
         <span class="record-badge">
+          <i class="bi bi-collection me-1"></i>
           {{ payments?.totalRecords ?? 0 }} Records
         </span>
 
       </div>
 
-      <!-- Payment Table -->
-      <div class="table-responsive"
-           *ngIf="payments?.records?.length">
+      <!-- TABLE -->
+      <div
+        class="table-responsive"
+        *ngIf="payments?.records?.length">
 
         <table class="table payment-table">
 
           <thead>
             <tr>
-
-              <th>#</th>
-
-              <th>Payment ID</th>
-
+              <!-- <th>#</th> -->
+              <!-- <th>Payment ID</th> -->
+              <th>Policy Number</th>
               <th>Transaction Reference</th>
-
-              <th>Policy ID</th>
-
               <th>Payment Date</th>
-
               <th>Payment Mode</th>
-
               <th>Amount</th>
-
               <th>Status</th>
-
             </tr>
           </thead>
 
@@ -189,13 +188,19 @@
             <tr
               *ngFor="let payment of payments.records; let i = index">
 
-              <td class="row-number">
+              <!-- <td class="row-number">
                 {{ (payments.currentPage - 1) * payments.pageSize + i + 1 }}
-              </td>
+              </td> -->
 
-              <td>
+              <!-- <td>
                 <span class="payment-id">
                   #{{ payment.paymentId }}
+                </span>
+              </td> -->
+
+              <td>
+                <span class="policy-number">
+                  {{ payment.policyNumber || 'N/A' }}
                 </span>
               </td>
 
@@ -205,13 +210,13 @@
                 </span>
               </td>
 
-              <td>
+              <!-- <td>
                 <span class="policy-id">
                   #{{ payment.policyId }}
                 </span>
-              </td>
+              </td> -->
 
-              <td>
+              <td class="date-cell">
                 {{ payment.paymentDate | date:'dd MMM yyyy, hh:mm a' }}
               </td>
 
@@ -240,20 +245,23 @@
 
       </div>
 
-     <div class="empty-container"
-     *ngIf="!isLoading && !payments?.records?.length">
-  <app-empty-state
-    icon="bi bi-credit-card"
-    title="No Payments Found"
-    message="There are no payment records available."
-  ></app-empty-state>
+      <!-- EMPTY STATE -->
+      <div
+        class="empty-container"
+        *ngIf="!payments?.records?.length">
 
-</div>
- 
+        <app-empty-state
+          icon="bi bi-credit-card"
+          title="No Payments Found"
+          message="There are no payment records available.">
+        </app-empty-state>
 
-      <!-- Pagination -->
-      <div class="pagination-wrapper"
-           *ngIf="payments?.records?.length">
+      </div>
+
+      <!-- PAGINATION -->
+      <div
+        class="pagination-wrapper"
+        *ngIf="payments?.records?.length">
 
         <div class="pagination-info">
 

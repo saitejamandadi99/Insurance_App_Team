@@ -1,9 +1,8 @@
 
 <div class="container-fluid py-4 view-plans-page">
 
-  <!-- PAGE HEADER -->
+  <!-- Page Header -->
   @if (isAdmin) {
-
     <app-page-header
       title="Policy Plans"
       subtitle="Manage insurance policy plans and their availability."
@@ -11,31 +10,26 @@
       buttonIcon="bi bi-plus-lg"
       (buttonClick)="navigateToAddPlan()">
     </app-page-header>
-
   } @else if (isOfficer) {
-
     <app-page-header
       title="Policy Plans"
       subtitle="View available plans and issue policies to customers.">
     </app-page-header>
-
   } @else {
-
     <app-page-header
       title="Explore Policy Plans"
       subtitle="Explore insurance plans and choose the coverage that suits your needs.">
     </app-page-header>
-
   }
 
-  <!-- FILTER FORM -->
+  <!-- Filters -->
   <form [formGroup]="filterForm" (ngSubmit)="searchPlans()">
 
     <app-filter-card>
 
       <div class="row g-3">
 
-        <!-- SEARCH -->
+        <!-- Search -->
         <div class="col-12">
           <label class="form-label-custom">
             Search Policy Plans
@@ -48,9 +42,8 @@
           </app-search-box>
         </div>
 
-        <!-- SORT BY -->
+        <!-- Sort By -->
         <div class="col-lg-3 col-md-6">
-
           <label class="form-label-custom">Sort By</label>
 
           <select
@@ -64,12 +57,10 @@
             <option value="createdDate">Created Date</option>
 
           </select>
-
         </div>
 
-        <!-- SORT DIRECTION -->
+        <!-- Sort Direction -->
         <div class="col-lg-3 col-md-6">
-
           <label class="form-label-custom">Sort Order</label>
 
           <select
@@ -80,12 +71,10 @@
             <option value="desc">Descending</option>
 
           </select>
-
         </div>
 
-        <!-- PAGE SIZE -->
+        <!-- Page Size -->
         <div class="col-lg-3 col-md-6">
-
           <label class="form-label-custom">Records Per Page</label>
 
           <select
@@ -99,38 +88,33 @@
             <option [ngValue]="50">50</option>
 
           </select>
-
         </div>
 
-        <!-- RESET -->
+        <!-- Reset -->
         <div class="col-lg-3 col-md-6 d-flex align-items-end">
-
           <button
             type="button"
             class="btn btn-secondary-custom w-100"
             (click)="resetFilters()"
             [disabled]="isLoading">
 
-            <i class="bi bi-arrow-counterclockwise me-2"></i>
+            <i class="bi bi-arrow-counterclockwise"></i>
             Reset Filters
 
           </button>
-
         </div>
 
-        <!-- SEARCH BUTTON -->
+        <!-- Search -->
         <div class="col-12 d-flex justify-content-end">
-
           <button
             type="submit"
             class="btn btn-primary-custom"
             [disabled]="isLoading">
 
-            <i class="bi bi-search me-2"></i>
+            <i class="bi bi-search"></i>
             Search Plans
 
           </button>
-
         </div>
 
       </div>
@@ -139,7 +123,7 @@
 
   </form>
 
-  <!-- LOADING -->
+  <!-- Loading -->
   @if (isLoading) {
 
     <app-loading-spinner
@@ -151,7 +135,7 @@
 
     @if (lstPlans?.records?.length) {
 
-      <!-- TABLE SUMMARY -->
+      <!-- Table Summary -->
       <div class="table-summary mt-4">
 
         <div class="summary-left">
@@ -179,8 +163,8 @@
 
       </div>
 
-      <!-- TABLE -->
-      <div class="table-responsive mt-3 app-card plans-table-card">
+      <!-- Plans Table -->
+      <div class="table-responsive mt-3 plans-table-card">
 
         <table class="table table-hover align-middle table-dark-custom">
 
@@ -208,57 +192,76 @@
 
               <tr>
 
+                <!-- Product -->
                 <td>
                   <div class="product-cell">
                     <div class="product-icon">
                       <i class="bi bi-box-seam"></i>
                     </div>
+
                     <span>{{ plan.productName }}</span>
                   </div>
                 </td>
 
-                <td>{{ plan.productType }}</td>
+                <!-- Product Type -->
+                <td>
+                  <span class="product-type">
+                    {{ plan.productType }}
+                  </span>
+                </td>
 
+                <!-- Plan Name -->
                 <td>
                   <span class="plan-name">
                     {{ plan.planName }}
                   </span>
                 </td>
 
+                <!-- Coverage -->
                 <td>
                   <span class="amount-text">
                     {{ plan.coverageAmount | currency:'INR':'symbol':'1.2-2' }}
                   </span>
                 </td>
 
+                <!-- Premium -->
                 <td>
                   <span class="premium-amount">
                     {{ plan.premiumAmount | currency:'INR':'symbol':'1.2-2' }}
                   </span>
                 </td>
 
+                <!-- Premium Type -->
                 <td>
                   <span class="premium-type">
                     {{ plan.premiumType }}
                   </span>
                 </td>
 
-                <td>{{ plan.duration }} Years</td>
+                <!-- Duration -->
+                <td>
+                  <span class="duration-text">
+                    {{ plan.duration }} Years
+                  </span>
+                </td>
 
+                <!-- Status -->
                 <td class="text-center">
                   <app-status-badge [status]="plan.activeStatus">
                   </app-status-badge>
                 </td>
 
+                <!-- Created Date -->
                 <td>
-                  {{ plan.createdDate | date:'dd-MM-yyyy' }}
+                  <span class="created-date">
+                    {{ plan.createdDate | date:'dd-MM-yyyy' }}
+                  </span>
                 </td>
 
-                <!-- ADMIN ACTIONS -->
+                <!-- Admin Actions -->
                 @if (isAdmin) {
 
                   <td class="text-center">
-
                     <div class="plan-actions">
 
                       <app-action-buttons
@@ -274,59 +277,54 @@
                       </app-action-buttons>
 
                     </div>
-
                   </td>
 
                 }
 
-                <!-- OFFICER ACTION -->
+                <!-- Officer Action -->
                 @else if (isOfficer) {
 
                   <td class="text-center">
-
                     <button
                       type="button"
                       class="btn btn-issue"
                       (click)="issuePolicy()">
 
-                      <i class="bi bi-file-earmark-check me-1"></i>
+                      <i class="bi bi-file-earmark-check"></i>
                       Issue Policy
 
                     </button>
-
                   </td>
 
                 }
 
-                <!-- CUSTOMER ACTION -->
+                <!-- Customer Action -->
                 @else if (isCustomer) {
 
                   <td class="text-center">
-
                     <button
-  type="button"
-  class="btn btn-purchase"
-  [disabled]="isPurchasing"
-  (click)="purchasePolicy(plan.planId)">
+                      type="button"
+                      class="btn btn-purchase"
+                      [disabled]="isPurchasing"
+                      (click)="purchasePolicy(plan.planId)">
 
-  @if (isPurchasing && purchasingPlanId === plan.planId) {
+                      @if (isPurchasing && purchasingPlanId === plan.planId) {
 
-    <span
-      class="spinner-border spinner-border-sm"
-      aria-hidden="true">
-    </span>
+                        <span
+                          class="spinner-border spinner-border-sm"
+                          aria-hidden="true">
+                        </span>
 
-    Processing...
+                        Processing...
 
-  } @else {
+                      } @else {
 
-    <i class="bi bi-cart-check"></i>
-    Purchase
+                        <i class="bi bi-cart-check"></i>
+                        Purchase
 
-  }
+                      }
 
-</button>
-
+                    </button>
                   </td>
 
                 }
@@ -341,9 +339,8 @@
 
       </div>
 
-      <!-- PAGINATION -->
+      <!-- Pagination -->
       <div class="pagination-container">
-
         <app-pagination
           [currentPage]="lstPlans.currentPage"
           [totalPages]="lstPlans.totalPages"
@@ -351,13 +348,12 @@
           [pageSize]="filterForm.value.pageSize ?? 10"
           (pageChange)="onPageChange($event)">
         </app-pagination>
-
       </div>
 
     } @else {
 
+      <!-- Empty State -->
       <div class="empty-container">
-
         <app-empty-state
           icon="bi bi-file-earmark-text"
           title="No Policy Plans Found"
@@ -365,7 +361,6 @@
           buttonText="Reset Filters"
           (buttonClick)="resetFilters()">
         </app-empty-state>
-
       </div>
 
     }

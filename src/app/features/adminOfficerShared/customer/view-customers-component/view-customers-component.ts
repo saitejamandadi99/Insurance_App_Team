@@ -172,7 +172,7 @@ export class ViewCustomerComponent implements OnInit {
   // View customer
   viewCustomer(customerId: number): void {
 
-    this.router.navigate(['/customer-details', customerId]);
+    this.router.navigate(['/customerdetails', customerId]);
 
   }
 

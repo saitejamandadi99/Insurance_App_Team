@@ -6,7 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { PaginationResponseDto } from '../../../../DTO/PaginationResponseDto';
 import { ErrorResponseDto } from '../../../../DTO/ErrorResponseDto';
 import { PaymentResponseDto } from '../../../../DTO/PaymentResponseDto';
-
+import { CommonModule } from '@angular/common';
 import { PremiumPaymentServices } from '../../../../services/PremiumPayment/premium-payment-services';
 
 import { PageHeader } from '../../../../shared/ui/page-header/page-header';
@@ -24,6 +24,7 @@ import { ToastService } from '../../../../services/Toast/toast-service';
   standalone: true,
   imports: [
     ReactiveFormsModule,
+    CommonModule,
     DatePipe,
     DecimalPipe,
     PageHeader,
