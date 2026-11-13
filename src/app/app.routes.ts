@@ -26,7 +26,7 @@ import { ViewProducts } from './features/shared/product/view-products/view-produ
 // Admin / Shared - Policy Plans
 import { AddPlanComponent } from './features/admin/PolicyPlan/add-policy-plan-component/add-policy-plan-component';
 import { EditPolicyPlan } from './features/admin/PolicyPlan/edit-policy-plan-component/edit-policy-plan-component';
-import { ViewPlansComponent } from './features/shared/PolicyPlan/view-policy-plan-component/view-policy-plan-component';
+import { ViewPolicyPlanComponent } from './features/shared/PolicyPlan/view-policy-plan-component/view-policy-plan-component';
 
 // Admin / Officer - Customers
 import { ViewCustomerComponent } from './features/adminOfficerShared/customer/view-customers-component/view-customers-component';
@@ -162,7 +162,7 @@ export const routes: Routes = [
   // Policy Plans
   {
     path: 'viewplans',
-    component: ViewPlansComponent,
+    component: ViewPolicyPlanComponent,
     canActivate: [authGuard([Role.Admin, Role.Officer, Role.Customer])]
   },
   {

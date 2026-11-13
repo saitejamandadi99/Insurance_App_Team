@@ -146,6 +146,7 @@
 
           <div>
             <h5>Policy Plan Records</h5>
+
             <p>
               {{ isCustomer
                 ? 'Available insurance plans'
@@ -156,9 +157,28 @@
 
         </div>
 
-        <div class="records-count">
-          <span>{{ lstPlans.totalRecords }}</span>
-          Total Records
+        <div class="summary-right">
+
+          <!-- Single Issue Policy Button for Admin and Officer -->
+          @if (isAdmin || isOfficer) {
+
+            <button
+              type="button"
+              class="btn btn-issue"
+              (click)="issuePolicy()">
+
+              <i class="bi bi-file-earmark-check"></i>
+              Issue Policy
+
+            </button>
+
+          }
+
+          <div class="records-count">
+            <span>{{ lstPlans.totalRecords }}</span>
+            Total Records
+          </div>
+
         </div>
 
       </div>
@@ -180,7 +200,8 @@
               <th class="text-center">Status</th>
               <th>Created On</th>
 
-              @if (isAdmin || isOfficer || isCustomer) {
+              <!-- Actions column only for Admin and Customer -->
+              @if (isAdmin || isCustomer) {
                 <th class="text-center">Actions</th>
               }
             </tr>
@@ -281,27 +302,11 @@
 
                 }
 
-                <!-- Officer Action -->
-                @else if (isOfficer) {
-
-                  <td class="text-center">
-                    <button
-                      type="button"
-                      class="btn btn-issue"
-                      (click)="issuePolicy()">
-
-                      <i class="bi bi-file-earmark-check"></i>
-                      Issue Policy
-
-                    </button>
-                  </td>
-
-                }
-
                 <!-- Customer Action -->
                 @else if (isCustomer) {
 
                   <td class="text-center">
+
                     <button
                       type="button"
                       class="btn btn-purchase"
@@ -325,6 +330,7 @@
                       }
 
                     </button>
+
                   </td>
 
                 }
@@ -341,6 +347,7 @@
 
       <!-- Pagination -->
       <div class="pagination-container">
+
         <app-pagination
           [currentPage]="lstPlans.currentPage"
           [totalPages]="lstPlans.totalPages"
@@ -348,12 +355,14 @@
           [pageSize]="filterForm.value.pageSize ?? 10"
           (pageChange)="onPageChange($event)">
         </app-pagination>
+
       </div>
 
     } @else {
 
       <!-- Empty State -->
       <div class="empty-container">
+
         <app-empty-state
           icon="bi bi-file-earmark-text"
           title="No Policy Plans Found"
@@ -361,6 +370,7 @@
           buttonText="Reset Filters"
           (buttonClick)="resetFilters()">
         </app-empty-state>
+
       </div>
 
     }

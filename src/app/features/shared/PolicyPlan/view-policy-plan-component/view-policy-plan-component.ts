@@ -45,7 +45,7 @@ import { ToastService } from '../../../../services/Toast/toast-service';
   templateUrl: './view-policy-plan-component.html',
   styleUrl: './view-policy-plan-component.css'
 })
-export class ViewPlansComponent implements OnInit {
+export class ViewPolicyPlanComponent implements OnInit {
 
   isLoading = false;
   isPurchasing = false;

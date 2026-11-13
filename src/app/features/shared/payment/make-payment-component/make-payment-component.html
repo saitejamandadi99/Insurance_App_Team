@@ -23,7 +23,6 @@
         <i class="bi bi-exclamation-circle me-2"></i>
         {{ errorMessage }}
       </div>
-
     }
 
     <!-- POLICY NOT AVAILABLE -->
@@ -245,7 +244,6 @@
                 <div class="validation-message">
                   Please select a payment method.
                 </div>
-
               }
 
               <div class="section-divider"></div>
@@ -283,7 +281,6 @@
                         <small class="validation-message">
                           Enter a valid UPI ID.
                         </small>
-
                       }
 
                     </div>
@@ -314,7 +311,6 @@
                         <small class="validation-message">
                           Please select a UPI application.
                         </small>
-
                       }
 
                     </div>
@@ -330,7 +326,6 @@
                   </div>
 
                 </div>
-
               }
 
               <!-- CARD DETAILS -->
@@ -366,7 +361,6 @@
                         <small class="validation-message">
                           Enter a valid cardholder name.
                         </small>
-
                       }
 
                     </div>
@@ -394,7 +388,6 @@
                         <small class="validation-message">
                           Enter a valid card number format.
                         </small>
-
                       }
 
                     </div>
@@ -421,7 +414,6 @@
                         <small class="validation-message">
                           Enter expiry in MM/YY format.
                         </small>
-
                       }
 
                     </div>
@@ -449,7 +441,6 @@
                         <small class="validation-message">
                           Enter a 3 or 4 digit demo CVV.
                         </small>
-
                       }
 
                     </div>
@@ -466,7 +457,6 @@
                   </div>
 
                 </div>
-
               }
 
               <!-- NET BANKING -->
@@ -479,6 +469,7 @@
                     <h5>Net Banking Details</h5>
                   </div>
 
+                  <!-- BANK SELECTION -->
                   <div class="mb-3">
 
                     <label class="form-label">
@@ -511,20 +502,163 @@
                       <small class="validation-message">
                         Please select your bank.
                       </small>
-
                     }
 
                   </div>
 
+                  <!-- ACCOUNT DETAILS: SHOW AFTER BANK SELECTION -->
+                  @if (paymentForm.controls.bankName.value) {
+
+                    <div class="bank-account-section">
+
+                      <div class="section-title">
+                        <span class="step-number">3</span>
+                        <h5>Account Details</h5>
+                      </div>
+
+                      <div class="row g-3">
+
+                        <!-- ACCOUNT HOLDER -->
+                        <div class="col-12">
+
+                          <label class="form-label">
+                            Account Holder Name
+                            <span class="required">*</span>
+                          </label>
+
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="accountHolderName"
+                            placeholder="Enter account holder name"
+                            autocomplete="off">
+
+                          @if (
+                            paymentForm.controls.accountHolderName.touched &&
+                            paymentForm.controls.accountHolderName.invalid
+                          ) {
+
+                            <small class="validation-message">
+                              Enter a valid account holder name.
+                              Only letters and spaces are allowed.
+                            </small>
+                          }
+
+                        </div>
+
+                        <!-- ACCOUNT NUMBER -->
+                        <div class="col-md-6">
+
+                          <label class="form-label">
+                            Account Number
+                            <span class="required">*</span>
+                          </label>
+
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="accountNumber"
+                            placeholder="Enter account number"
+                            maxlength="18"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            autocomplete="off">
+
+                          @if (
+                            paymentForm.controls.accountNumber.touched &&
+                            paymentForm.controls.accountNumber.invalid
+                          ) {
+
+                            <small class="validation-message">
+                              Account number must contain 9 to 18 digits only.
+                            </small>
+                          }
+
+                        </div>
+
+                        <!-- CONFIRM ACCOUNT NUMBER -->
+                        <div class="col-md-6">
+
+                          <label class="form-label">
+                            Confirm Account Number
+                            <span class="required">*</span>
+                          </label>
+
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="confirmAccountNumber"
+                            placeholder="Re-enter account number"
+                            maxlength="18"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            autocomplete="off">
+
+                          @if (
+                            paymentForm.controls.confirmAccountNumber.touched &&
+                            paymentForm.controls.confirmAccountNumber.invalid
+                          ) {
+
+                            <small class="validation-message">
+                              Enter a valid account number.
+                            </small>
+                          }
+
+                          @if (
+                            paymentForm.hasError('accountNumberMismatch') &&
+                            paymentForm.controls.confirmAccountNumber.touched
+                          ) {
+
+                            <small class="validation-message">
+                              Account numbers do not match.
+                            </small>
+                          }
+
+                        </div>
+
+                        <!-- IFSC -->
+                        <div class="col-12">
+
+                          <label class="form-label">
+                            IFSC Code
+                            <span class="required">*</span>
+                          </label>
+
+                          <input
+                            type="text"
+                            class="form-control text-uppercase"
+                            formControlName="ifscCode"
+                            placeholder="Example: HDFC0001234"
+                            maxlength="11"
+                            autocomplete="off">
+
+                          @if (
+                            paymentForm.controls.ifscCode.touched &&
+                            paymentForm.controls.ifscCode.invalid
+                          ) {
+
+                            <small class="validation-message">
+                              Enter a valid 11-character IFSC code.
+                            </small>
+                          }
+
+                        </div>
+
+                      </div>
+
+                    </div>
+                  }
+
                   <div class="info-box">
                     <i class="bi bi-info-circle"></i>
                     <span>
-                      Demo only. No bank login, password or OTP is required.
+                      Demo only. Use dummy account details.
+                      No bank login, password, OTP or actual bank transfer
+                      is performed. These details are not sent to the backend.
                     </span>
                   </div>
 
                 </div>
-
               }
 
               <!-- CASH -->
@@ -568,7 +702,6 @@
                   </div>
 
                 </div>
-
               }
 
               <!-- PAYMENT AMOUNT -->

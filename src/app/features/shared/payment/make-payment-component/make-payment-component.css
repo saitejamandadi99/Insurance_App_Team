@@ -21,7 +21,7 @@
 }
 
 /* =====================================
-   POLICY SUMMARY
+   POLICY SUMMARY AND PAYMENT CARD
 ===================================== */
 
 .payment-summary,
@@ -316,6 +316,35 @@
   color: #EDF5F5;
 }
 
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+/* =====================================
+   BANK ACCOUNT DETAILS
+===================================== */
+
+.bank-account-section {
+  margin-top: 25px;
+  padding: 20px;
+  border: 1px solid #30464E;
+  border-radius: 10px;
+  background: rgba(23, 38, 45, 0.65);
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.bank-account-section .section-title {
+  margin-bottom: 20px;
+}
+
+.bank-account-section .form-control {
+  letter-spacing: 0.3px;
+}
+
+.bank-account-section input[inputmode="numeric"] {
+  font-variant-numeric: tabular-nums;
+}
+
 /* =====================================
    INFO BOX
 ===================================== */
@@ -389,6 +418,17 @@
   margin-top: 7px;
   color: #EF7278;
   font-size: 12px;
+  line-height: 1.5;
+}
+
+.form-control.ng-invalid.ng-touched,
+.form-select.ng-invalid.ng-touched {
+  border-color: #EF7278;
+}
+
+.form-control.ng-invalid.ng-touched:focus,
+.form-select.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 3px rgba(239, 114, 120, 0.12);
 }
 
 /* =====================================
@@ -482,11 +522,7 @@
   transform: translateY(-1px);
 }
 
-.btn-pay:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
+.btn-pay:disabled,
 .btn-back:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -525,15 +561,12 @@
 ===================================== */
 
 @media (max-width: 991px) {
-
   .payment-summary {
     position: static;
   }
-
 }
 
 @media (max-width: 576px) {
-
   .payment-summary,
   .payment-card {
     padding: 18px;
@@ -545,6 +578,10 @@
 
   .payment-method {
     min-height: 115px;
+  }
+
+  .bank-account-section {
+    padding: 15px;
   }
 
   .payment-total {
@@ -567,7 +604,6 @@
   .summary-item {
     font-size: 12px;
   }
-
 }
 
 /* =====================================
@@ -575,12 +611,10 @@
 ===================================== */
 
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
-
 }

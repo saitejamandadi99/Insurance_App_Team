@@ -92,7 +92,11 @@ export class MakePaymentComponent implements OnInit {
     ]),
 
     // Net Banking
-    bankName: new FormControl('')
+    bankName: new FormControl(''),
+    accountHolderName: new FormControl(''),
+    accountNumber: new FormControl(''),
+    confirmAccountNumber: new FormControl(''),
+    ifscCode: new FormControl('')
   });
 
   constructor(
@@ -106,18 +110,6 @@ export class MakePaymentComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const role = localStorage.getItem('role');
-
-    // if (role !== Role.Customer.toString()) {
-
-    //   this.toastService.error(
-    //     'Only customers are allowed to make payments.'
-    //   );
-
-    //   this.router.navigate(['/unauthorized']);
-    //   return;
-    // }
-
     const idParam = this.route.snapshot.paramMap.get('policyId');
     const id = Number(idParam);
 
@@ -126,7 +118,6 @@ export class MakePaymentComponent implements OnInit {
       !Number.isInteger(id) ||
       id <= 0
     ) {
-
       this.errorMessage = 'Invalid policy ID.';
       return;
     }
@@ -137,12 +128,29 @@ export class MakePaymentComponent implements OnInit {
       this.updatePaymentValidators(mode);
     });
 
+    this.paymentForm.controls.bankName.valueChanges.subscribe(bankName => {
+      this.updateBankAccountValidators(bankName);
+    });
+
     this.loadPolicy();
   }
 
   // Payment Mode Getter
   get paymentMode(): FormControl<PaymentMode | null> {
     return this.paymentForm.controls.paymentMode;
+  }
+
+  // Check whether account numbers match
+  get accountNumbersDoNotMatch(): boolean {
+
+    const controls = this.paymentForm.controls;
+
+    const accountNumber = controls.accountNumber.value;
+    const confirmAccountNumber = controls.confirmAccountNumber.value;
+
+    return !!accountNumber &&
+      !!confirmAccountNumber &&
+      accountNumber !== confirmAccountNumber;
   }
 
   // Load Policy Details
@@ -174,7 +182,6 @@ export class MakePaymentComponent implements OnInit {
 
           this.toastService.error(this.errorMessage);
         }
-
       });
   }
 
@@ -194,6 +201,11 @@ export class MakePaymentComponent implements OnInit {
 
     controls.bankName.clearValidators();
 
+    controls.accountHolderName.clearValidators();
+    controls.accountNumber.clearValidators();
+    controls.confirmAccountNumber.clearValidators();
+    controls.ifscCode.clearValidators();
+
     // Clear previous payment details
     controls.upiId.reset('', { emitEvent: false });
     controls.upiApp.reset('', { emitEvent: false });
@@ -204,6 +216,11 @@ export class MakePaymentComponent implements OnInit {
     controls.cvv.reset('', { emitEvent: false });
 
     controls.bankName.reset('', { emitEvent: false });
+
+    controls.accountHolderName.reset('', { emitEvent: false });
+    controls.accountNumber.reset('', { emitEvent: false });
+    controls.confirmAccountNumber.reset('', { emitEvent: false });
+    controls.ifscCode.reset('', { emitEvent: false });
 
     // UPI
     if (mode === PaymentMode.UPI) {
@@ -248,6 +265,8 @@ export class MakePaymentComponent implements OnInit {
       controls.bankName.setValidators([
         Validators.required
       ]);
+
+      this.updateBankAccountValidators(controls.bankName.value);
     }
 
     // Refresh validation
@@ -256,6 +275,54 @@ export class MakePaymentComponent implements OnInit {
         emitEvent: false
       });
     });
+
+    this.cdr.detectChanges();
+  }
+
+  // Validate bank account details after bank selection
+  updateBankAccountValidators(bankName: string | null): void {
+
+    const controls = this.paymentForm.controls;
+
+    if (bankName) {
+
+      controls.accountHolderName.setValidators([
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z ]+$/)
+      ]);
+
+      controls.accountNumber.setValidators([
+        Validators.required,
+        Validators.pattern(/^\d{9,18}$/)
+      ]);
+
+      controls.confirmAccountNumber.setValidators([
+        Validators.required,
+        Validators.pattern(/^\d{9,18}$/)
+      ]);
+
+      controls.ifscCode.setValidators([
+        Validators.required,
+        Validators.pattern(/^[A-Z]{4}0[A-Z0-9]{6}$/i)
+      ]);
+
+    } else {
+
+      controls.accountHolderName.clearValidators();
+      controls.accountNumber.clearValidators();
+      controls.confirmAccountNumber.clearValidators();
+      controls.ifscCode.clearValidators();
+
+      controls.accountHolderName.reset('', { emitEvent: false });
+      controls.accountNumber.reset('', { emitEvent: false });
+      controls.confirmAccountNumber.reset('', { emitEvent: false });
+      controls.ifscCode.reset('', { emitEvent: false });
+    }
+
+    controls.accountHolderName.updateValueAndValidity({ emitEvent: false });
+    controls.accountNumber.updateValueAndValidity({ emitEvent: false });
+    controls.confirmAccountNumber.updateValueAndValidity({ emitEvent: false });
+    controls.ifscCode.updateValueAndValidity({ emitEvent: false });
 
     this.cdr.detectChanges();
   }
@@ -270,12 +337,17 @@ export class MakePaymentComponent implements OnInit {
       return;
     }
 
+    // Identify logged-in role
     const role = localStorage.getItem('role');
 
-    if (role !== Role.Customer.toString()) {
+    const isCustomer = role === Role.Customer.toString();
+    const isAdmin = role === Role.Admin.toString();
+    const isOfficer = role === Role.Officer.toString();
+
+    if (!isCustomer && !isAdmin && !isOfficer) {
 
       this.toastService.error(
-        'Only customers can make payments.'
+        'You are not authorized to make payments.'
       );
 
       return;
@@ -307,14 +379,35 @@ export class MakePaymentComponent implements OnInit {
       return;
     }
 
+    // Validate matching account numbers
+    if (
+      selectedMode === PaymentMode.Net_Banking &&
+      this.accountNumbersDoNotMatch
+    ) {
+
+      this.paymentForm.controls.confirmAccountNumber.markAsTouched();
+
+      this.errorMessage = 'Account numbers do not match.';
+
+      this.toastService.error(this.errorMessage);
+
+      return;
+    }
+
+    // Existing backend DTO contract
     const request: PaymentRequestDto = {
       policyId: this.policyId,
       paymentMode: selectedMode
     };
 
+    // Select endpoint according to logged-in role
+    const paymentRequest$ = isCustomer
+      ? this.paymentService.makeMyPayment(request)
+      : this.paymentService.makeOfficerPayment(request);
+
     this.submitting = true;
 
-    this.paymentService.makeMyPayment(request)
+    paymentRequest$
       .pipe(
         finalize(() => {
           this.submitting = false;
@@ -331,7 +424,11 @@ export class MakePaymentComponent implements OnInit {
 
           this.toastService.success(this.successMessage);
 
-          this.router.navigate(['/mypayments']);
+          if (isCustomer) {
+            this.router.navigate(['/mypayments']);
+          } else {
+            this.router.navigate(['/viewpayments']);
+          }
         },
 
         error: (error: HttpErrorResponse) => {
@@ -344,7 +441,6 @@ export class MakePaymentComponent implements OnInit {
 
           this.toastService.error(this.errorMessage);
         }
-
       });
   }
 

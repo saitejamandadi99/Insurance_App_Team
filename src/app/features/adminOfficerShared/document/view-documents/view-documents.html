@@ -6,62 +6,85 @@
   </app-page-header>
 
   <!-- Search and Filters -->
-  <div class="filter-card">
-    <form [formGroup]="filterForm" (ngSubmit)="searchDocuments()">
+<div class="filter-card">
+  <form [formGroup]="filterForm" (ngSubmit)="searchDocuments()">
 
-      <div class="row g-3 align-items-end">
+    <div class="row g-3 align-items-end">
 
-        <div class="col-lg-5 col-md-12">
-          <label class="form-label">Search Documents</label>
+      <!-- Search -->
+      <div class="col-lg-4 col-md-12">
+        <label class="form-label">Search Documents</label>
 
-          <div class="search-wrapper">
-            <i class="bi bi-search"></i>
+        <div class="search-wrapper">
+          <i class="bi bi-search"></i>
 
-            <input
-              type="text"
-              class="form-control"
-              formControlName="search"
-              placeholder="Search by document name, claim number or type">
-          </div>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="search"
+            placeholder="Search by document name, claim number or type">
         </div>
+      </div>
 
-        <div class="col-lg-3 col-md-4">
-          <label class="form-label">Sort By</label>
+      <!-- Sort By -->
+      <div class="col-lg-2 col-md-4">
+        <label class="form-label">Sort By</label>
 
-          <select class="form-select" formControlName="sortBy">
-            <option value="uploadeddate">Upload Date</option>
-            <option value="documentname">Document Name</option>
-            <option value="documenttype">Document Type</option>
-          </select>
-        </div>
+        <select class="form-select" formControlName="sortBy">
+          <option value="uploadeddate">Upload Date</option>
+          <option value="documentname">Document Name</option>
+          <option value="documenttype">Document Type</option>
+        </select>
+      </div>
 
-        <div class="col-lg-2 col-md-4">
-          <label class="form-label">Sort Direction</label>
+      <!-- Sort Direction -->
+      <div class="col-lg-2 col-md-4">
+        <label class="form-label">Sort Direction</label>
 
-          <select class="form-select" formControlName="sortDirection">
-            <option value="desc">Descending</option>
-            <option value="asc">Ascending</option>
-          </select>
-        </div>
+        <select class="form-select" formControlName="sortDirection">
+          <option value="desc">Descending</option>
+          <option value="asc">Ascending</option>
+        </select>
+      </div>
 
-        <div class="col-lg-2 col-md-4 d-flex gap-2">
-          <button type="submit" class="btn btn-primary flex-grow-1">
-            <i class="bi bi-search me-1"></i>
-            Search
-          </button>
+      <!-- Rows Per Page -->
+      <div class="col-lg-2 col-md-4">
+        <label class="form-label">Rows Per Page</label>
 
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            title="Reset filters"
-            (click)="resetFilters()">
-            <i class="bi bi-arrow-counterclockwise"></i>
-          </button>
-        </div>
+        <select
+          class="form-select"
+          formControlName="pageSize"
+          (change)="searchDocuments()">
+
+          <option [ngValue]="5">5</option>
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+          <option [ngValue]="50">50</option>
+
+        </select>
+      </div>
+
+      <!-- Actions -->
+      <div class="col-lg-2 col-md-12 d-flex gap-2">
+
+        <button type="submit" class="btn btn-primary flex-grow-1">
+          <i class="bi bi-search me-1"></i>
+          Search
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          title="Reset filters"
+          (click)="resetFilters()">
+          <i class="bi bi-arrow-counterclockwise"></i>
+        </button>
 
       </div>
-    </form>
-  </div>
+
+    </div>
+  </form>
+</div>
 
   <!-- Documents Table -->
   <div class="documents-table-card">
