@@ -1,3 +1,4 @@
+
 <div class="container-fluid py-4 officer-dashboard-page">
 
   <!-- DASHBOARD HEADER -->
@@ -6,9 +7,7 @@
       <i class="bi bi-person-badge-fill"></i>
     </div>
 
-    <h1 class="page-title">
-      Officer Dashboard
-    </h1>
+    <h1 class="page-title">Officer Dashboard</h1>
 
     <p class="page-subtitle">
       Review claims, manage policies, and track customer records.
@@ -21,7 +20,6 @@
       <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
-
       <p>Loading dashboard data...</p>
     </div>
   }
@@ -32,14 +30,12 @@
       <i class="bi bi-exclamation-triangle-fill"></i>
 
       <h5>Unable to Load Dashboard</h5>
-
       <p>{{ errorMessage }}</p>
 
       <button
         type="button"
         class="btn btn-primary"
         (click)="loadDashboard()">
-
         <i class="bi bi-arrow-clockwise me-2"></i>
         Retry
       </button>
@@ -52,7 +48,6 @@
     <!-- SUMMARY CARDS -->
     <div class="dashboard-stats">
 
-      <!-- PENDING CLAIMS -->
       <div class="stat-card">
         <div class="stat-icon chip-warning">
           <i class="bi bi-file-earmark-medical"></i>
@@ -60,14 +55,11 @@
 
         <div class="stat-content">
           <p>Pending Claims</p>
-
           <h3>{{ dashboard.pendingClaimsCount }}</h3>
-
           <span>Claims awaiting review</span>
         </div>
       </div>
 
-      <!-- PENDING CLAIM AMOUNT -->
       <div class="stat-card">
         <div class="stat-icon chip-primary">
           <i class="bi bi-currency-rupee"></i>
@@ -75,11 +67,9 @@
 
         <div class="stat-content">
           <p>Pending Claims Amount</p>
-
           <h3>
             {{ dashboard.pendingClaimsAmount | currency:'INR':'symbol':'1.0-0' }}
           </h3>
-
           <span>Total pending claim value</span>
         </div>
       </div>
@@ -87,7 +77,7 @@
     </div>
 
     <!-- TOP CLAIMS -->
-    <div class="dashboard-section top-claims-section">
+    <section class="dashboard-section top-claims-section">
 
       <div class="section-header">
         <div>
@@ -106,7 +96,6 @@
       </div>
 
       @if (dashboard.topClaims && dashboard.topClaims.length > 0) {
-
         <div class="table-responsive">
           <table class="table dashboard-table">
 
@@ -122,7 +111,6 @@
             <tbody>
               @for (claim of dashboard.topClaims; track claim.claimId) {
                 <tr>
-
                   <td>
                     <span class="claim-number">
                       {{ claim.claimNumber }}
@@ -141,9 +129,10 @@
 
                   <td>
                     <a
-                      routerLink="/officerreview/{{ claim.claimId }}"
+                      [routerLink]="['/officerreview', claim.claimId]"
                       class="claim-action"
-                      title="View Claim">
+                      title="View Claim"
+                      aria-label="View claim">
                       <i class="bi bi-eye"></i>
                     </a>
                   </td>
@@ -153,7 +142,6 @@
 
           </table>
         </div>
-
       } @else {
         <div class="empty-claims">
           <i class="bi bi-inbox"></i>
@@ -161,7 +149,178 @@
         </div>
       }
 
-    </div>
+    </section>
+
+    <!-- RECENT POLICIES -->
+    <section class="dashboard-section record-section">
+
+      <div class="section-header">
+        <div>
+          <h4>
+            <i class="bi bi-shield-check me-2"></i>
+            Recent Policies
+          </h4>
+
+          <p>Recently created insurance policies.</p>
+        </div>
+
+        <a routerLink="/viewpolicies" class="view-all-link">
+          View All Policies
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
+      @if (dashboard.recentPolicies && dashboard.recentPolicies.length > 0) {
+        <div class="record-grid">
+
+          @for (policy of dashboard.recentPolicies; track policy.policyId) {
+            <div class="record-card">
+
+              <div class="record-card-header">
+                <div class="record-icon chip-primary">
+                  <i class="bi bi-shield-check"></i>
+                </div>
+
+                <span class="record-status policy-status">
+                  {{ policy.policyStatus }}
+                </span>
+              </div>
+
+              <div class="record-primary">
+                <span class="record-label">POLICY NUMBER</span>
+                <h5>{{ policy.policyNumber }}</h5>
+              </div>
+
+              <div class="record-details">
+
+                <div class="record-detail">
+                  <span>Customer</span>
+                  <strong>{{ policy.customerName }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Product</span>
+                  <strong>{{ policy.productName }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Plan</span>
+                  <strong>{{ policy.planName }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Premium Paid</span>
+                  <strong class="record-amount">
+                    {{ policy.totalPremiumPaid | currency:'INR':'symbol':'1.2-2' }}
+                  </strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Start Date</span>
+                  <strong>{{ policy.startDate | date:'dd MMM yyyy' }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>End Date</span>
+                  <strong>{{ policy.endDate | date:'dd MMM yyyy' }}</strong>
+                </div>
+
+              </div>
+            </div>
+          }
+
+        </div>
+      } @else {
+        <div class="empty-claims">
+          <i class="bi bi-shield"></i>
+          <p>No recent policies available.</p>
+        </div>
+      }
+
+    </section>
+
+    <!-- RECENT PAYMENTS -->
+    <section class="dashboard-section record-section">
+
+      <div class="section-header">
+        <div>
+          <h4>
+            <i class="bi bi-cash-stack me-2"></i>
+            Recent Payments
+          </h4>
+
+          <p>Latest premium payment transactions.</p>
+        </div>
+
+        <a routerLink="/viewpayments" class="view-all-link">
+          View All Payments
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
+      @if (dashboard.recentPayments && dashboard.recentPayments.length > 0) {
+        <div class="record-grid">
+
+          @for (payment of dashboard.recentPayments; track payment.paymentId) {
+            <div class="record-card">
+
+              <div class="record-card-header">
+                <div class="record-icon chip-success">
+                  <i class="bi bi-credit-card"></i>
+                </div>
+
+                <span class="record-status payment-status">
+                  {{ payment.paymentStatus }}
+                </span>
+              </div>
+
+              <div class="record-primary">
+                <span class="record-label">POLICY NUMBER</span>
+                <h5>{{ payment.policyNumber }}</h5>
+              </div>
+
+              <div class="payment-amount">
+                {{ payment.amount | currency:'INR':'symbol':'1.2-2' }}
+              </div>
+
+              <div class="record-details">
+
+                <div class="record-detail">
+                  <span>Customer</span>
+                  <strong>{{ payment.customerName }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Payment Date</span>
+                  <strong>{{ payment.paymentDate | date:'dd MMM yyyy' }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Payment Mode</span>
+                  <strong>{{ payment.paymentMode }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Transaction Reference</span>
+                  <strong class="transaction-reference">
+                    {{ payment.transactionReference }}
+                  </strong>
+                </div>
+
+              </div>
+            </div>
+          }
+
+        </div>
+      } @else {
+        <div class="empty-claims">
+          <i class="bi bi-wallet2"></i>
+          <p>No recent payments available.</p>
+        </div>
+      }
+
+    </section>
+
   }
 
   <!-- DASHBOARD NAVIGATION -->
@@ -177,48 +336,35 @@
     </div>
 
     @for (section of sections; track section.heading) {
-
       <div class="dashboard-section">
 
-        <!-- SECTION HEADING -->
         <div class="section-heading">
-
-          <h5>
-            {{ section.heading }}
-          </h5>
+          <h5>{{ section.heading }}</h5>
 
           <span class="section-count">
             {{ section.cards.length }}
             {{ section.cards.length === 1 ? 'Option' : 'Options' }}
           </span>
-
         </div>
 
-        <!-- DASHBOARD CARDS -->
         <div class="dashboard-grid">
 
           @for (card of section.cards; track card.title) {
-
             <a
               class="app-card dashboard-card"
               [routerLink]="card.route">
 
               <div class="card-top">
-
                 <div
                   class="icon-chip"
                   [ngClass]="'chip-' + card.color">
-
                   <i [class]="card.icon"></i>
-
                 </div>
 
                 <i class="bi bi-arrow-up-right card-arrow"></i>
-
               </div>
 
               <div class="card-content">
-
                 <h6 class="card-title-custom">
                   {{ card.title }}
                 </h6>
@@ -226,7 +372,6 @@
                 <p class="card-subtitle-custom">
                   {{ card.subtitle }}
                 </p>
-
               </div>
 
               <div class="card-action">
@@ -235,13 +380,10 @@
               </div>
 
             </a>
-
           }
 
         </div>
-
       </div>
-
     }
 
   </div>

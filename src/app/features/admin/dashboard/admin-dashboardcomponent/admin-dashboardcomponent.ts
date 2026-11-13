@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, CurrencyPipe } from '@angular/common';
+import { NgClass, NgFor, NgIf, CurrencyPipe,DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -22,7 +22,7 @@ interface DashboardSection {
 @Component({
   selector: 'app-admin-dashboard-component',
   standalone: true,
-  imports: [NgFor, NgIf, RouterLink, NgClass, CurrencyPipe],
+  imports: [NgFor, NgIf, RouterLink, NgClass, CurrencyPipe, DatePipe],
   templateUrl: './admin-dashboardcomponent.html',
   styleUrl: './admin-dashboardcomponent.css',
 })

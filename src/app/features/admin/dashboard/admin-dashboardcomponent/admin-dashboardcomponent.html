@@ -16,19 +16,16 @@
 
   <!-- LOADING -->
   @if (isLoading) {
-
     <div class="loading-container">
       <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
       <p>Loading dashboard data...</p>
     </div>
-
   }
 
   <!-- ERROR -->
   @else if (errorMessage) {
-
     <div class="error-card">
       <div class="error-icon">
         <i class="bi bi-exclamation-triangle-fill"></i>
@@ -41,13 +38,10 @@
         type="button"
         class="btn btn-retry"
         (click)="loadDashboard()">
-
         <i class="bi bi-arrow-clockwise"></i>
         Retry
-
       </button>
     </div>
-
   }
 
   <!-- DASHBOARD DATA -->
@@ -130,10 +124,8 @@
       </div>
 
       @if (dashboard.topClaims && dashboard.topClaims.length > 0) {
-
         <div class="table-responsive">
           <table class="table dashboard-table">
-
             <thead>
               <tr>
                 <th>CLAIM NUMBER</th>
@@ -145,7 +137,6 @@
 
             <tbody>
               @for (claim of dashboard.topClaims; track claim.claimId) {
-
                 <tr>
                   <td>
                     <span class="claim-number">
@@ -171,21 +162,15 @@
                       class="claim-action"
                       title="View Claim"
                       aria-label="View claim">
-
                       <i class="bi bi-eye"></i>
-
                     </a>
                   </td>
                 </tr>
-
               }
             </tbody>
-
           </table>
         </div>
-
       } @else {
-
         <div class="empty-claims">
           <div class="empty-icon">
             <i class="bi bi-inbox"></i>
@@ -194,7 +179,186 @@
           <h5>No Claims Available</h5>
           <p>There are currently no claims to display.</p>
         </div>
+      }
 
+    </section>
+
+    <!-- RECENT POLICIES -->
+    <section class="dashboard-section">
+
+      <div class="section-header">
+        <div class="section-heading">
+          <div class="section-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+
+          <div>
+            <h4>Recent Policies</h4>
+            <p>Recently created insurance policies.</p>
+          </div>
+        </div>
+
+        <a routerLink="/viewpolicies" class="view-all-link">
+          View All Policies
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
+      @if (dashboard.recentPolicies && dashboard.recentPolicies.length > 0) {
+        <div class="record-grid">
+
+          @for (policy of dashboard.recentPolicies; track policy.policyId) {
+            <div class="record-card">
+
+              <div class="record-card-header">
+                <div class="record-icon chip-primary">
+                  <i class="bi bi-shield-check"></i>
+                </div>
+
+                <span class="record-status policy-status">
+                  {{ policy.policyStatus }}
+                </span>
+              </div>
+
+              <div class="record-primary">
+                <span class="record-label">POLICY NUMBER</span>
+                <h5>{{ policy.policyNumber }}</h5>
+              </div>
+
+              <div class="record-details">
+                <div class="record-detail">
+                  <span>Customer</span>
+                  <strong>{{ policy.customerName }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Product</span>
+                  <strong>{{ policy.productName }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Plan</span>
+                  <strong>{{ policy.planName }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Premium Paid</span>
+                  <strong class="record-amount">
+                    {{ policy.totalPremiumPaid | currency:'INR':'symbol':'1.2-2' }}
+                  </strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Start Date</span>
+                  <strong>{{ policy.startDate | date:'dd MMM yyyy' }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>End Date</span>
+                  <strong>{{ policy.endDate | date:'dd MMM yyyy' }}</strong>
+                </div>
+              </div>
+
+            </div>
+          }
+
+        </div>
+      } @else {
+        <div class="empty-claims">
+          <div class="empty-icon">
+            <i class="bi bi-shield"></i>
+          </div>
+
+          <h5>No Recent Policies</h5>
+          <p>There are currently no policies to display.</p>
+        </div>
+      }
+
+    </section>
+
+    <!-- RECENT PAYMENTS -->
+    <section class="dashboard-section">
+
+      <div class="section-header">
+        <div class="section-heading">
+          <div class="section-icon">
+            <i class="bi bi-cash-stack"></i>
+          </div>
+
+          <div>
+            <h4>Recent Payments</h4>
+            <p>Latest premium payment transactions.</p>
+          </div>
+        </div>
+
+        <a routerLink="/viewpayments" class="view-all-link">
+          View All Payments
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
+      @if (dashboard.recentPayments && dashboard.recentPayments.length > 0) {
+        <div class="record-grid">
+
+          @for (payment of dashboard.recentPayments; track payment.paymentId) {
+            <div class="record-card">
+
+              <div class="record-card-header">
+                <div class="record-icon chip-success">
+                  <i class="bi bi-credit-card"></i>
+                </div>
+
+                <span class="record-status payment-status">
+                  {{ payment.paymentStatus }}
+                </span>
+              </div>
+
+              <div class="record-primary">
+                <span class="record-label">POLICY NUMBER</span>
+                <h5>{{ payment.policyNumber }}</h5>
+              </div>
+
+              <div class="payment-amount">
+                {{ payment.amount | currency:'INR':'symbol':'1.2-2' }}
+              </div>
+
+              <div class="record-details">
+                <div class="record-detail">
+                  <span>Customer</span>
+                  <strong>{{ payment.customerName }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Payment Date</span>
+                  <strong>{{ payment.paymentDate | date:'dd MMM yyyy' }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Payment Mode</span>
+                  <strong>{{ payment.paymentMode }}</strong>
+                </div>
+
+                <div class="record-detail">
+                  <span>Transaction Reference</span>
+                  <strong class="transaction-reference">
+                    {{ payment.transactionReference }}
+                  </strong>
+                </div>
+              </div>
+
+            </div>
+          }
+
+        </div>
+      } @else {
+        <div class="empty-claims">
+          <div class="empty-icon">
+            <i class="bi bi-wallet2"></i>
+          </div>
+
+          <h5>No Recent Payments</h5>
+          <p>There are currently no payments to display.</p>
+        </div>
       }
 
     </section>
@@ -216,7 +380,6 @@
     </div>
 
     @for (section of sections; track section.heading) {
-
       <div class="dashboard-group">
 
         <h5 class="group-heading">
@@ -226,7 +389,6 @@
         <div class="dashboard-grid">
 
           @for (card of section.cards; track card.title) {
-
             <div
               class="app-card dashboard-card"
               [routerLink]="card.route"
@@ -235,9 +397,7 @@
               <div
                 class="icon-chip"
                 [ngClass]="'chip-' + card.color">
-
                 <i [class]="card.icon"></i>
-
               </div>
 
               <h6 class="card-title-custom">
@@ -253,13 +413,11 @@
               </div>
 
             </div>
-
           }
 
         </div>
 
       </div>
-
     }
 
   </section>

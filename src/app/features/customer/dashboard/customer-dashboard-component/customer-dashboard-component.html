@@ -1,3 +1,4 @@
+
 <div class="customer-dashboard-page">
 
   <!-- DASHBOARD HEADER -->
@@ -20,22 +21,16 @@
 
   <!-- PROFILE CHECK LOADING -->
   <div class="dashboard-loading" *ngIf="isLoading">
-
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-
     <p>Checking your customer profile...</p>
-
   </div>
 
   <!-- PROFILE CHECK ERROR -->
   <div class="profile-error" *ngIf="!isLoading && profileCheckFailed">
-
     <i class="bi bi-exclamation-triangle-fill"></i>
-
     <h5>Unable to Load Profile</h5>
-
     <p>
       We couldn't check your customer profile.
       Please try again.
@@ -45,12 +40,9 @@
       type="button"
       class="btn btn-primary"
       (click)="checkCustomerProfile()">
-
       <i class="bi bi-arrow-clockwise me-2"></i>
       Retry
-
     </button>
-
   </div>
 
   <!-- DASHBOARD CONTENT -->
@@ -61,48 +53,40 @@
 
       <!-- DASHBOARD STATISTICS -->
       <div class="dashboard-section">
-
         <div class="section-header">
           <div>
             <h4>
               <i class="bi bi-bar-chart-fill me-2"></i>
               My Overview
             </h4>
-
             <p>Summary of your insurance claims.</p>
           </div>
         </div>
 
         <!-- DASHBOARD LOADING -->
         <div class="dashboard-loading" *ngIf="isDashboardLoading">
-
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
-
           <p>Loading your dashboard data...</p>
-
         </div>
 
         <!-- DASHBOARD ERROR -->
-        <div class="profile-error" *ngIf="!isDashboardLoading && dashboardErrorMessage">
+        <div
+          class="profile-error"
+          *ngIf="!isDashboardLoading && dashboardErrorMessage">
 
           <i class="bi bi-exclamation-triangle-fill"></i>
-
           <h5>Unable to Load Dashboard</h5>
-
           <p>{{ dashboardErrorMessage }}</p>
 
           <button
             type="button"
             class="btn btn-primary"
             (click)="loadCustomerDashboard()">
-
             <i class="bi bi-arrow-clockwise me-2"></i>
             Retry
-
           </button>
-
         </div>
 
         <!-- DASHBOARD DATA -->
@@ -112,59 +96,46 @@
 
           <!-- TOTAL CLAIMS -->
           <div class="stat-card">
-
             <div class="stat-icon accent-primary">
               <i class="bi bi-file-earmark-medical"></i>
             </div>
 
             <div class="stat-content">
               <p>Total Claims</p>
-
               <h3>{{ dashboard.totalClaimsCount }}</h3>
-
               <span>Total claims submitted</span>
             </div>
-
           </div>
 
           <!-- PENDING CLAIMS -->
           <div class="stat-card">
-
             <div class="stat-icon accent-warning">
               <i class="bi bi-hourglass-split"></i>
             </div>
 
             <div class="stat-content">
               <p>Pending Claims</p>
-
               <h3>{{ dashboard.pendingClaimsCount }}</h3>
-
               <span>Claims awaiting review</span>
             </div>
-
           </div>
 
           <!-- PENDING CLAIM AMOUNT -->
           <div class="stat-card">
-
             <div class="stat-icon accent-success">
               <i class="bi bi-currency-rupee"></i>
             </div>
 
             <div class="stat-content">
               <p>Pending Claims Amount</p>
-
               <h3>
                 {{ dashboard.pendingClaimsAmount | currency:'INR':'symbol':'1.0-0' }}
               </h3>
-
               <span>Total pending claim value</span>
             </div>
-
           </div>
 
         </div>
-
       </div>
 
       <!-- CLAIM HISTORY -->
@@ -178,7 +149,6 @@
               <i class="bi bi-clock-history me-2"></i>
               My Claim History
             </h4>
-
             <p>Track your submitted claims and their latest recorded dates.</p>
           </div>
 
@@ -193,7 +163,6 @@
           *ngIf="dashboard.claimHistory && dashboard.claimHistory.length > 0">
 
           <table class="table dashboard-table">
-
             <thead>
               <tr>
                 <th>CLAIM NUMBER</th>
@@ -205,10 +174,7 @@
             </thead>
 
             <tbody>
-
-              <tr *ngFor="let claim of dashboard.claimHistory; let i = index">
-
-
+              <tr *ngFor="let claim of dashboard.claimHistory">
                 <td>
                   <span class="claim-number">
                     {{ claim.claimNumber }}
@@ -225,20 +191,11 @@
                   </span>
                 </td>
 
-                <td>
-                  {{ claim.createdDate | date:'dd MMM yyyy' }}
-                </td>
-
-                <td>
-                  {{ claim.updatedDate | date:'dd MMM yyyy' }}
-                </td>
-
+                <td>{{ claim.createdDate | date:'dd MMM yyyy' }}</td>
+                <td>{{ claim.updatedDate | date:'dd MMM yyyy' }}</td>
               </tr>
-
             </tbody>
-
           </table>
-
         </div>
 
         <div
@@ -246,25 +203,182 @@
           *ngIf="!dashboard.claimHistory || dashboard.claimHistory.length === 0">
 
           <i class="bi bi-inbox"></i>
-
           <p>You haven't submitted any claims yet.</p>
+        </div>
+      </div>
 
+      <!-- RECENT POLICIES -->
+      <div
+        class="dashboard-section record-section"
+        *ngIf="!isDashboardLoading && !dashboardErrorMessage && dashboard">
+
+        <div class="section-header">
+          <div>
+            <h4>
+              <i class="bi bi-shield-check me-2"></i>
+              My Recent Policies
+            </h4>
+            <p>Overview of your recently purchased insurance policies.</p>
+          </div>
+
+          <a routerLink="/mypolicies" class="view-all-link">
+            View All Policies
+            <i class="bi bi-arrow-right"></i>
+          </a>
         </div>
 
+        <div
+          class="record-grid"
+          *ngIf="dashboard.recentPolicies && dashboard.recentPolicies.length > 0">
+
+          <div
+            class="record-card"
+            *ngFor="let policy of dashboard.recentPolicies">
+
+            <div class="record-card-header">
+              <div class="record-icon policy-icon">
+                <i class="bi bi-shield-check"></i>
+              </div>
+
+              <span class="record-status policy-status">
+                {{ policy.policyStatus }}
+              </span>
+            </div>
+
+            <div class="record-primary">
+              <span class="record-label">POLICY NUMBER</span>
+              <h5>{{ policy.policyNumber }}</h5>
+            </div>
+
+            <div class="record-details">
+              <div class="record-detail">
+                <span>Product</span>
+                <strong>{{ policy.productName }}</strong>
+              </div>
+
+              <div class="record-detail">
+                <span>Plan</span>
+                <strong>{{ policy.planName }}</strong>
+              </div>
+
+              <div class="record-detail">
+                <span>Total Premium Paid</span>
+                <strong class="record-amount">
+                  {{ policy.totalPremiumPaid | currency:'INR':'symbol':'1.2-2' }}
+                </strong>
+              </div>
+
+              <div class="record-detail">
+                <span>Start Date</span>
+                <strong>{{ policy.startDate | date:'dd MMM yyyy' }}</strong>
+              </div>
+
+              <div class="record-detail full-width-detail">
+                <span>End Date</span>
+                <strong>{{ policy.endDate | date:'dd MMM yyyy' }}</strong>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div
+          class="empty-records"
+          *ngIf="!dashboard.recentPolicies || dashboard.recentPolicies.length === 0">
+
+          <i class="bi bi-shield"></i>
+          <p>You don't have any recent policies.</p>
+        </div>
+      </div>
+
+      <!-- RECENT PAYMENTS -->
+      <div
+        class="dashboard-section record-section"
+        *ngIf="!isDashboardLoading && !dashboardErrorMessage && dashboard">
+
+        <div class="section-header">
+          <div>
+            <h4>
+              <i class="bi bi-wallet2 me-2"></i>
+              My Recent Payments
+            </h4>
+            <p>Track your latest insurance premium payments.</p>
+          </div>
+
+          <a routerLink="/mypayments" class="view-all-link">
+            View All Payments
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+
+        <div
+          class="record-grid"
+          *ngIf="dashboard.recentPayments && dashboard.recentPayments.length > 0">
+
+          <div
+            class="record-card"
+            *ngFor="let payment of dashboard.recentPayments">
+
+            <div class="record-card-header">
+              <div class="record-icon payment-icon">
+                <i class="bi bi-credit-card"></i>
+              </div>
+
+              <span class="record-status payment-status">
+                {{ payment.paymentStatus }}
+              </span>
+            </div>
+
+            <div class="record-primary">
+              <span class="record-label">POLICY NUMBER</span>
+              <h5>{{ payment.policyNumber }}</h5>
+            </div>
+
+            <div class="payment-amount">
+              {{ payment.amount | currency:'INR':'symbol':'1.2-2' }}
+            </div>
+
+            <div class="record-details">
+              <div class="record-detail">
+                <span>Payment Date</span>
+                <strong>{{ payment.paymentDate | date:'dd MMM yyyy' }}</strong>
+              </div>
+
+              <div class="record-detail">
+                <span>Payment Mode</span>
+                <strong>{{ payment.paymentMode }}</strong>
+              </div>
+
+              <div class="record-detail full-width-detail">
+                <span>Transaction Reference</span>
+                <strong class="transaction-reference">
+                  {{ payment.transactionReference || 'N/A' }}
+                </strong>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div
+          class="empty-records"
+          *ngIf="!dashboard.recentPayments || dashboard.recentPayments.length === 0">
+
+          <i class="bi bi-wallet2"></i>
+          <p>You don't have any recent payments.</p>
+        </div>
       </div>
 
     </div>
 
     <!-- PROFILE SECTION -->
     <div class="dashboard-section">
-
       <div class="section-header">
         <div>
           <h4>
             <i class="bi bi-person-circle me-2"></i>
             My Account
           </h4>
-
           <p>Manage your customer profile.</p>
         </div>
       </div>
@@ -289,7 +403,6 @@
           <div class="card-arrow">
             <i class="bi bi-arrow-right"></i>
           </div>
-
         </a>
 
         <!-- EDIT PROFILE -->
@@ -310,11 +423,9 @@
           <div class="card-arrow">
             <i class="bi bi-arrow-right"></i>
           </div>
-
         </a>
 
       </div>
-
     </div>
 
     <!-- OTHER DASHBOARD SECTIONS -->
@@ -329,7 +440,6 @@
       </div>
 
       <div class="dashboard-grid">
-
         <a
           *ngFor="let card of section.cards"
           class="dashboard-card"
@@ -341,23 +451,16 @@
           </div>
 
           <div class="card-content">
-
             <h5>{{ card.title }}</h5>
-
             <p>{{ card.subtitle }}</p>
-
           </div>
 
           <div class="card-arrow">
             <i class="bi bi-arrow-right"></i>
           </div>
-
         </a>
-
       </div>
-
     </div>
 
   </div>
-
 </div>

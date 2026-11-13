@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgClass } from '@angular/common';
+import { CurrencyPipe, NgClass,DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
@@ -22,7 +22,7 @@ interface DashboardSection {
 @Component({
   selector: 'app-officer-dashboard-component',
   standalone: true,
-  imports: [NgClass, RouterLink, CurrencyPipe],
+  imports: [NgClass, RouterLink, CurrencyPipe, DatePipe],
   templateUrl: './officer-dashboard-component.html',
   styleUrl: './officer-dashboard-component.css'
 })
